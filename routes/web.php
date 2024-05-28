@@ -25,6 +25,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'verified', 'role:Super-Admin'])->group(function () {
     Route::get('/superadmin', [SuperAdminController::class, 'index'])->name('superadmin');
     Route::get('kendaraan', [kendaraanController::class, 'index'])->name('kendaraan');
+    Route::post('kendaraan/store', [KendaraanController::class, 'store'])->name('kendaraan.store');
+    Route::post('kendaraan/{id}', [KendaraanController::class, 'update'])->name('kendaraan.update');
 });
 
 Route::get('admin', function () {

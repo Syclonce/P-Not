@@ -242,9 +242,21 @@
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
-                "buttons": false
+                "buttons": false,
+                "lengthChange": true,  
+                "language": {
+                    "lengthMenu": "Tampil  _MENU_",
+                    "info": "Menampilkan _START_ - _END_ dari _TOTAL_ entri",
+                    "search": "Cari :",  // Custom text for the search input
+                    "paginate": {
+                        "previous": "Sebelumnya",  // Custom text for the previous button
+                        "next": "Berikutnya"  // Custom text for the next button
+                    }
+                }
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
         });
+
+
         const Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
@@ -287,6 +299,12 @@
             }
         });
 
+        $(function () {
+                $('#tahunBuat, #tanggalPajak, #tanggalStnk').datetimepicker({
+                    format: 'L'
+                });
+        });
+
         // Menerapkan preferensi dark mode saat halaman dimuat
         $(document).ready(function() {
             // Memeriksa preferensi dark mode pada local storage
@@ -299,6 +317,64 @@
             } else {
                 $('.btn-group-toggle label:nth-child(1)').addClass('active'); // Menandai label mode terang
             }
+
+            $('#kendaraan-form').on('submit', function(e) {
+            e.preventDefault();
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#example1').DataTable().ajax.reload();
+
+                        toastr.success('Kendaraan berhasil disimpan.');
+                    },
+                    error: function(xhr) {
+                        toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
+                    }
+                });
+            }); 
+
+            $(document).on('click', '.edit-data', function(){
+                var id = $(this).data('id');
+                var no_pol = $(this).data('no-pol');
+                var nama_pem = $(this).data('nama-pem');
+                var merek = $(this).data('merek');
+                var model = $(this).data('model');
+                var kode_merek = $(this).data('kode-merek');
+                var tgl_buat = $(this).data('tgl-buat');
+                var tgl_pajak = $(this).data('tgl-pajak');
+                var tgl_stnk = $(this).data('tgl-stnk');
+                
+                $('#editId').val(id);
+                $('#editNoPol').val(no_pol);
+                $('#editNamaPem').val(nama_pem);
+                $('#editMerek').val(merek);
+                $('#editModel').val(model);
+                $('#editKodeMerek').val(kode_merek);
+                $('#editTglBuat').val(tgl_buat);
+                $('#editTglPajak').val(tgl_pajak);
+                $('#editTglStnk').val(tgl_stnk);
+            });      
+            
+            $('#editBtn').click(function(){
+                $.ajax({
+                    type: 'POST',
+                    url: '/kendaraan/{{ $kendaraan->id }}',
+                    data: $('#editForm').serialize(),
+                    success: function(response) {
+                        $('#editModal').modal('hide');
+                        $('#example1').DataTable().ajax.reload();
+
+                        // location.reload();
+                        toastr.success('Kendaraan berhasil diperbarui.');
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            });
         });
     </script>
 </body>
