@@ -24,16 +24,17 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">Data Kendaraan</h3>
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">
-                                    <i class="fas fa-plus"></i> Tambah Data
-                                </button>
-                            </div>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        data-target="#addModal">
+                                        <i class="fas fa-plus"></i> Tambah Data
+                                    </button>
+                                </div>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <table id="example1" class="table table-bordered table-striped">
-                                <thead>
+                                    <thead>
                                         <tr>
                                             <th>No</th>
                                             <th>No Polisi</th>
@@ -49,23 +50,33 @@
                                     </thead>
                                     <tbody>
                                         @php $index = 1; @endphp
-                                        @foreach($kendaraan as $kendaraan)
-                                        <tr>
-                                            <td>{{ $index }}</td>
-                                            <td>{{ $kendaraan->no_pol }}</td>
-                                            <td>{{ $kendaraan->nama_pem }}</td>
-                                            <td>{{ $kendaraan->merek }}</td>
-                                            <td>{{ $kendaraan->model }}</td>
-                                            <td>{{ $kendaraan->kode_merek }}</td>
-                                            <td>{{ $kendaraan->tgl_buat }}</td>
-                                            <td>{{ $kendaraan->tgl_pajak }}</td>
-                                            <td>{{ $kendaraan->tgl_stnk }}</td>
-                                            <td class="text-center">
-                                                <a href="#" data-toggle="modal" data-target="#editModal" data-id="{{ $kendaraan->id }}" data-no-pol="{{ $kendaraan->no_pol }}" data-nama-pem="{{ $kendaraan->nama_pem }}" data-merek="{{ $kendaraan->merek }}" data-model="{{ $kendaraan->model }}" data-kode-merek="{{ $kendaraan->kode_merek }}" data-tgl-buat="{{ $kendaraan->tgl_buat }}" data-tgl-pajak="{{ $kendaraan->tgl_pajak }}" data-tgl-stnk="{{ $kendaraan->tgl_stnk }}" class="edit-data"><i class="fa fa-edit text-secondary"></i></a>
-                                                <a><i class="fa fa-trash-can text-secondary"></i></a>
-                                            </td>
-                                        </tr>
-                                        @php $index++; @endphp
+                                        @foreach ($kendaraan as $kendaraan)
+                                            <tr>
+                                                <td>{{ $index }}</td>
+                                                <td>{{ $kendaraan->no_pol }}</td>
+                                                <td>{{ $kendaraan->nama_pem }}</td>
+                                                <td>{{ $kendaraan->merek }}</td>
+                                                <td>{{ $kendaraan->model }}</td>
+                                                <td>{{ $kendaraan->kode_merek }}</td>
+                                                <td>{{ $kendaraan->tgl_buat }}</td>
+                                                <td>{{ $kendaraan->tgl_pajak }}</td>
+                                                <td>{{ $kendaraan->tgl_stnk }}</td>
+                                                <td class="text-center">
+                                                    <a href="#" data-toggle="modal" data-target="#editModal"
+                                                        data-id="{{ $kendaraan->id }}"
+                                                        data-no-pol="{{ $kendaraan->no_pol }}"
+                                                        data-nama-pem="{{ $kendaraan->nama_pem }}"
+                                                        data-merek="{{ $kendaraan->merek }}"
+                                                        data-model="{{ $kendaraan->model }}"
+                                                        data-kode-merek="{{ $kendaraan->kode_merek }}"
+                                                        data-tgl-buat="{{ $kendaraan->tgl_buat }}"
+                                                        data-tgl-pajak="{{ $kendaraan->tgl_pajak }}"
+                                                        data-tgl-stnk="{{ $kendaraan->tgl_stnk }}" class="edit-data"><i
+                                                            class="fa fa-edit text-secondary"></i></a>
+                                                    <a><i class="fa fa-trash-can text-secondary"></i></a>
+                                                </td>
+                                            </tr>
+                                            @php $index++; @endphp
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -98,7 +109,8 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>No Polisi</label>
-                                    <input type="text" class="form-control" name="noPolisi" placeholder="Contoh : A 1234">
+                                    <input type="text" class="form-control" name="noPolisi"
+                                        placeholder="Contoh : A 1234">
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -133,8 +145,10 @@
                                 <div class="form-group">
                                     <label>Tahun Buatan Kendaraan</label>
                                     <div class="input-group date" id="tahunBuat" data-target-input="nearest">
-                                        <input type="text" class="form-control datetimepicker-input" data-target="#tahunBuat" name="tahunBuat"/>
-                                        <div class="input-group-append" data-target="#tahunBuat" data-toggle="datetimepicker">
+                                        <input type="text" class="form-control datetimepicker-input"
+                                            data-target="#tahunBuat" name="tahunBuat" />
+                                        <div class="input-group-append" data-target="#tahunBuat"
+                                            data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                         </div>
                                     </div>
@@ -146,8 +160,10 @@
                                 <div class="form-group">
                                     <label>Tanggal Akhir Pajak</label>
                                     <div class="input-group date" id="tanggalPajak" data-target-input="nearest">
-                                        <input type="text" class="form-control datetimepicker-input" data-target="#tanggalPajak" name="tanggalPajak"/>
-                                        <div class="input-group-append" data-target="#tanggalPajak" data-toggle="datetimepicker">
+                                        <input type="text" class="form-control datetimepicker-input"
+                                            data-target="#tanggalPajak" name="tanggalPajak" />
+                                        <div class="input-group-append" data-target="#tanggalPajak"
+                                            data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                         </div>
                                     </div>
@@ -157,8 +173,10 @@
                                 <div class="form-group">
                                     <label>Tanggal Akhir STNK</label>
                                     <div class="input-group date" id="tanggalStnk" data-target-input="nearest">
-                                        <input type="text" class="form-control datetimepicker-input" data-target="#tanggalStnk" name="tanggalStnk"/>
-                                        <div class="input-group-append" data-target="#tanggalStnk" data-toggle="datetimepicker">
+                                        <input type="text" class="form-control datetimepicker-input"
+                                            data-target="#tanggalStnk" name="tanggalStnk" />
+                                        <div class="input-group-append" data-target="#tanggalStnk"
+                                            data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                         </div>
                                     </div>
@@ -170,25 +188,26 @@
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                         <button type="submit" class="btn btn-primary">Simpan</button> <!-- Submit button -->
                     </div>
-                </form> 
+                </form>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Edit Data Kendaraan</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="editForm">
-                    @csrf
-                    <input type="hidden" id="editId" name="editId">
-                    <div class="row">
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Data Kendaraan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm">
+                        @csrf
+                        <input type="hidden" id="editId" name="editId">
+                        <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="editNoPol">No Polisi</label>
@@ -198,11 +217,12 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="editNamaPem">Nama Pemilik</label>
-                                    <input type="text" class="form-control" id="editNamaPem" name="nama_pem" required>
+                                    <input type="text" class="form-control" id="editNamaPem" name="nama_pem"
+                                        required>
                                 </div>
                             </div>
-                    </div>
-                    <div class="row">
+                        </div>
+                        <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="editMerek">Merek</label>
@@ -215,44 +235,46 @@
                                     <input type="text" class="form-control" id="editModel" name="model" required>
                                 </div>
                             </div>
-                    </div>
-                    <div class="row">
+                        </div>
+                        <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="editKodeMerek">Kode Merek</label>
-                                    <input type="text" class="form-control" id="editKodeMerek" name="kode_merek" required>
+                                    <input type="text" class="form-control" id="editKodeMerek" name="kode_merek"
+                                        required>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="editTglBuat">Tanggal Buat</label>
-                                    <input type="date" class="form-control" id="editTglBuat" name="tgl_buat" required>
+                                    <input type="date" class="form-control" id="editTglBuat" name="tgl_buat"
+                                        required>
                                 </div>
                             </div>
-                    </div>
-                    <div class="row">
+                        </div>
+                        <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="editTglPajak">Tanggal Pajak</label>
-                                    <input type="date" class="form-control" id="editTglPajak" name="tgl_pajak" required>
+                                    <input type="date" class="form-control" id="editTglPajak" name="tgl_pajak"
+                                        required>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="editTglStnk">Tanggal STNK</label>
-                                    <input type="date" class="form-control" id="editTglStnk" name="tgl_stnk" required>
+                                    <input type="date" class="form-control" id="editTglStnk" name="tgl_stnk"
+                                        required>
                                 </div>
                             </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                <button type="button" class="btn btn-primary" id="editBtn">Perbarui</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" id="editBtn">Perbarui</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-
 @endsection

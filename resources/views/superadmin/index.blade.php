@@ -22,49 +22,28 @@
                 <div class="row">
                     <div class="col-lg-3 col-6">
                         <!-- small box -->
-                        <div class="small-box bg-info">
-                            <div class="inner">
-                                <h3>150</h3>
-
-                                <p>New Orders</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-bag"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i
-                                    class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
                         <div class="small-box bg-success">
                             <div class="inner">
-                                <h3>53<sup style="font-size: 20px">%</sup></h3>
+                                <h3>{{ $totalKendaraan }} Unit</h3>
 
-                                <p>Bounce Rate</p>
+                                <p>Jumlah Kendaraan</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-stats-bars"></i>
+                                <i class="fas fa-car"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i
-                                    class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
                     <div class="col-lg-3 col-6">
                         <!-- small box -->
-                        <div class="small-box bg-warning">
+                        <div class="small-box bg-info">
                             <div class="inner">
-                                <h3>44</h3>
-
-                                <p>User Registrations</p>
+                                <h3>{{ $totalUsers }} User</h3>
+                                <p>Jumlah User</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-person-add"></i>
+                                <i class="fas fa-user"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i
-                                    class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -72,15 +51,27 @@
                         <!-- small box -->
                         <div class="small-box bg-danger">
                             <div class="inner">
-                                <h3>65</h3>
+                                <h3>{{ $countKadaluarsa }} Unit</h3>
 
-                                <p>Unique Visitors</p>
+                                <p>Terlambat Pajak</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-pie-graph"></i>
+                                <i class="far fa-clock"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i
-                                    class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-danger">
+                            <div class="inner">
+                                <h3>{{ $countKadaluarsap }} Unit</h3>
+
+                                <p>Terlambat Pajak STNK</p>
+                            </div>
+                            <div class="icon">
+                                <i class="far fa-clock"></i>
+                            </div>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -88,7 +79,88 @@
                 <!-- /.row -->
                 <!-- Main row -->
                 <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">daftar Jatuht Tempo kendaran Bulan ini</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <table id="example2" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>No Polisi</th>
+                                            <th>Model</th>
+                                            <th>Tanggal Pajak</th>
+                                            <th>Tanggal STNK</th>
+                                            <th>Keterangan</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
+                                        @foreach ($kendaraans as $data)
+                                            <tr>
+                                                <td>{{ $data->no_pol }}</td>
+                                                <td>{{ $data->merek }} - {{ $data->model }}</td>
+                                                <td>{{ $data->tgl_pajak }}</td>
+                                                <td>{{ $data->tgl_stnk }}</td>
+                                                <td style="background-color: rgb(252, 228, 19); color: black;">Akan jatoh
+                                                    tempo
+                                                </td>
+                                                <td class="text-center">
+                                                    <a><i class="fa fa-trash-can text-secondary"></i></a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+
+                    <br>
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">daftar Jatuht Tempo kendaran Bulan ini</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <table id="example3" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>No Polisi</th>
+                                            <th>Model</th>
+                                            <th>Tanggal Pajak</th>
+                                            <th>Tanggal STNK</th>
+                                            <th>Keterangan</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @foreach ($kendaraanss as $data)
+                                            <tr>
+                                                <td>{{ $data->no_pol }}</td>
+                                                <td>{{ $data->merek }} - {{ $data->model }}</td>
+                                                <td>{{ $data->tgl_pajak }}</td>
+                                                <td>{{ $data->tgl_stnk }}</td>
+                                                <td style="background-color: red; color: black;">Terlambat</td>
+                                                <td class="text-center">
+                                                    <a><i class="fa fa-trash-can text-secondary"></i></a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
 
                 </div>
                 <!-- /.row (main row) -->

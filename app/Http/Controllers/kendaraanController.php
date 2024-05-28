@@ -52,5 +52,4 @@ class kendaraanController extends Controller
         $kendaraan->update($request->all());
         return redirect()->back()->with('success', 'Data kendaraan berhasil diperbarui.');
     }
-
 }

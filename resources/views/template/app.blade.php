@@ -243,17 +243,42 @@
                 "lengthChange": false,
                 "autoWidth": false,
                 "buttons": false,
-                "lengthChange": true,  
+                "lengthChange": true,
                 "language": {
                     "lengthMenu": "Tampil  _MENU_",
                     "info": "Menampilkan _START_ - _END_ dari _TOTAL_ entri",
-                    "search": "Cari :",  // Custom text for the search input
+                    "search": "Cari :", // Custom text for the search input
                     "paginate": {
-                        "previous": "Sebelumnya",  // Custom text for the previous button
-                        "next": "Berikutnya"  // Custom text for the next button
+                        "previous": "Sebelumnya", // Custom text for the previous button
+                        "next": "Berikutnya" // Custom text for the next button
                     }
                 }
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+            $("#example2").DataTable({
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
+                "buttons": false,
+                "lengthChange": false,
+                "bPaginate": false,
+                "bInfo": false,
+                "language": {
+                    "search": "Cari :", // Custom text for the search input
+                }
+            }).buttons().container().appendTo('#example2_wrapper .col-md-6:eq(0)');
+            $("#example3").DataTable({
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
+                "buttons": false,
+                "lengthChange": false,
+                "bPaginate": false,
+                "bInfo": false,
+                "language": {
+                    "search": "Cari :", // Custom text for the search input
+                }
+            }).buttons().container().appendTo('#example3_wrapper .col-md-6:eq(0)');
         });
 
 
@@ -299,10 +324,10 @@
             }
         });
 
-        $(function () {
-                $('#tahunBuat, #tanggalPajak, #tanggalStnk').datetimepicker({
-                    format: 'L'
-                });
+        $(function() {
+            $('#tahunBuat, #tanggalPajak, #tanggalStnk').datetimepicker({
+                format: 'L'
+            });
         });
 
         // Menerapkan preferensi dark mode saat halaman dimuat
@@ -319,7 +344,7 @@
             }
 
             $('#kendaraan-form').on('submit', function(e) {
-            e.preventDefault();
+                e.preventDefault();
 
                 $.ajax({
                     url: $(this).attr('action'),
@@ -334,9 +359,9 @@
                         toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
                     }
                 });
-            }); 
+            });
 
-            $(document).on('click', '.edit-data', function(){
+            $(document).on('click', '.edit-data', function() {
                 var id = $(this).data('id');
                 var no_pol = $(this).data('no-pol');
                 var nama_pem = $(this).data('nama-pem');
@@ -346,7 +371,7 @@
                 var tgl_buat = $(this).data('tgl-buat');
                 var tgl_pajak = $(this).data('tgl-pajak');
                 var tgl_stnk = $(this).data('tgl-stnk');
-                
+
                 $('#editId').val(id);
                 $('#editNoPol').val(no_pol);
                 $('#editNamaPem').val(nama_pem);
@@ -356,25 +381,42 @@
                 $('#editTglBuat').val(tgl_buat);
                 $('#editTglPajak').val(tgl_pajak);
                 $('#editTglStnk').val(tgl_stnk);
-            });      
-            
-            $('#editBtn').click(function(){
-                $.ajax({
-                    type: 'POST',
-                    url: '/kendaraan/{{ $kendaraan->id }}',
-                    data: $('#editForm').serialize(),
-                    success: function(response) {
-                        $('#editModal').modal('hide');
-                        $('#example1').DataTable().ajax.reload();
+            });
 
-                        // location.reload();
-                        toastr.success('Kendaraan berhasil diperbarui.');
-                    },
-                    error: function(error) {
-                        console.log(error);
+            document.addEventListener('DOMContentLoaded', function() {
+                // Mendapatkan tanggal sekarang
+                var today = new Date();
+                var dd = String(today.getDate()).padStart(2, '0');
+                var mm = String(today.getMonth() + 1).padStart(2, '0'); // Januari dimulai dari 0
+                var yyyy = today.getFullYear();
+                var currentDate = yyyy + '-' + mm + '-' + dd;
+
+                // Perulangan untuk setiap kendaraan
+                kendaraans.forEach(function(kendaraan) {
+                    // Cek apakah tgl_pajak jatuh tempo hari ini
+                    if (kendaraan.tgl_pajak === currentDate) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Peringatan!',
+                            text: 'Tanggal pajak kendaraan ' + kendaraan.no_pol +
+                                ' jatuh tempo hari ini.',
+                            timer: 5000 // Durasi pesan (5 detik)
+                        });
+                    }
+                    // Cek apakah tgl_stnk jatuh tempo hari ini
+                    if (kendaraan.tgl_stnk === currentDate) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Peringatan!',
+                            text: 'Tanggal STNK kendaraan ' + kendaraan.no_pol +
+                                ' jatuh tempo hari ini.',
+                            timer: 5000 // Durasi pesan (5 detik)
+                        });
                     }
                 });
             });
+
+
         });
     </script>
 </body>
