@@ -15,7 +15,7 @@ class SetwebSeeder extends Seeder
     {
         setweb::create(
             [
-                'name_app' => 'SIMRS DEV',
+                'name_app' => 'P-NOT DEV',
                 'logo_app' => 'app-logo.png'
             ]
         );
