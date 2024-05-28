@@ -71,9 +71,14 @@
                                                         data-kode-merek="{{ $kendaraan->kode_merek }}"
                                                         data-tgl-buat="{{ $kendaraan->tgl_buat }}"
                                                         data-tgl-pajak="{{ $kendaraan->tgl_pajak }}"
-                                                        data-tgl-stnk="{{ $kendaraan->tgl_stnk }}" class="edit-data"><i
-                                                            class="fa fa-edit text-secondary"></i></a>
-                                                    <a><i class="fa fa-trash-can text-secondary"></i></a>
+                                                        data-tgl-stnk="{{ $kendaraan->tgl_stnk }}" class="edit-data">
+                                                    <i class="fa fa-edit text-secondary"></i></a>
+                                                    <a href="#" data-toggle="modal" data-target="#deleteModal"
+                                                        data-id="{{ $kendaraan->id }}"
+                                                        data-no-pol="{{ $kendaraan->no_pol }}"
+                                                        data-nama-pem="{{ $kendaraan->nama_pem }}"
+                                                       class="delete-data">
+                                                    <i class="fa fa-trash-can text-secondary"></i></a>
                                                 </td>
                                             </tr>
                                             @php $index++; @endphp
@@ -204,7 +209,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="editForm">
+                    <form id="editForm" action="{{ route('kendaraan.update') }}" method="POST">
                         @csrf
                         <input type="hidden" id="editId" name="editId">
                         <div class="row">
@@ -268,12 +273,37 @@
                                 </div>
                             </div>
                         </div>
-                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" id="editBtn">Perbarui</button>
+                    <button type="submit" class="btn btn-primary">Perbarui</button> <!-- Submit button -->
                 </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Hapus Data Kendaraan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="deleteForm" action="{{ route('kendaraan.destroy') }}" method="POST">
+                        @csrf
+                        <input type="hidden" id="deleteId" name="deleteId">
+                        <div id="deleteText"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-danger">Hapus</button> <!-- Submit button -->
+                </div>
+                </form>
             </div>
         </div>
     </div>

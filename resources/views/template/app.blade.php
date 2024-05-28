@@ -343,7 +343,7 @@
                 $('.btn-group-toggle label:nth-child(1)').addClass('active'); // Menandai label mode terang
             }
 
-            $('#kendaraan-form').on('submit', function(e) {
+            $('#addKendaraan-form').on('submit', function(e) {
                 e.preventDefault();
 
                 $.ajax({
@@ -351,12 +351,15 @@
                     method: $(this).attr('method'),
                     data: $(this).serialize(),
                     success: function(response) {
-                        $('#example1').DataTable().ajax.reload();
+                            $('#addModal').modal('hide');
+                            toastr.success(response.message);
 
-                        toastr.success('Kendaraan berhasil disimpan.');
+                            var table = $('#example1').DataTable();
+                            table.ajax.reload();
+                            $('#addForm')[0].reset();
                     },
                     error: function(xhr) {
-                        toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
+                            toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
                     }
                 });
             });
@@ -381,6 +384,16 @@
                 $('#editTglBuat').val(tgl_buat);
                 $('#editTglPajak').val(tgl_pajak);
                 $('#editTglStnk').val(tgl_stnk);
+            });
+
+            $(document).on('click', '.delete-data', function() {
+                var id = $(this).data('id');
+                var no_pol = $(this).data('no-pol');
+                var nama_pem = $(this).data('nama-pem');
+            
+                $('#deleteId').val(id);
+                $('#deleteText').html("<span>Apa anda yakin ingin menghapus kendaraan dengan No.Polisi <b>"+ no_pol +"</b> a/n <b>" + nama_pem +"</b></span>");
+              
             });
 
             document.addEventListener('DOMContentLoaded', function() {
@@ -416,6 +429,46 @@
                 });
             });
 
+            $('#editKendaraan-form').on('submit', function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    success: function(response) {
+                            $('#addModal').modal('hide');
+                            toastr.success(response.message);
+
+                            var table = $('#example1').DataTable();
+                            table.ajax.reload();
+                            $('#addForm')[0].reset();
+                    },
+                    error: function(xhr) {
+                            toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
+                    }
+                });
+            });
+
+            $('#deleteKendaraan-form').on('submit', function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    success: function(response) {
+                            $('#deleteModal').modal('hide');
+                            toastr.success(response.message);
+
+                            var table = $('#example1').DataTable();
+                            table.ajax.reload();
+                    },
+                    error: function(xhr) {
+                            toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
+                    }
+                });
+            });
 
         });
     </script>
