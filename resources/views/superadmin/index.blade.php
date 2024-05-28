@@ -52,9 +52,6 @@
                         <div class="small-box bg-danger">
                             <div class="inner">
                                 <h3>{{ $countKadaluarsa }} Unit</h3>
-                                @php
-                                    var_dump($countKadaluarsa);
-                                @endphp
                                 <p>Terlambat Pajak</p>
                             </div>
                             <div class="icon">
@@ -176,7 +173,6 @@
     <script>
         // Fungsi untuk menampilkan popup berdasarkan nomor polisi
         function showWarningForId(id) {
-
 
         }
 

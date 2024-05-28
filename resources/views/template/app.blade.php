@@ -351,15 +351,15 @@
                     method: $(this).attr('method'),
                     data: $(this).serialize(),
                     success: function(response) {
-                            $('#addModal').modal('hide');
-                            toastr.success(response.message);
+                        $('#addModal').modal('hide');
+                        toastr.success(response.message);
 
-                            var table = $('#example1').DataTable();
-                            table.ajax.reload();
-                            $('#addForm')[0].reset();
+                        var table = $('#example1').DataTable();
+                        table.ajax.reload();
+                        $('#addForm')[0].reset();
                     },
                     error: function(xhr) {
-                            toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
+                        toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
                     }
                 });
             });
@@ -390,44 +390,14 @@
                 var id = $(this).data('id');
                 var no_pol = $(this).data('no-pol');
                 var nama_pem = $(this).data('nama-pem');
-            
+
                 $('#deleteId').val(id);
-                $('#deleteText').html("<span>Apa anda yakin ingin menghapus kendaraan dengan No.Polisi <b>"+ no_pol +"</b> a/n <b>" + nama_pem +"</b></span>");
-              
+                $('#deleteText').html(
+                    "<span>Apa anda yakin ingin menghapus kendaraan dengan No.Polisi <b>" + no_pol +
+                    "</b> a/n <b>" + nama_pem + "</b></span>");
+
             });
 
-            document.addEventListener('DOMContentLoaded', function() {
-                // Mendapatkan tanggal sekarang
-                var today = new Date();
-                var dd = String(today.getDate()).padStart(2, '0');
-                var mm = String(today.getMonth() + 1).padStart(2, '0'); // Januari dimulai dari 0
-                var yyyy = today.getFullYear();
-                var currentDate = yyyy + '-' + mm + '-' + dd;
-
-                // Perulangan untuk setiap kendaraan
-                kendaraans.forEach(function(kendaraan) {
-                    // Cek apakah tgl_pajak jatuh tempo hari ini
-                    if (kendaraan.tgl_pajak === currentDate) {
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'Peringatan!',
-                            text: 'Tanggal pajak kendaraan ' + kendaraan.no_pol +
-                                ' jatuh tempo hari ini.',
-                            timer: 5000 // Durasi pesan (5 detik)
-                        });
-                    }
-                    // Cek apakah tgl_stnk jatuh tempo hari ini
-                    if (kendaraan.tgl_stnk === currentDate) {
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'Peringatan!',
-                            text: 'Tanggal STNK kendaraan ' + kendaraan.no_pol +
-                                ' jatuh tempo hari ini.',
-                            timer: 5000 // Durasi pesan (5 detik)
-                        });
-                    }
-                });
-            });
 
             $('#editKendaraan-form').on('submit', function(e) {
                 e.preventDefault();
@@ -437,15 +407,15 @@
                     method: $(this).attr('method'),
                     data: $(this).serialize(),
                     success: function(response) {
-                            $('#addModal').modal('hide');
-                            toastr.success(response.message);
+                        $('#addModal').modal('hide');
+                        toastr.success(response.message);
 
-                            var table = $('#example1').DataTable();
-                            table.ajax.reload();
-                            $('#addForm')[0].reset();
+                        var table = $('#example1').DataTable();
+                        table.ajax.reload();
+                        $('#addForm')[0].reset();
                     },
                     error: function(xhr) {
-                            toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
+                        toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
                     }
                 });
             });
@@ -458,14 +428,14 @@
                     method: $(this).attr('method'),
                     data: $(this).serialize(),
                     success: function(response) {
-                            $('#deleteModal').modal('hide');
-                            toastr.success(response.message);
+                        $('#deleteModal').modal('hide');
+                        toastr.success(response.message);
 
-                            var table = $('#example1').DataTable();
-                            table.ajax.reload();
+                        var table = $('#example1').DataTable();
+                        table.ajax.reload();
                     },
                     error: function(xhr) {
-                            toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
+                        toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
                     }
                 });
             });
