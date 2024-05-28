@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('merek');
             $table->text('model');
             $table->text('kode_merek');
-            $table->datetimes('tgl_buat');
-            $table->datetimes('tgl_pajak');
-            $table->datetimes('tgl_stnk');
+            $table->datetime('tgl_buat');
+            $table->datetime('tgl_pajak');
+            $table->dateTime('tgl_stnk');
             $table->timestamps();
         });
     }
