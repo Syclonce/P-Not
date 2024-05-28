@@ -34,8 +34,75 @@
     <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
-    {{-- sweetalert --}}
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <style>
+        .theme-switch-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: auto;
+            /* Center vertically */
+        }
+
+        .theme-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .theme-switch input {
+            display: none;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "\f185";
+            /* FontAwesome sun icon */
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        input:checked+.slider {
+            background-color: #2196F3;
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(26px);
+            content: "\f186";
+            /* FontAwesome moon icon */
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+    </style>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -63,7 +130,7 @@
                     </form>
                 </li>
                 <li class="nav-item">
-                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    {{-- <div class="btn-group btn-group-toggle" data-toggle="buttons">
                         <label class="btn btn-secondary active">
                             <input type="radio" name="options" autocomplete="off" checked>
                             <i class="fa-regular fa-sun"></i>
@@ -72,7 +139,16 @@
                             <input type="radio" name="options" autocomplete="off">
                             <i class="fa-solid fa-moon"></i>
                         </label>
+                    </div> --}}
+
+                    <div class="theme-switch-wrapper  ">
+                        <label class="theme-switch" for="checkbox">
+                            <input type="checkbox" id="checkbox">
+                            <span class="slider round"></span>
+                        </label>
                     </div>
+
+
                 </li>
             </ul>
         </nav>
@@ -80,7 +156,7 @@
 
 
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <aside class="main-sidebar sidebar-light-lightblue elevation-4">
             <!-- Brand Logo -->
             @php
                 // Mengambil data menggunakan model Webset
@@ -126,32 +202,22 @@
                         data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                         <li class="nav-item">
+                            <a href="{{ route('superadmin') }}"
+                                class="nav-link {{ \Route::is('superadmin') ? 'active' : '' }}">
+                                <i class="fas fa-fw fa-tachometer-alt"></i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ route('kendaraan') }}"
                                 class="nav-link {{ \Route::is('kendaraan') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
+                                <i class="fas fa-fw fa-car-side"></i>
                                 <p>Kendaraan</p>
                             </a>
                         </li>
 
-                        <li class="nav-item {{ \Route::is('superadmin') ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ \Route::is('superadmin') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('superadmin') }}"
-                                        class="nav-link {{ \Route::is('superadmin') ? 'active' : '' }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Add Bank</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
                         <li class="nav-item">
-                            <a href="pages/widgets.html" class="nav-link">
+                            <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-cogs"></i>
                                 <p>
                                     Web Seting
@@ -172,11 +238,8 @@
 
 
         <footer class="main-footer">
-            <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
-            All rights reserved.
-            <div class="float-right d-none d-sm-inline-block">
-                <b>Version</b> 3.2.0
-            </div>
+            <strong>Copyright &copy; <?= date('Y') ?></strong>
+
         </footer>
 
         <!-- Control Sidebar -->
@@ -309,23 +372,6 @@
             }
         });
 
-        // Event listener untuk perubahan mode
-        $('.btn-group-toggle label').on('click', function() {
-            // Menghapus kelas 'active' dari semua label
-            $('.btn-group-toggle label').removeClass('active');
-            // Menambahkan kelas 'active' ke label yang diklik
-            $(this).addClass('active');
-
-            // Memeriksa apakah label yang diklik adalah label pertama (mode terang)
-            if ($(this).index() === 0) {
-                $('body').removeClass('dark-mode');
-                localStorage.setItem('darkMode', 'disabled'); // Menyimpan preferensi dark mode pada local storage
-            } else {
-                $('body').addClass('dark-mode');
-                localStorage.setItem('darkMode', 'enabled'); // Menyimpan preferensi dark mode pada local storage
-            }
-        });
-
         $(function() {
             $('#tahunBuat, #tanggalPajak, #tanggalStnk').datetimepicker({
                 format: 'L'
@@ -334,16 +380,50 @@
 
         // Menerapkan preferensi dark mode saat halaman dimuat
         $(document).ready(function() {
-            // Memeriksa preferensi dark mode pada local storage
-            var darkModeEnabled = localStorage.getItem('darkMode') === 'enabled';
+            // Memeriksa apakah ada preferensi tema yang disimpan di local storage
+            var darkMode = localStorage.getItem('darkMode');
 
-            // Mengatur mode berdasarkan preferensi yang disimpan
-            if (darkModeEnabled) {
-                $('.btn-group-toggle label:nth-child(2)').addClass('active'); // Menandai label mode gelap
-                $('body').addClass('dark-mode'); // Mengatur mode gelap pada body
-            } else {
-                $('.btn-group-toggle label:nth-child(1)').addClass('active'); // Menandai label mode terang
+            // Jika tidak ada preferensi tema yang disimpan, menggunakan tema terang sebagai default
+            if (!darkMode) {
+                $('body').removeClass('dark-mode');
+                $('.navbar').removeClass('dark-mode'); // Menghapus tema gelap dari navbar
+                $('.main-sidebar').removeClass(
+                'sidebar-dark-lightblue dark-mode'); // Menghapus tema gelap dari sidebar
+            } else if (darkMode === 'enabled') {
+                // Jika preferensi tema adalah mode gelap, aktifkan mode gelap
+                $('body').addClass('dark-mode');
+                $('.navbar').addClass('dark-mode'); // Menambahkan tema gelap ke navbar
+                $('.main-sidebar').addClass(
+                'sidebar-dark-lightblue dark-mode'); // Menambahkan tema gelap ke sidebar
+                $('#checkbox').prop('checked', true);
             }
+
+            // Event listener untuk perubahan mode
+            $('.theme-switch input').on('change', function() {
+                // Menghapus kelas 'active' dari semua label
+                $('.theme-switch input').removeClass('active');
+
+                // Menambahkan kelas 'active' ke label yang diklik
+                $(this).addClass('active');
+
+                // Memeriksa apakah label yang diklik adalah label pertama (mode terang)
+                if ($(this).is(':checked')) {
+                    $('body').addClass('dark-mode');
+                    $('.navbar').addClass('dark-mode'); // Menambahkan tema gelap ke navbar
+                    $('.main-sidebar').addClass(
+                    'sidebar-dark-lightblue dark-mode'); // Menambahkan tema gelap ke sidebar
+                    localStorage.setItem('darkMode',
+                    'enabled'); // Menyimpan preferensi dark mode pada local storage
+                } else {
+                    $('body').removeClass('dark-mode');
+                    $('.navbar').removeClass('dark-mode'); // Menghapus tema gelap dari navbar
+                    $('.main-sidebar').removeClass(
+                    'sidebar-dark-lightblue dark-mode'); // Menghapus tema gelap dari sidebar
+                    localStorage.setItem('darkMode',
+                    'disabled'); // Menyimpan preferensi light mode pada local storage
+                }
+            });
+
 
             $('#addKendaraan-form').on('submit', function(e) {
                 e.preventDefault();
@@ -444,6 +524,71 @@
 
         });
     </script>
+
+    <script>
+        // Fungsi untuk menampilkan popup berdasarkan nomor polisi
+        function showWarningForId(id) {
+            // Functionality can be added here if needed
+        }
+
+        function loadDataAndCheckExpired() {
+            // Mendapatkan tanggal sekarang dalam format YYYY-MM-DD
+            var currentDate = new Date().toISOString().split('T')[0];
+
+            // Mendapatkan data kendaraan dari database (diasumsikan telah dimuat sebelumnya)
+            var kendaraan = {!! json_encode($kendaraan) !!};
+
+            // Mengonversi data kendaraan menjadi array jika tidak sudah dalam bentuk array
+            if (!Array.isArray(kendaraan)) {
+                kendaraan = [kendaraan];
+            }
+
+            // Inisialisasi array untuk menyimpan ID kendaraan yang memiliki tanggal pajak yang sudah jatuh tempo
+            var kendaraanIdJatuhTempo = [];
+
+            // Perulangan untuk setiap kendaraan
+            kendaraan.forEach(function(k) {
+                // Cek apakah tgl_pajak jatuh tempo hari ini atau sebelumnya
+                if (k.tgl_pajak <= currentDate) {
+                    // Simpan ID kendaraan yang memiliki STNK yang sudah jatuh tempo
+                    kendaraanIdJatuhTempo.push(k.id);
+                }
+            });
+
+            // Tampilkan jumlah kendaraan yang sudah jatuh tempo
+            console.log('Jumlah kendaraan yang sudah jatuh tempo: ' + kendaraanIdJatuhTempo.length);
+
+            // Panggil fungsi showWarningForId untuk setiap ID kendaraan yang memiliki STNK yang sudah jatuh tempo
+            function showWarningsSequentially(id) {
+                if (id < kendaraanIdJatuhTempo.length) {
+                    showWarningForId(kendaraanIdJatuhTempo[id]);
+                    var noPolisi = kendaraan.find(k => k.id === kendaraanIdJatuhTempo[id]).no_pol;
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Peringatan!',
+                        text: 'Kendaraan dengan nomor polisi ' + noPolisi +
+                            ' memiliki STNK yang sudah jatuh tempo!',
+                        confirmButtonText: 'Tutup'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            showWarningsSequentially(id + 1);
+                        }
+                    });
+                }
+            }
+
+            showWarningsSequentially(0);
+        }
+
+        // Periksa URL saat halaman dimuat dan panggil fungsi loadDataAndCheckExpired jika berada di /superadmin
+        document.addEventListener('DOMContentLoaded', function() {
+            var currentUrl = window.location.pathname;
+            if (currentUrl === '/superadmin') {
+                loadDataAndCheckExpired();
+            }
+        });
+    </script>
+
 </body>
 
 </html>
