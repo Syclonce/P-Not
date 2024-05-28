@@ -6,8 +6,7 @@ use App\Models\kendaraan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-
-
+use Illuminate\Support\Facades\DB;
 
 class SuperAdminController extends Controller
 {
@@ -16,7 +15,9 @@ class SuperAdminController extends Controller
     {
         $title = 'Rs Apps';
         $kendaraan = Kendaraan::all();
-        $countKadaluarsa = Kendaraan::where('tgl_stnk', '<', today())->count();
+        $countKadaluarsa = DB::table('kendaraan')
+            ->where('tgl_stnk', '<', DB::raw('CURDATE()'))
+            ->count();
         $countKadaluarsap = Kendaraan::where('tgl_pajak', '<', today())->count();
         $totalKendaraan = Kendaraan::count();
         $totalUsers = User::count();
