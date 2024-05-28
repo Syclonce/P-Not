@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('webset', function (Blueprint $table) {
-            $table->string('name_app'); // Creates 'nama' column of type string
-            $table->string('logo_app'); // Creates 'nama' column of type string
-            $table->timestamps(); // Creates 'created_at' and 'updated_at' columns for timestamps
+            $table->string('name_app');
+            $table->string('logo_app');
+            $table->timestamps();
         });
     }
 
