@@ -642,7 +642,7 @@
     <script>
         $(function() {
             // Get context with jQuery - using jQuery's .get() method.
-            var lineChartCanvas = $('#lineChart').get(0).getContext('2d');
+            var lineChartCanvas = $('#lineChart');
 
             // Fetch data from the database using AJAX
             $.ajax({
@@ -653,71 +653,59 @@
                     var data = response.data;
 
                     var labels = data.map(function(item) {
-                        return item.month; // Assuming month is the label field in your database
+                        return item.no_pol; // Assuming 'no_pol' is the label field
                     });
 
-                    var jatuhTempoSTNK = data.map(function(item) {
-                        return item.jatuh_tempo_stnk;
+                    var tgl_pajak = data.map(function(item) {
+                        return new Date(item.tgl_pajak) < new Date() ? 1 : 0;
                     });
 
-                    var pajak = data.map(function(item) {
-                        return item.pajak;
+                    var tgl_stnk = data.map(function(item) {
+                        return new Date(item.tgl_stnk) < new Date() ? 1 : 0;
                     });
 
-                    var akanJatuhTempoSTNK = data.map(function(item) {
-                        return item.akan_jatuh_tempo_stnk;
+                    var akan_jatuh_tempo_pajak = data.map(function(item) {
+                        var tgl_pajak = new Date(item.tgl_pajak);
+                        tgl_pajak.setDate(tgl_pajak.getDate() - 7);
+                        return new Date() > tgl_pajak ? 1 : 0;
                     });
 
-                    var akanPajak = data.map(function(item) {
-                        return item.akan_pajak;
+                    var akan_jatuh_tempo_stnk = data.map(function(item) {
+                        var tgl_stnk = new Date(item.tgl_stnk);
+                        tgl_stnk.setDate(tgl_stnk.getDate() - 7);
+                        return new Date() > tgl_stnk ? 1 : 0;
                     });
 
                     var lineChartData = {
                         labels: labels,
                         datasets: [{
-                                label: 'Jatuh Tempo STNK',
-                                backgroundColor: 'rgba(60,141,188,0.9)',
-                                borderColor: 'rgba(60,141,188,0.8)',
-                                pointRadius: false,
-                                pointColor: '#3b8bba',
-                                pointStrokeColor: 'rgba(60,141,188,1)',
-                                pointHighlightFill: '#fff',
-                                pointHighlightStroke: 'rgba(60,141,188,1)',
-                                data: jatuhTempoSTNK
+                                label: 'Tgl Pajak',
+                                data: tgl_pajak,
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1
                             },
                             {
-                                label: 'Pajak',
-                                backgroundColor: 'rgba(210, 214, 222, 1)',
-                                borderColor: 'rgba(210, 214, 222, 1)',
-                                pointRadius: false,
-                                pointColor: 'rgba(210, 214, 222, 1)',
-                                pointStrokeColor: '#c1c7d1',
-                                pointHighlightFill: '#fff',
-                                pointHighlightStroke: 'rgba(220,220,220,1)',
-                                data: pajak
+                                label: 'Tgl STNK',
+                                data: tgl_stnk,
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Akan Jatuh Tempo Pajak',
+                                data: akan_jatuh_tempo_pajak,
+                                backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                                borderColor: 'rgba(255, 206, 86, 1)',
+                                borderWidth: 1
                             },
                             {
                                 label: 'Akan Jatuh Tempo STNK',
-                                backgroundColor: 'rgba(255, 99, 132, 0.9)',
-                                borderColor: 'rgba(255, 99, 132, 0.8)',
-                                pointRadius: false,
-                                pointColor: '#ff6384',
-                                pointStrokeColor: 'rgba(255, 99, 132, 1)',
-                                pointHighlightFill: '#fff',
-                                pointHighlightStroke: 'rgba(255, 99, 132, 1)',
-                                data: akanJatuhTempoSTNK
-                            },
-                            {
-                                label: 'Akan Pajak',
-                                backgroundColor: 'rgba(255, 159, 64, 0.9)',
-                                borderColor: 'rgba(255, 159, 64, 0.8)',
-                                pointRadius: false,
-                                pointColor: '#ff9f40',
-                                pointStrokeColor: 'rgba(255, 159, 64, 1)',
-                                pointHighlightFill: '#fff',
-                                pointHighlightStroke: 'rgba(255, 159, 64, 1)',
-                                data: akanPajak
-                            },
+                                data: akan_jatuh_tempo_stnk,
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }
                         ]
                     };
 
