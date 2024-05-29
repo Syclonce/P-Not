@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Middleware\CheckLicense;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Spatie\Permission\Middleware\RoleMiddleware;
+use barryvdh\DomPDF\Facade;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -15,7 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'role' => RoleMiddleware::class,
-            'check.license' => CheckLicense::class
+            'PDF' => Facade::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
