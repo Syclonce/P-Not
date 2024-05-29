@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\kendaraan;
-
+// use Barryvdh\DomPDF\Facade as PDF;
+// use PDF;
 
 class kendaraanController extends Controller
 {
@@ -72,6 +73,14 @@ class kendaraanController extends Controller
         kendaraan::findOrFail($id)->delete();
 
         return redirect()->back()->with('success', 'Data kendaraan berhasil dihapus.');
+    }
+
+    public function downloadPDF($id)
+    {
+        $kendaraan = Kendaraan::findOrFail($id);
+
+        $pdf = PDF::loadView('pdf.kendaraan', compact('kendaraan'));
+        return $pdf->download('kendaraan-' . $kendaraan->id . '.pdf');
     }
 
 }

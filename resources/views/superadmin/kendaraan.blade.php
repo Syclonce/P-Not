@@ -48,10 +48,10 @@
                                             <th>Kode Merek</th>
                                             <th>Tahun Pembuatan</th>
                                             <th>Tanggal Pajak</th>
-                                            <th>Status Pajak</th>
+                                            <th class="text-center">Status Pajak</th>
                                             <th>Tanggal STNK</th>
-                                            <th>Status STNK</th>
-                                            <th>Action</th>
+                                            <th class="text-center">Status STNK</th>
+                                            <th class="text-center">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -67,25 +67,22 @@
                                                 $oneMonthFromNow = $today->copy()->addMonth();
                                                 
                                                 if ($tglPajak->isPast()) {
-                                                    $statusPajak = 'Terlambat';
-                                                    $badgePajak = 'badge badge-danger';
+                                                    $pajakStatus = '<span class="badge badge-danger">Terlambat</span>
+                                                    <br>
+                                                    <a href="' . route('download-pdf', $kendaraan->id) . '">
+                                                    <i class="fa fa-file-pdf text-secondary"></i></a>';
                                                 } elseif ($tglPajak->lessThanOrEqualTo($oneMonthFromNow)) {
-                                                    $statusPajak = 'Mendekati Jatuh Tempo';
-                                                    $badgePajak = 'badge badge-warning';
+                                                    $pajakStatus = '<span class="badge badge-warning">Akan jatuh tempo</span>';
                                                 } else {
-                                                    $statusPajak = 'Pembayaran Masih Lama';
-                                                    $badgePajak = 'badge badge-success';
+                                                    $pajakStatus = '<span class="badge badge-success">Pembayaran Masih Lama</span>';
                                                 }
 
                                                 if ($tglStnk->isPast()) {
-                                                    $statusStnk = 'Terlambat';
-                                                    $badgeStnk = 'badge badge-danger';
+                                                    $stnkStatus = '<span class="badge badge-danger">Terlambat</span>';
                                                 } elseif ($tglStnk->lessThanOrEqualTo($oneMonthFromNow)) {
-                                                    $statusStnk = 'Akan jatuh tempo';
-                                                    $badgeStnk = 'badge badge-warning';
+                                                    $stnkStatus= '<span class="badge badge-warning">Akan jatuh tempo</span>';
                                                 } else {
-                                                    $statusStnk = 'Pembayaran Masih Lama';
-                                                    $badgeStnk = 'badge badge-success';
+                                                    $stnkStatus= '<span class="badge badge-success">Pembayaran Masih Lama</span>';
                                                 }
                                             @endphp
                                             <tr>
@@ -97,9 +94,9 @@
                                                 <td>{{ $kendaraan->kode_merek }}</td>
                                                 <td>{{ $tanggalBuatFormatted}}</td>
                                                 <td>{{ $tglPajakFormatted }}</td>
-                                                <td class="text-center"><span class="{{ $badgePajak }}">{{ $statusPajak }}</span></td>
+                                                <td class="text-center">{!! $pajakStatus !!}</td>
                                                 <td>{{ $tglStnkFormatted }}</td>
-                                                <td class="text-center"><span class="{{ $badgeStnk }}">{{ $statusStnk }}</span></td>
+                                                <td class="text-center">{!! $stnkStatus !!}</td>
                                                 <td class="text-center">
                                                     <a href="#" data-toggle="modal" data-target="#editModal"
                                                         data-id="{{ $kendaraan->id }}"
