@@ -42,26 +42,35 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Merek</th>
+                                            <th>Model</th>
                                             <th>Kode Merek</th>
+                                            <th>Tahun Pembuatan</th>
                                             <th class="text-center">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @php $index = 1; @endphp
                                         @foreach ($kendaraan as $kendaraan)
+                                            @php
+                                                $tanggalBuatFormatted = Carbon::parse(
+                                                    $kendaraan->tgl_buat,
+                                                )->translatedFormat('Y');
+                                            @endphp
                                             <tr>
                                                 <td>{{ $index }}</td>
                                                 <td>{{ $kendaraan->merek }}</td>
+                                                <td>{{ $kendaraan->model }}</td>
                                                 <td>{{ $kendaraan->kode_merek }}</td>
+                                                <td>{{ $tanggalBuatFormatted }}</td>
                                                 <td class="text-center">
                                                     <a href="#" data-toggle="modal" data-target="#editModal"
                                                         data-id="{{ $kendaraan->id }}" data-merek="{{ $kendaraan->merek }}"
-                                                        data-kode-merek="{{ $kendaraan->kode_merek }}" class="edit-data">
+                                                        data-model="{{ $kendaraan->model }}"
+                                                        data-kode-merek="{{ $kendaraan->kode_merek }}"
+                                                        data-tgl-buat="{{ $kendaraan->tgl_buat }}"class="edit-data">
                                                         <i class="fa fa-edit text-secondary"></i></a>
                                                     <a href="#" data-toggle="modal" data-target="#deleteModal"
-                                                        data-id="{{ $kendaraan->id }}"
-                                                        data-no-pol="{{ $kendaraan->no_pol }}"
-                                                        data-nama-pem="{{ $kendaraan->nama_pem }}" class="delete-data">
+                                                        data-id="{{ $kendaraan->id }}" class="delete-data">
                                                         <i class="fa fa-trash-can text-secondary"></i></a>
                                                 </td>
                                             </tr>
@@ -103,11 +112,32 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
+                                    <label>Nama Model Kendaraan</label>
+                                    <input type="text" class="form-control" name="namaModel">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
                                     <label>Kode Merk Kendaraan</label>
                                     <input type="text" class="form-control" name="kodeMerk">
                                 </div>
                             </div>
-
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Tahun Buatan Kendaraan</label>
+                                    <div class="input-group date" id="tahunBuat" data-target-input="nearest">
+                                        <input type="text" class="form-control datetimepicker-input"
+                                            data-target="#tahunBuat" name="tahunBuat" />
+                                        <div class="input-group-append" data-target="#tahunBuat"
+                                            data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
@@ -131,24 +161,10 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="editForm" action="{{ route('kendaraan.update') }}" method="POST">
+                    <form id="editForm" action="{{ route('mkendaraan.update') }}" method="POST">
                         @csrf
                         <input type="hidden" id="editId" name="editId">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="editNoPol">No Polisi</label>
-                                    <input type="text" class="form-control" id="editNoPol" name="no_pol" required>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="editNamaPem">Nama Pemilik</label>
-                                    <input type="text" class="form-control" id="editNamaPem" name="nama_pem"
-                                        required>
-                                </div>
-                            </div>
-                        </div>
+
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
@@ -158,43 +174,13 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="editModel">Model</label>
-                                    <input type="text" class="form-control" id="editModel" name="model" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
                                     <label for="editKodeMerek">Kode Merek</label>
                                     <input type="text" class="form-control" id="editKodeMerek" name="kode_merek"
                                         required>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="editTglBuat">Tanggal Buat</label>
-                                    <input type="date" class="form-control" id="editTglBuat" name="tgl_buat"
-                                        required>
-                                </div>
-                            </div>
                         </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="editTglPajak">Tanggal Pajak</label>
-                                    <input type="date" class="form-control" id="editTglPajak" name="tgl_pajak"
-                                        required>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="editTglStnk">Tanggal STNK</label>
-                                    <input type="date" class="form-control" id="editTglStnk" name="tgl_stnk"
-                                        required>
-                                </div>
-                            </div>
-                        </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>

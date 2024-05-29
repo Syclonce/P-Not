@@ -3,6 +3,7 @@
 use App\Http\Controllers\kendaraanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\websetController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -32,6 +33,10 @@ Route::middleware(['auth', 'verified', 'role:Super-Admin'])->group(function () {
 
     Route::get('mkendaraan', [kendaraanController::class, 'mekendaran'])->name('mkendaraan');
     Route::post('mkendaraan/store', [KendaraanController::class, 'mstore'])->name('mkendaraan.store');
+    Route::post('mkendaraan/update', [KendaraanController::class, 'mupdate'])->name('mkendaraan.update');
+
+    Route::get('setweb', [websetController::class, 'index'])->name('setweb');
+    Route::post('setweb/update', [websetController::class, 'updates'])->name('setweb.update');
 });
 
 // Route::get('admin', function () {

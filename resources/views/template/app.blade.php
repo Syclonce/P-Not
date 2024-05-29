@@ -237,7 +237,8 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('setweb') }}"
+                                class="nav-link {{ \Route::is('setweb') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-cogs"></i>
                                 <p>
                                     Web Seting

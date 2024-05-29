@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\kendaraan;
+use App\Models\mkendaraan;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 
 
@@ -89,7 +90,7 @@ class kendaraanController extends Controller
         $title = 'Rs Apps';
         // return view('superadmin.kendaraan', compact('title'));
 
-        $kendaraan = kendaraan::all();
+        $kendaraan = mkendaraan::all();
         return view('superadmin.merekkendaraan', compact('kendaraan', 'title'));
     }
 
@@ -97,15 +98,33 @@ class kendaraanController extends Controller
     public function mstore(Request $request)
     {
         $validatedData = $request->validate([
-            'namaMerk' => 'required|unique:kendaraan,no_pol',
-            'kodeMerk' => 'required',
+            'namaMerk' => 'required',
+            'namaModel' => 'required',
+            'kodeMerk' => 'required|unique:merek_kendaraan,kode_merek',
+            'tahunBuat' => 'required',
         ]);
 
-        $kendaraan = new kendaraan();
-        $kendaraan->merek = $validatedData['namaMerk'];
-        $kendaraan->kode_merek = $validatedData['kodeMerk'];
-        $kendaraan->save();
+        $mkendaraan = new mkendaraan();
+        $mkendaraan->merek = $validatedData['namaMerk'];
+        $mkendaraan->model = $validatedData['namaModel'];
+        $mkendaraan->kode_merek = $validatedData['kodeMerk'];
+        $mkendaraan->tgl_buat = Carbon::parse($validatedData['tahunBuat'])->format('Y-m-d');
+        $mkendaraan->save();
 
         return redirect()->back()->with('success', 'Data kendaraan berhasil disimpan.');
+    }
+
+    public function mupdate(Request $request)
+    {
+        $id =  $request['editId'];
+
+        $kendaraan = mkendaraan::findOrFail($id);
+        $kendaraan->merek = $request['merek'];
+        $kendaraan->model = $request['model'];
+        $kendaraan->kode_merek = $request['kode_merek'];
+        $kendaraan->tgl_buat = Carbon::parse($request['tgl_buat'])->format('Y-m-d');
+        $kendaraan->update();
+
+        return redirect()->back()->with('success', 'Data kendaraan berhasil diperbarui.');
     }
 }

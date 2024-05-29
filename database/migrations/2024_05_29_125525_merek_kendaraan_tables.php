@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('merek_kendaraan', function (Blueprint $table) {
             $table->id();
             $table->string('merek');
+            $table->text('model');
             $table->text('kode_merek');
+            $table->date('tgl_buat');
             $table->timestamps();
         });
     }

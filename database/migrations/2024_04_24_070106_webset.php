@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('webset', function (Blueprint $table) {
+            $table->id();
             $table->string('name_app');
             $table->string('logo_app');
             $table->timestamps();
