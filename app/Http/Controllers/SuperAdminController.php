@@ -6,6 +6,7 @@ use App\Models\kendaraan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Dompdf\Dompdf;
 use Illuminate\Support\Facades\DB;
 
 class SuperAdminController extends Controller
