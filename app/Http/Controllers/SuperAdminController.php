@@ -16,9 +16,9 @@ class SuperAdminController extends Controller
         $title = 'Rs Apps';
         $kendaraan = Kendaraan::all();
         $countKadaluarsa = DB::table('kendaraan')
-            ->where('tgl_stnk', '<', DB::raw('CURDATE()'))
+            ->where('tgl_stnk', '<=', DB::raw('CURDATE()'))
             ->count();
-        $countKadaluarsap = Kendaraan::where('tgl_pajak', '<', today())->count();
+        $countKadaluarsap = Kendaraan::where('tgl_pajak', '<=', today())->count();
         $totalKendaraan = Kendaraan::count();
         $totalUsers = User::count();
 
