@@ -127,4 +127,11 @@ class kendaraanController extends Controller
 
         return redirect()->back()->with('success', 'Data kendaraan berhasil diperbarui.');
     }
+
+    public function apidata()
+    {
+        $data = kendaraan::all();
+
+        return response()->json(['data' => $data]);
+    }
 }

@@ -31,19 +31,33 @@ class SuperAdminController extends Controller
         $date30DaysLater = Carbon::today()->addDays(30)->toDateString();
 
         // Mengambil data kendaraan di mana tanggal pajak atau tanggal STNK akan jatuh tempo dalam 30 hari dari tanggal saat ini
+        // $kendaraans = Kendaraan::where(function ($query) use ($today, $date30DaysLater) {
+        //     $query->where('tgl_pajak', '>=', $today)
+        //         ->where('tgl_pajak', '<=', $date30DaysLater);
+        // })
+        //     ->orWhere(function ($query) use ($today, $date30DaysLater) {
+        //         $query->where('tgl_stnk', '>=', $today)
+        //             ->where('tgl_stnk', '<=', $date30DaysLater);
+        //     })
+        //     ->get();
+
         $kendaraans = Kendaraan::where(function ($query) use ($today, $date30DaysLater) {
-            $query->where('tgl_pajak', '>=', $today)
+            $query->where('tgl_pajak', '>', $today)
                 ->where('tgl_pajak', '<=', $date30DaysLater);
-        })
-            ->orWhere(function ($query) use ($today, $date30DaysLater) {
-                $query->where('tgl_stnk', '>=', $today)
-                    ->where('tgl_stnk', '<=', $date30DaysLater);
-            })
-            ->get();
-        $kendaraanss = Kendaraan::whereDate('tgl_pajak', '<', today())
-            ->orWhere('tgl_stnk', '<', today())
+        })->get();
+
+        $kendaraansss = Kendaraan::where(function ($query) use ($today, $date30DaysLater) {
+            $query->where('tgl_stnk', '>', $today)
+                ->where('tgl_stnk', '<=', $date30DaysLater);
+        })->get();
+
+
+        $kendaraanss = Kendaraan::whereDate('tgl_stnk', '<=', today())
             ->get();
 
-        return view('superadmin.index', compact('title', 'countKadaluarsa', 'kendaraan', 'countKadaluarsap', 'totalKendaraan', 'totalUsers', 'kendaraans', 'kendaraanss'));
+        $kendaraa = Kendaraan::whereDate('tgl_pajak', '<=', today())
+            ->get();
+
+        return view('superadmin.index', compact('title', 'countKadaluarsa', 'kendaraan', 'countKadaluarsap', 'totalKendaraan', 'totalUsers', 'kendaraans', 'kendaraanss', 'kendaraansss', 'kendaraa'));
     }
 }

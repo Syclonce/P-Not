@@ -321,6 +321,8 @@
     <script src="{{ asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+    {{-- ChartJS --}}
+    <script src="{{ asset('plugins/chart.js/Chart.min.js') }}"></script>
     <!-- Page specific script -->
     <script>
         $(function() {
@@ -353,6 +355,20 @@
                     "search": "Cari :", // Custom text for the search input
                 }
             }).buttons().container().appendTo('#example2_wrapper .col-md-6:eq(0)');
+
+            $("#example4").DataTable({
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
+                "buttons": false,
+                "lengthChange": false,
+                "bPaginate": false,
+                "bInfo": false,
+                "language": {
+                    "search": "Cari :", // Custom text for the search input
+                }
+            }).buttons().container().appendTo('#example4_wrapper .col-md-6:eq(0)');
+
             $("#example3").DataTable({
                 "responsive": true,
                 "lengthChange": false,
@@ -365,6 +381,19 @@
                     "search": "Cari :", // Custom text for the search input
                 }
             }).buttons().container().appendTo('#example3_wrapper .col-md-6:eq(0)');
+
+            $("#example5").DataTable({
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
+                "buttons": false,
+                "lengthChange": false,
+                "bPaginate": false,
+                "bInfo": false,
+                "language": {
+                    "search": "Cari :", // Custom text for the search input
+                }
+            }).buttons().container().appendTo('#example5_wrapper .col-md-6:eq(0)');
         });
 
 
@@ -610,6 +639,121 @@
         });
     </script>
 
+    <script>
+        $(function() {
+            // Get context with jQuery - using jQuery's .get() method.
+            var lineChartCanvas = $('#lineChart').get(0).getContext('2d');
+
+            // Fetch data from the database using AJAX
+            $.ajax({
+                url: '{{ url('api/fetch-data') }}', // Adjust the route as needed
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    var data = response.data;
+
+                    var labels = data.map(function(item) {
+                        return item.month; // Assuming month is the label field in your database
+                    });
+
+                    var jatuhTempoSTNK = data.map(function(item) {
+                        return item.jatuh_tempo_stnk;
+                    });
+
+                    var pajak = data.map(function(item) {
+                        return item.pajak;
+                    });
+
+                    var akanJatuhTempoSTNK = data.map(function(item) {
+                        return item.akan_jatuh_tempo_stnk;
+                    });
+
+                    var akanPajak = data.map(function(item) {
+                        return item.akan_pajak;
+                    });
+
+                    var lineChartData = {
+                        labels: labels,
+                        datasets: [{
+                                label: 'Jatuh Tempo STNK',
+                                backgroundColor: 'rgba(60,141,188,0.9)',
+                                borderColor: 'rgba(60,141,188,0.8)',
+                                pointRadius: false,
+                                pointColor: '#3b8bba',
+                                pointStrokeColor: 'rgba(60,141,188,1)',
+                                pointHighlightFill: '#fff',
+                                pointHighlightStroke: 'rgba(60,141,188,1)',
+                                data: jatuhTempoSTNK
+                            },
+                            {
+                                label: 'Pajak',
+                                backgroundColor: 'rgba(210, 214, 222, 1)',
+                                borderColor: 'rgba(210, 214, 222, 1)',
+                                pointRadius: false,
+                                pointColor: 'rgba(210, 214, 222, 1)',
+                                pointStrokeColor: '#c1c7d1',
+                                pointHighlightFill: '#fff',
+                                pointHighlightStroke: 'rgba(220,220,220,1)',
+                                data: pajak
+                            },
+                            {
+                                label: 'Akan Jatuh Tempo STNK',
+                                backgroundColor: 'rgba(255, 99, 132, 0.9)',
+                                borderColor: 'rgba(255, 99, 132, 0.8)',
+                                pointRadius: false,
+                                pointColor: '#ff6384',
+                                pointStrokeColor: 'rgba(255, 99, 132, 1)',
+                                pointHighlightFill: '#fff',
+                                pointHighlightStroke: 'rgba(255, 99, 132, 1)',
+                                data: akanJatuhTempoSTNK
+                            },
+                            {
+                                label: 'Akan Pajak',
+                                backgroundColor: 'rgba(255, 159, 64, 0.9)',
+                                borderColor: 'rgba(255, 159, 64, 0.8)',
+                                pointRadius: false,
+                                pointColor: '#ff9f40',
+                                pointStrokeColor: 'rgba(255, 159, 64, 1)',
+                                pointHighlightFill: '#fff',
+                                pointHighlightStroke: 'rgba(255, 159, 64, 1)',
+                                data: akanPajak
+                            },
+                        ]
+                    };
+
+                    var lineChartOptions = {
+                        maintainAspectRatio: false,
+                        responsive: true,
+                        legend: {
+                            display: false
+                        },
+                        scales: {
+                            xAxes: [{
+                                gridLines: {
+                                    display: false,
+                                }
+                            }],
+                            yAxes: [{
+                                gridLines: {
+                                    display: false,
+                                }
+                            }]
+                        }
+                    };
+
+                    // This will get the first returned node in the jQuery collection.
+                    new Chart(lineChartCanvas, {
+                        type: 'line',
+                        data: lineChartData,
+                        options: lineChartOptions
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
