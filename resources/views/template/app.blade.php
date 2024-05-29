@@ -216,6 +216,26 @@
                             </a>
                         </li>
 
+                        <li class="nav-item {{ \Route::is('mkendaraan') ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ \Route::is('mkendaraan') ? 'active' : '' }}">
+                                <i class="fas fa-fw fa-database"></i>
+                                <p>
+                                    Master Data
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('mkendaraan') }}"
+                                        class="nav-link {{ \Route::is('mkendaraan') ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-circle text-info"></i>
+                                        <p>Merek Kendaraan</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-cogs"></i>

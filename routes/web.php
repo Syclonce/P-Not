@@ -29,6 +29,9 @@ Route::middleware(['auth', 'verified', 'role:Super-Admin'])->group(function () {
     Route::post('kendaraan/update', [KendaraanController::class, 'update'])->name('kendaraan.update');
     Route::post('kendaraan/destroy', [KendaraanController::class, 'destroy'])->name('kendaraan.destroy');
     Route::get('kendaraan/download-pdf/{id}', [KendaraanController::class, 'downloadPDF'])->name('download-pdf');
+
+    Route::get('mkendaraan', [kendaraanController::class, 'mekendaran'])->name('mkendaraan');
+    Route::post('mkendaraan/store', [KendaraanController::class, 'mstore'])->name('mkendaraan.store');
 });
 
 // Route::get('admin', function () {

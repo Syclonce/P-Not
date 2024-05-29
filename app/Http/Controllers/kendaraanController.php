@@ -82,4 +82,30 @@ class kendaraanController extends Controller
         $pdf = FacadePdf::loadView('pdf.kendaraan', compact('kendaraan'));
         return $pdf->download('kendaraan-' . $kendaraan->id . '.pdf');
     }
+
+
+    public function mekendaran()
+    {
+        $title = 'Rs Apps';
+        // return view('superadmin.kendaraan', compact('title'));
+
+        $kendaraan = kendaraan::all();
+        return view('superadmin.merekkendaraan', compact('kendaraan', 'title'));
+    }
+
+
+    public function mstore(Request $request)
+    {
+        $validatedData = $request->validate([
+            'namaMerk' => 'required|unique:kendaraan,no_pol',
+            'kodeMerk' => 'required',
+        ]);
+
+        $kendaraan = new kendaraan();
+        $kendaraan->merek = $validatedData['namaMerk'];
+        $kendaraan->kode_merek = $validatedData['kodeMerk'];
+        $kendaraan->save();
+
+        return redirect()->back()->with('success', 'Data kendaraan berhasil disimpan.');
+    }
 }
