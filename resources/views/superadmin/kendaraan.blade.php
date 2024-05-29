@@ -33,6 +33,10 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
+                                @php
+                                use Carbon\Carbon;
+                                Carbon::setLocale('id');
+                                @endphp
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
@@ -42,15 +46,48 @@
                                             <th>Merek</th>
                                             <th>Model</th>
                                             <th>Kode Merek</th>
-                                            <th>Tahun Buat</th>
+                                            <th>Tahun Pembuatan</th>
                                             <th>Tanggal Pajak</th>
+                                            <th>Status Pajak</th>
                                             <th>Tanggal STNK</th>
+                                            <th>Status STNK</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @php $index = 1; @endphp
                                         @foreach ($kendaraan as $kendaraan)
+                                             @php
+                                                $tanggalBuatFormatted = Carbon::parse($kendaraan->tgl_buat)->translatedFormat('Y');
+                                                $tglPajakFormatted = Carbon::parse($kendaraan->tgl_pajak)->translatedFormat('d F Y');
+                                                $tglStnkFormatted = Carbon::parse($kendaraan->tgl_stnk)->translatedFormat('d F Y');
+                                                $tglPajak = Carbon::parse($kendaraan->tgl_pajak);
+                                                $tglStnk = Carbon::parse($kendaraan->tgl_stnk);
+                                                $today = Carbon::now();
+                                                $oneMonthFromNow = $today->copy()->addMonth();
+                                                
+                                                if ($tglPajak->isPast()) {
+                                                    $statusPajak = 'Terlambat';
+                                                    $badgePajak = 'badge badge-danger';
+                                                } elseif ($tglPajak->lessThanOrEqualTo($oneMonthFromNow)) {
+                                                    $statusPajak = 'Mendekati Jatuh Tempo';
+                                                    $badgePajak = 'badge badge-warning';
+                                                } else {
+                                                    $statusPajak = 'Pembayaran Masih Lama';
+                                                    $badgePajak = 'badge badge-success';
+                                                }
+
+                                                if ($tglStnk->isPast()) {
+                                                    $statusStnk = 'Terlambat';
+                                                    $badgeStnk = 'badge badge-danger';
+                                                } elseif ($tglStnk->lessThanOrEqualTo($oneMonthFromNow)) {
+                                                    $statusStnk = 'Akan jatuh tempo';
+                                                    $badgeStnk = 'badge badge-warning';
+                                                } else {
+                                                    $statusStnk = 'Pembayaran Masih Lama';
+                                                    $badgeStnk = 'badge badge-success';
+                                                }
+                                            @endphp
                                             <tr>
                                                 <td>{{ $index }}</td>
                                                 <td>{{ $kendaraan->no_pol }}</td>
@@ -58,9 +95,11 @@
                                                 <td>{{ $kendaraan->merek }}</td>
                                                 <td>{{ $kendaraan->model }}</td>
                                                 <td>{{ $kendaraan->kode_merek }}</td>
-                                                <td>{{ $kendaraan->tgl_buat }}</td>
-                                                <td>{{ $kendaraan->tgl_pajak }}</td>
-                                                <td>{{ $kendaraan->tgl_stnk }}</td>
+                                                <td>{{ $tanggalBuatFormatted}}</td>
+                                                <td>{{ $tglPajakFormatted }}</td>
+                                                <td class="text-center"><span class="{{ $badgePajak }}">{{ $statusPajak }}</span></td>
+                                                <td>{{ $tglStnkFormatted }}</td>
+                                                <td class="text-center"><span class="{{ $badgeStnk }}">{{ $statusStnk }}</span></td>
                                                 <td class="text-center">
                                                     <a href="#" data-toggle="modal" data-target="#editModal"
                                                         data-id="{{ $kendaraan->id }}"
