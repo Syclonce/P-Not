@@ -388,13 +388,13 @@
                 $('body').removeClass('dark-mode');
                 $('.navbar').removeClass('dark-mode'); // Menghapus tema gelap dari navbar
                 $('.main-sidebar').removeClass(
-                'sidebar-dark-lightblue dark-mode'); // Menghapus tema gelap dari sidebar
+                    'sidebar-dark-lightblue dark-mode'); // Menghapus tema gelap dari sidebar
             } else if (darkMode === 'enabled') {
                 // Jika preferensi tema adalah mode gelap, aktifkan mode gelap
                 $('body').addClass('dark-mode');
                 $('.navbar').addClass('dark-mode'); // Menambahkan tema gelap ke navbar
                 $('.main-sidebar').addClass(
-                'sidebar-dark-lightblue dark-mode'); // Menambahkan tema gelap ke sidebar
+                    'sidebar-dark-lightblue dark-mode'); // Menambahkan tema gelap ke sidebar
                 $('#checkbox').prop('checked', true);
             }
 
@@ -411,16 +411,16 @@
                     $('body').addClass('dark-mode');
                     $('.navbar').addClass('dark-mode'); // Menambahkan tema gelap ke navbar
                     $('.main-sidebar').addClass(
-                    'sidebar-dark-lightblue dark-mode'); // Menambahkan tema gelap ke sidebar
+                        'sidebar-dark-lightblue dark-mode'); // Menambahkan tema gelap ke sidebar
                     localStorage.setItem('darkMode',
-                    'enabled'); // Menyimpan preferensi dark mode pada local storage
+                        'enabled'); // Menyimpan preferensi dark mode pada local storage
                 } else {
                     $('body').removeClass('dark-mode');
                     $('.navbar').removeClass('dark-mode'); // Menghapus tema gelap dari navbar
                     $('.main-sidebar').removeClass(
-                    'sidebar-dark-lightblue dark-mode'); // Menghapus tema gelap dari sidebar
+                        'sidebar-dark-lightblue dark-mode'); // Menghapus tema gelap dari sidebar
                     localStorage.setItem('darkMode',
-                    'disabled'); // Menyimpan preferensi light mode pada local storage
+                        'disabled'); // Menyimpan preferensi light mode pada local storage
                 }
             });
 
@@ -567,7 +567,7 @@
                         icon: 'warning',
                         title: 'Peringatan!',
                         text: 'Kendaraan dengan nomor polisi ' + noPolisi +
-                            ' memiliki STNK yang sudah jatuh tempo!',
+                            ' memiliki PAJAK  yang sudah jatuh tempo!',
                         confirmButtonText: 'Tutup'
                     }).then((result) => {
                         if (result.isConfirmed) {
