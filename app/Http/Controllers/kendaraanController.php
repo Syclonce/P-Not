@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\kendaraan;
-// use Barryvdh\DomPDF\Facade as PDF;
-// use PDF;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+
 
 class kendaraanController extends Controller
 {
@@ -55,7 +55,7 @@ class kendaraanController extends Controller
 
         $kendaraan->no_pol = $request['no_pol'];
         $kendaraan->nama_pem = $request['nama_pem'];
-        $kendaraan->merek =$request['merek'];
+        $kendaraan->merek = $request['merek'];
         $kendaraan->model = $request['model'];
         $kendaraan->kode_merek = $request['kode_merek'];
         $kendaraan->tgl_buat = Carbon::parse($request['tgl_buat'])->format('Y-m-d');
@@ -79,8 +79,7 @@ class kendaraanController extends Controller
     {
         $kendaraan = Kendaraan::findOrFail($id);
 
-        $pdf = PDF::loadView('pdf.kendaraan', compact('kendaraan'));
+        $pdf = FacadePdf::loadView('pdf.kendaraan', compact('kendaraan'));
         return $pdf->download('kendaraan-' . $kendaraan->id . '.pdf');
     }
-
 }
