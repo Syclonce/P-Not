@@ -12,6 +12,6 @@ Route::get('/user', function (Request $request) {
 
 Route::get('fetch-data', [kendaraanController::class, 'apidata'])->name('fetch.data');
 Route::get('provinsi', [WilayahController::class, 'getProvinsi']);
-Route::get('kabupaten/{kode_provinsi}', [WilayahController::class, 'getKabupaten']);
-Route::get('kecamatan/{kode_kabupaten}', [WilayahController::class, 'getKecamatan']);
-Route::get('desa/{kode_kecamatan}', [WilayahController::class, 'getDesa']);
+Route::get('kabupaten/{kode_provinsi?}', [WilayahController::class, 'getKabupaten']);
+Route::get('kecamatan/{kode_kabupaten?}', [WilayahController::class, 'getKecamatan']);
+Route::get('desa/{kode_kecamatan?}', [WilayahController::class, 'getDesa']);

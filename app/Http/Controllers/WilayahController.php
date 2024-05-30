@@ -15,21 +15,33 @@ class WilayahController extends Controller
         return response()->json(['data' => $data]);
     }
 
-    public function getKabupaten($kode_provinsi)
+    public function getKabupaten($kode_provinsi = null)
     {
-        $data = Kabupaten::where('kode_provinsi', $kode_provinsi)->get();
+        if (empty($kode_provinsi)) {
+            $data = [];
+        } else {
+            $data = Kabupaten::where('kode_provinsi', $kode_provinsi)->get();
+        }
         return response()->json(['data' => $data]);
     }
 
-    public function getKecamatan($kode_kabupaten)
+    public function getKecamatan($kode_kabupaten = null)
     {
-        $data = Kecamatan::where('kode_kabupaten', $kode_kabupaten)->get();
+        if(empty($kode_kabupaten)) {
+            $data = [];
+        } else {
+            $data = Kecamatan::where('kode_kabupaten', $kode_kabupaten)->get();
+        }
         return response()->json(['data' => $data]);
     }
 
-    public function getDesa($kode_kecamatan)
+    public function getDesa($kode_kecamatan = null)
     {
-        $data = Desa::where('kode_kecamatan', $kode_kecamatan)->get();
+        if (empty($kode_kecamatan)) {
+            $data = [];
+        } else {
+            $data = Desa::where('kode_kecamatan', $kode_kecamatan)->get();
+        }
         return response()->json(['data' => $data]);
     }
 }
