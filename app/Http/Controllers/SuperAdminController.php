@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Dompdf\Dompdf;
+use App\Models\Pemilik;
 use Illuminate\Support\Facades\DB;
 
 class SuperAdminController extends Controller
@@ -21,7 +22,7 @@ class SuperAdminController extends Controller
             ->count();
         $countKadaluarsap = Kendaraan::where('tgl_pajak', '<=', today())->count();
         $totalKendaraan = Kendaraan::count();
-        $totalUsers = User::count();
+        $totalUsers = Pemilik::count();
 
 
         // Mendapatkan tanggal sekarang

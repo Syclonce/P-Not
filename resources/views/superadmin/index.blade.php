@@ -38,8 +38,8 @@
                         <!-- small box -->
                         <div class="small-box bg-info">
                             <div class="inner">
-                                <h3>{{ $totalUsers }} User</h3>
-                                <p>Jumlah User</p>
+                                <h3>{{ $totalUsers }} Pemilik</h3>
+                                <p>Jumlah Pemilik Kendaraan</p>
                             </div>
                             <div class="icon">
                                 <i class="fas fa-user"></i>
