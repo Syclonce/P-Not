@@ -4,6 +4,7 @@ use App\Http\Controllers\kendaraanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\websetController;
+use App\Http\Controllers\PemilikController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -35,6 +36,9 @@ Route::middleware(['auth', 'verified', 'role:Super-Admin'])->group(function () {
     Route::post('mkendaraan/store', [KendaraanController::class, 'mstore'])->name('mkendaraan.store');
     Route::post('mkendaraan/update', [KendaraanController::class, 'mupdate'])->name('mkendaraan.update');
     Route::post('mkendaraan/destroy', [KendaraanController::class, 'mdestroy'])->name('mkendaraan.destroy');
+
+    Route::get('pemilik', [PemilikController::class, 'index'])->name('pemilik');
+
 
     Route::get('setweb', [websetController::class, 'index'])->name('setweb');
     Route::post('setweb/update', [websetController::class, 'updates'])->name('setweb.update');

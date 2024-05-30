@@ -34,6 +34,15 @@
     <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
+    <!-- Select2 Bootstrap 4-->
+    <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+
+ 
+
     <style>
         .theme-switch-wrapper {
             display: flex;
@@ -234,6 +243,15 @@
                                     </a>
                                 </li>
                             </ul>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('pemilik') }}"
+                                        class="nav-link {{ \Route::is('pemilik') ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-circle text-info"></i>
+                                        <p>Pemilik Kendaraan</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
 
                         <li class="nav-item">
@@ -321,8 +339,16 @@
     <script src="{{ asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
-    {{-- ChartJS --}}
+    <!-- {{-- ChartJS --}} -->
     <script src="{{ asset('plugins/chart.js/Chart.min.js') }}"></script>
+    <!-- Select2 -->
+    <script src="{{ asset('plugins/select2/js/select2.full.js') }}"></script>
+    <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
+    <!-- <script src="{{ asset('plugins/select2/js/select2.js') }}"></script>
+    <script src="{{ asset('plugins/select2/js/select2.min.js') }}"></script> -->
+
+
+    
     <!-- Page specific script -->
     <script>
         $(function() {
@@ -598,6 +624,80 @@
 
             });
 
+            $('.select2').select2({
+                theme: 'bootstrap4',
+                width: '100%',
+                dropdownParent: "#addPemilikModal"
+            });
+            
+            $.ajax({
+                url: `{{ url('api/provinsi') }}`,
+                method: 'GET',
+                success: function(response) {
+                    var provinsiSelect = $('#provinsi');
+                    response.data.forEach(function(provinsi) {
+                        provinsiSelect.append(new Option(provinsi.name, provinsi.kode));
+                    });
+                }
+            });
+
+            $('#provinsi').on('change', function() {
+                var kodeProvinsi = $(this).val();
+                $('#kabupaten').empty().append(new Option('Pilih Kabupaten', ''));
+                $('#kecamatan').empty().append(new Option('Pilih Kecamatan', ''));
+                $('#desa').empty().append(new Option('Pilih Desa', ''));
+
+                if (kodeProvinsi) {
+                    $.ajax({
+                        url: `{{ url('api/kabupaten') }}/${kodeProvinsi}`,
+                        method: 'GET',
+                        success: function(response) {
+                            var kabupatenSelect = $('#kabupaten');
+                            response.data.forEach(function(kabupaten) {
+                                kabupatenSelect.append(new Option(kabupaten.name, kabupaten.kode));
+                            });
+                        }
+                    });
+                }
+            });
+
+            $('#kabupaten').on('change', function() {
+                var kodeKabupaten = $(this).val();
+                $('#kecamatan').empty().append(new Option('Pilih Kecamatan', ''));
+                $('#desa').empty().append(new Option('Pilih Desa', ''));
+
+                if (kodeKabupaten) {
+                    $.ajax({
+                        url: `{{ url('api/kecamatan') }}/${kodeKabupaten}`,
+                        method: 'GET',
+                        success: function(response) {
+                            var kecamatanSelect = $('#kecamatan');
+                            response.data.forEach(function(kecamatan) {
+                                kecamatanSelect.append(new Option(kecamatan.name, kecamatan.kode));
+                            });
+                        }
+                    });
+                }
+            });
+
+            $('#kecamatan').on('change', function() {
+                var kodeKecamatan = $(this).val();
+                $('#desa').empty().append(new Option('Pilih Desa', ''));
+
+                if (kodeKecamatan) {
+                    $.ajax({
+                        url: `{{ url('api/desa') }}/${kodeKecamatan}`,
+                        method: 'GET',
+                        success: function(response) {
+                            var desaSelect = $('#desa');
+                            response.data.forEach(function(desa) {
+                                desaSelect.append(new Option(desa.name, desa.kode));
+                            });
+                        }
+                    });
+                }
+            });
+
         });
     </script>
 
@@ -672,7 +772,7 @@
 
             // Fetch data from the database using AJAX
             $.ajax({
-                url: '{{ url('api/fetch-data') }}', // Adjust the route as needed
+                url: `{{ url('api/fetch-data') }}`,
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
