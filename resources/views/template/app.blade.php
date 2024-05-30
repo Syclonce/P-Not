@@ -530,6 +530,19 @@
 
             });
 
+            $(document).on('click', '.edit-mdata', function() {
+                var id = $(this).data('id');
+                var merek = $(this).data('merek');
+                var model = $(this).data('model');
+                var kode_merek = $(this).data('kode-merek');
+                var tgl_buat = $(this).data('tgl-buat');
+
+                $('#meditId').val(id);
+                $('#meditMerek').val(merek);
+                $('#meditModel').val(model);
+                $('#meditKodeMerek').val(kode_merek);
+                $('#meditTglBuat').val(tgl_buat);
+            });
 
             $('#editKendaraan-form').on('submit', function(e) {
                 e.preventDefault();
@@ -570,6 +583,19 @@
                         toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
                     }
                 });
+            });
+
+
+            $(document).on('click', '.delete-mdata', function() {
+                var id = $(this).data('id');
+                var merek = $(this).data('merek');
+                var kode_merek = $(this).data('kode-merek');
+
+                $('#deleteId').val(id);
+                $('#deleteText').html(
+                    "<span>Apa anda yakin ingin menghapus kendaraan dengan No.Polisi <b>" + merek +
+                    "</b> a/n <b>" + kode_merek + "</b></span>");
+
             });
 
         });

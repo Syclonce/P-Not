@@ -67,10 +67,14 @@
                                                         data-id="{{ $kendaraan->id }}" data-merek="{{ $kendaraan->merek }}"
                                                         data-model="{{ $kendaraan->model }}"
                                                         data-kode-merek="{{ $kendaraan->kode_merek }}"
-                                                        data-tgl-buat="{{ $kendaraan->tgl_buat }}"class="edit-data">
+                                                        data-tgl-buat="{{ $kendaraan->tgl_buat }}"class="edit-mdata">
                                                         <i class="fa fa-edit text-secondary"></i></a>
                                                     <a href="#" data-toggle="modal" data-target="#deleteModal"
-                                                        data-id="{{ $kendaraan->id }}" class="delete-data">
+                                                        data-id="{{ $kendaraan->id }}"
+                                                        data-merek="{{ $kendaraan->merek }}"
+                                                        data-model="{{ $kendaraan->model }}"
+                                                        data-kode-merek="{{ $kendaraan->kode_merek }}"
+                                                        data-tgl-buat="{{ $kendaraan->tgl_buat }}" class="delete-mdata">
                                                         <i class="fa fa-trash-can text-secondary"></i></a>
                                                 </td>
                                             </tr>
@@ -163,20 +167,40 @@
                 <div class="modal-body">
                     <form id="editForm" action="{{ route('mkendaraan.update') }}" method="POST">
                         @csrf
-                        <input type="hidden" id="editId" name="editId">
-
+                        <input type="hidden" id="meditId" name="editId">
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="editMerek">Merek</label>
-                                    <input type="text" class="form-control" id="editMerek" name="merek" required>
+                                    <label>Nama Merk Kendaraan</label>
+                                    <input type="text" class="form-control" id="meditMerek" name="namaMerk">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="editKodeMerek">Kode Merek</label>
-                                    <input type="text" class="form-control" id="editKodeMerek" name="kode_merek"
-                                        required>
+                                    <label>Nama Model Kendaraan</label>
+                                    <input type="text" class="form-control" id="meditModel" name="namaModel">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Kode Merk Kendaraan</label>
+                                    <input type="text" class="form-control" id="meditKodeMerek" name="kodeMerk">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Tahun Buatan Kendaraan</label>
+                                    <div class="input-group date" id="tahunBuat" data-target-input="nearest">
+                                        <input type="text" class="form-control datetimepicker-input"
+                                            data-target="#tahunBuat" name="tahunBuat" id="meditTglBuat" />
+                                        <div class="input-group-append" data-target="#tahunBuat"
+                                            data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -202,7 +226,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="deleteForm" action="{{ route('kendaraan.destroy') }}" method="POST">
+                    <form id="deleteForm" action="{{ route('mkendaraan.destroy') }}" method="POST">
                         @csrf
                         <input type="hidden" id="deleteId" name="deleteId">
                         <div id="deleteText"></div>

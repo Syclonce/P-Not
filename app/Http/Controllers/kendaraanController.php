@@ -128,6 +128,14 @@ class kendaraanController extends Controller
         return redirect()->back()->with('success', 'Data kendaraan berhasil diperbarui.');
     }
 
+    public function mdestroy(Request $request)
+    {
+        $id =  $request['deleteId'];
+
+        mkendaraan::findOrFail($id)->delete();
+
+        return redirect()->back()->with('success', 'Data kendaraan berhasil dihapus.');
+    }
     public function apidata()
     {
         $data = kendaraan::all();
