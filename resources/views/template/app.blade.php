@@ -41,7 +41,7 @@
     <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 
- 
+
 
     <style>
         .theme-switch-wrapper {
@@ -348,7 +348,7 @@
     <script src="{{ asset('plugins/select2/js/select2.min.js') }}"></script> -->
 
 
-    
+
     <!-- Page specific script -->
     <script>
         $(function() {
@@ -629,7 +629,7 @@
                 width: '100%',
                 dropdownParent: "#addPemilikModal"
             });
-            
+
             $.ajax({
                 url: `{{ url('api/provinsi') }}`,
                 method: 'GET',
@@ -654,7 +654,8 @@
                         success: function(response) {
                             var kabupatenSelect = $('#kabupaten');
                             response.data.forEach(function(kabupaten) {
-                                kabupatenSelect.append(new Option(kabupaten.name, kabupaten.kode));
+                                kabupatenSelect.append(new Option(kabupaten.name,
+                                    kabupaten.kode));
                             });
                         }
                     });
@@ -673,7 +674,8 @@
                         success: function(response) {
                             var kecamatanSelect = $('#kecamatan');
                             response.data.forEach(function(kecamatan) {
-                                kecamatanSelect.append(new Option(kecamatan.name, kecamatan.kode));
+                                kecamatanSelect.append(new Option(kecamatan.name,
+                                    kecamatan.kode));
                             });
                         }
                     });
@@ -702,39 +704,26 @@
     </script>
 
     <script>
-        // Fungsi untuk menampilkan popup berdasarkan nomor polisi
         function showWarningForId(id) {
             // Functionality can be added here if needed
         }
 
-        function loadDataAndCheckExpired() {
-            // Mendapatkan tanggal sekarang dalam format YYYY-MM-DD
+        function loadDataAndCheckExpired(callback) {
             var currentDate = new Date().toISOString().split('T')[0];
-
-            // Mendapatkan data kendaraan dari database (diasumsikan telah dimuat sebelumnya)
             var kendaraan = {!! json_encode($kendaraan) !!};
-
-            // Mengonversi data kendaraan menjadi array jika tidak sudah dalam bentuk array
             if (!Array.isArray(kendaraan)) {
                 kendaraan = [kendaraan];
             }
 
-            // Inisialisasi array untuk menyimpan ID kendaraan yang memiliki tanggal pajak yang sudah jatuh tempo
             var kendaraanIdJatuhTempo = [];
-
-            // Perulangan untuk setiap kendaraan
             kendaraan.forEach(function(k) {
-                // Cek apakah tgl_pajak jatuh tempo hari ini atau sebelumnya
                 if (k.tgl_pajak <= currentDate) {
-                    // Simpan ID kendaraan yang memiliki STNK yang sudah jatuh tempo
                     kendaraanIdJatuhTempo.push(k.id);
                 }
             });
 
-            // Tampilkan jumlah kendaraan yang sudah jatuh tempo
             console.log('Jumlah kendaraan yang sudah jatuh tempo: ' + kendaraanIdJatuhTempo.length);
 
-            // Panggil fungsi showWarningForId untuk setiap ID kendaraan yang memiliki STNK yang sudah jatuh tempo
             function showWarningsSequentially(id) {
                 if (id < kendaraanIdJatuhTempo.length) {
                     showWarningForId(kendaraanIdJatuhTempo[id]);
@@ -743,24 +732,104 @@
                         icon: 'warning',
                         title: 'Peringatan!',
                         text: 'Kendaraan dengan nomor polisi ' + noPolisi +
-                            ' memiliki PAJAK  yang sudah jatuh tempo!',
+                            ' memiliki PAJAK yang sudah jatuh tempo!',
                         confirmButtonText: 'Tutup'
                     }).then((result) => {
                         if (result.isConfirmed) {
                             showWarningsSequentially(id + 1);
                         }
                     });
+                } else if (callback) {
+                    callback();
                 }
             }
-
             showWarningsSequentially(0);
         }
 
-        // Periksa URL saat halaman dimuat dan panggil fungsi loadDataAndCheckExpired jika berada di /superadmin
+        function loadDataAndCheckExpired1(callback) {
+            var currentDate = new Date().toISOString().split('T')[0];
+            var kendaraan = {!! json_encode($kendaraan) !!};
+            if (!Array.isArray(kendaraan)) {
+                kendaraan = [kendaraan];
+            }
+
+            var kendaraanIdJatuhTempo = [];
+            kendaraan.forEach(function(k) {
+                if (k.tgl_stnk <= currentDate) {
+                    kendaraanIdJatuhTempo.push(k.id);
+                }
+            });
+
+            console.log('Jumlah kendaraan yang sudah jatuh tempo: ' + kendaraanIdJatuhTempo.length);
+
+            function showWarningsSequentially(id) {
+                if (id < kendaraanIdJatuhTempo.length) {
+                    showWarningForId(kendaraanIdJatuhTempo[id]);
+                    var noPolisi = kendaraan.find(k => k.id === kendaraanIdJatuhTempo[id]).no_pol;
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Peringatan!',
+                        text: 'Kendaraan dengan nomor polisi ' + noPolisi +
+                            ' memiliki STNK yang sudah jatuh tempo!',
+                        confirmButtonText: 'Tutup'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            showWarningsSequentially(id + 1);
+                        }
+                    });
+                } else if (callback) {
+                    callback();
+                }
+            }
+            showWarningsSequentially(0);
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
-            var currentUrl = window.location.pathname;
-            if (currentUrl === '/superadmin') {
-                loadDataAndCheckExpired();
+            function checkWarnings() {
+                var warningsEnabled = localStorage.getItem('warningsEnabled') === 'true';
+                var warningsEnabled1 = localStorage.getItem('warningsEnabled1') === 'true';
+
+                if (warningsEnabled && warningsEnabled1) {
+                    loadDataAndCheckExpired(function() {
+                        loadDataAndCheckExpired1();
+                    });
+                } else if (warningsEnabled) {
+                    loadDataAndCheckExpired();
+                } else if (warningsEnabled1) {
+                    loadDataAndCheckExpired1();
+                }
+            }
+
+            function runAtSpecificTime(hour, minute, callback) {
+                var now = new Date();
+                var then = new Date();
+
+                then.setHours(hour);
+                then.setMinutes(minute);
+                then.setSeconds(0);
+
+                if (then <= now) {
+                    then.setDate(then.getDate() + 1);
+                }
+
+                var timeout = then.getTime() - now.getTime();
+                setTimeout(function() {
+                    callback();
+                    setInterval(callback, 24 * 60 * 60 * 1000);
+                }, timeout);
+            }
+
+            var reminderTime = localStorage.getItem('reminderTime') || '08:00';
+            var timeParts = reminderTime.split(':');
+            var hour = parseInt(timeParts[0], 10);
+            var minute = parseInt(timeParts[1], 10);
+
+            // Jalankan checkWarnings saat halaman dimuat
+            if (window.location.pathname === '/superadmin') {
+                checkWarnings();
+
+                // Jalankan checkWarnings pada waktu yang ditentukan
+                runAtSpecificTime(hour, minute, checkWarnings);
             }
         });
     </script>
