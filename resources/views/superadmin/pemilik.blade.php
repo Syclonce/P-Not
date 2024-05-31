@@ -34,8 +34,8 @@
                             <!-- /.card-header -->
                             <div class="card-body">
                                 @php
-                                use Carbon\Carbon;
-                                Carbon::setLocale('id');
+                                    use Carbon\Carbon;
+                                    Carbon::setLocale('id');
                                 @endphp
                                 <table id="pemilikTable" class="table table-bordered table-striped">
                                 </table>
@@ -44,8 +44,11 @@
                         </div>
                         <!-- /.card -->
                     </div>
+                    <div id="map"></div>
+
                 </div>
                 <!-- /.row (main row) -->
+
             </div><!-- /.container-fluid -->
         </section>
         <!-- /.content -->
@@ -151,5 +154,4 @@
             </div>
         </div>
     </div>
-   
 @endsection
