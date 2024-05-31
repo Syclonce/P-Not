@@ -456,6 +456,7 @@
 
         // Menerapkan preferensi dark mode saat halaman dimuat
         $(document).ready(function() {
+
             // Memeriksa apakah ada preferensi tema yang disimpan di local storage
             var darkMode = localStorage.getItem('darkMode');
 
@@ -936,6 +937,39 @@
                 }
             });
         });
+    </script>
+
+
+    <script>
+        function getCoordinates() {
+            var apiKey =
+                'AhQXcTxku41cvwtxg1VIrHx3YcM_hi_7r7peMHPYQht_1tf98FMY-WHW-q6FogCr'; // Replace with your Bing Maps API key
+            var address = 'Jl. Bungur Nn 09, Cipedes, Kec. Sukajadi, Kota Bandung, Jawa Barat, Indonesia';
+            var url = 'http://dev.virtualearth.net/REST/v1/Locations?query=' + encodeURIComponent(address) +
+                '&key=' + apiKey;
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.resourceSets.length > 0 && data.resourceSets[0].resources.length > 0) {
+                        var coordinates = data.resourceSets[0].resources[0].point.coordinates;
+                        var latitude = coordinates[0];
+                        var longitude = coordinates[1];
+                        console.log('Latitude: ' + latitude);
+                        console.log('Longitude: ' + longitude);
+                    } else {
+                        console.log('No results found for the given address.');
+                    }
+                })
+                .catch(error => {
+                    console.error('There has been a problem with your fetch operation:', error);
+                });
+        }
     </script>
 </body>
 
