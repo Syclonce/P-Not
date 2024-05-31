@@ -234,8 +234,9 @@
                             </a>
                         </li>
 
-                        <li class="nav-item {{ \Route::is('mkendaraan') ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ \Route::is('mkendaraan') ? 'active' : '' }}">
+                        <li class="nav-item {{ \Route::is('mkendaraan') || 'pemilik' ? 'menu-open' : '' }}">
+                            <a href="#"
+                                class="nav-link {{ \Route::is('mkendaraan') || 'pemilik' ? 'active' : '' }}">
                                 <i class="fas fa-fw fa-database"></i>
                                 <p>
                                     Master Data
