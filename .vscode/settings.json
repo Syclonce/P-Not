@@ -8,6 +8,8 @@
         "files.autoSave": "onFocusChange",
         "files.exclude": {
           "**/.git": false
-        }
+        },
+        "IDX.aI.enableInlineCompletion": true,
+        "IDX.aI.enableCodebaseIndexing": true
 
 }
