@@ -20,4 +20,5 @@ class Provinsi extends Model
     {
         return $this->hasMany(Kabupaten::class, 'kode_provinsi', 'kode_provinsi');
     }
+
 }

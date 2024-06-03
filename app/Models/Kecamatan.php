@@ -26,4 +26,5 @@ class Kecamatan extends Model
     {
         return $this->hasMany(Desa::class, 'kode_kecamatan', 'kode_kecamatan');
     }
+
 }

@@ -38,6 +38,9 @@ Route::middleware(['auth', 'verified', 'role:Super-Admin'])->group(function () {
     Route::post('mkendaraan/destroy', [KendaraanController::class, 'mdestroy'])->name('mkendaraan.destroy');
 
     Route::get('pemilik', [PemilikController::class, 'index'])->name('pemilik');
+    Route::post('pemilik/store', [PemilikController::class, 'store'])->name('pemilik.store');
+    Route::post('pemilik/destroy', [PemilikController::class, 'destroy'])->name('pemilik.destroy');
+
 
 
     Route::get('setweb', [websetController::class, 'index'])->name('setweb');

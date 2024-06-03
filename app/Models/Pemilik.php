@@ -21,4 +21,25 @@ class Pemilik extends Model
         'provinsi',
         'kode_pos',
     ];
+
+    public function provinsiRelation()
+    {
+        return $this->belongsTo(Provinsi::class, 'provinsi','kode');
+    }
+
+    public function kabupatenRelation()
+    {
+        return $this->belongsTo(Kabupaten::class, 'kab','kode');
+    }
+
+    public function kecamatanRelation()
+    {
+        return $this->belongsTo(Kecamatan::class, 'kec','kode');
+    }
+
+    public function desaRelation()
+    {
+        return $this->belongsTo(Desa::class, 'kel_des','kode');
+    }
+
 }

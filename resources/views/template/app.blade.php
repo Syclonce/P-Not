@@ -40,6 +40,9 @@
     <!-- Select2 Bootstrap 4-->
     <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.css') }}">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@6.14.1/ol.css">
     <style>
@@ -354,8 +357,9 @@
     <!-- Select2 -->
     <script src="{{ asset('plugins/select2/js/select2.full.js') }}"></script>
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
-    <!-- <script src="{{ asset('plugins/select2/js/select2.js') }}"></script>
-    <script src="{{ asset('plugins/select2/js/select2.min.js') }}"></script> -->
+    <!-- Toastr -->
+    <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+
 
 
 
@@ -1033,6 +1037,90 @@
 
             console.log('Marker added to map.');
         }
+    </script>
+
+    <!-- CRUD Pemilik Script  -->
+    <script>
+        $("#pemilikTable").DataTable({
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
+                "buttons": false,
+                "lengthChange": true,
+                "language": {
+                    "lengthMenu": "Tampil  _MENU_",
+                    "info": "Menampilkan _START_ - _END_ dari _TOTAL_ entri",
+                    "search": "Cari :",
+                    "paginate": {
+                        "previous": "Sebelumnya",
+                        "next": "Berikutnya"
+                    }
+                }
+         });
+
+         const alert = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 10000,
+            timerProgressBar: true
+        });
+
+         $('#addFormPemilik').on('submit', function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#addPemilikModal').modal('hide');        
+                        alert.fire({
+                            icon: 'success',
+                            title: response.message
+                        });
+                        $('#addFormPemilik')[0].reset();
+                        $('#provinsi').val(null).trigger('change');
+                        window.location.href = '{{ route("pemilik") }}';
+                    },
+                    error: function(xhr) {
+                        toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
+                    }
+                });
+        });
+
+        $(document).on('click', '.delete-data-pemilik', function() {
+                var id = $(this).data('id');
+                var no_polisi = $(this).data('no-polisi');
+                var nama_pemilik = $(this).data('nama-pemilik');
+
+                $('#pemilikId').val(id);
+                $('#deleteTextPemilik').html(
+                    "<span>Apa anda yakin ingin menghapus kendaraan dengan No.Polisi <b>" + no_polisi +
+                    "</b> a/n <b>" + nama_pemilik + "</b></span>");
+
+        });
+
+        $('#deleteFormPemilik').on('submit', function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#deletePemilikModal').modal('hide');        
+                        alert.fire({
+                            icon: 'success',
+                            title: response.message
+                        });
+                        window.location.href = '{{ route("pemilik") }}';
+                    },
+                    error: function(xhr) {
+                        toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
+                    }
+                });
+        });
     </script>
 </body>
 
