@@ -79,10 +79,10 @@
                                                         data-alamat="{{ $owner->alamat }}"
                                                         data-rt="{{ $owner->rt }}"
                                                         data-rw="{{ $owner->rw }}"
-                                                        data-desa="{{ $owner->desaRelation->name }}"
-                                                        data-kecamatan="{{ $owner->kecamatanRelation->name }}"
-                                                        data-kabupaten="{{ $owner->kabupatenRelation->name }}"
-                                                        data-provinsi="{{ $owner->provinsiRelation->name }}"
+                                                        data-desa="{{ $owner->desaRelation->kode }}"
+                                                        data-kecamatan="{{ $owner->kecamatanRelation->kode }}"
+                                                        data-kabupaten="{{ $owner->kabupatenRelation->kode }}"
+                                                        data-provinsi="{{ $owner->provinsiRelation->kode }}"
                                                         data-kode-pos="{{ $owner->kode_pos }}">
                                                     <i class="fa fa-edit text-secondary"></i></a>
                                                     <a href="#" data-toggle="modal" data-target="#deletePemilikModal"
@@ -216,26 +216,34 @@
     <div class="modal fade" id="editPemilikModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <form id="addFormPemilik" action="{{ route('pemilik.store') }}" method="POST">
+                <form id="editFormPemilik" action="{{ route('pemilik.update') }}" method="POST">
                     @csrf
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Tambah Data Pemilik Kendaraan</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Data Pemilik Kendaraan</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
+                        <div class="row" hidden>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="id" class="form-label">ID Pemilik</label>
+                                    <input type="text" class="form-control" name="editIdPemilik" id="editIdPemilik">
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="noPol" class="form-label">No.Polisi</label>
-                                    <input type="text" class="form-control" name="noPol" id="editNoPol">
+                                    <input type="text" class="form-control" name="editNoPol" id="editNoPol">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="namaPemilik" class="form-label">Nama Pemilik</label>
-                                    <input type="text" class="form-control" name="namaPemilik" id="editnamaPemilik">
+                                    <input type="text" class="form-control" name="editnamaPemilik" id="editnamaPemilik">
                                 </div>
                             </div>
                         </div>
@@ -243,7 +251,7 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label for="alamat" class="form-label">Alamat</label>
-                                    <textarea type="text" class="form-control" name="alamat" id="editAlamat"></textarea>
+                                    <textarea type="text" class="form-control" name="editAlamat" id="editAlamat"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -251,13 +259,13 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="kabupaten" class="form-label">RT</label>
-                                    <input type="text" class="form-control" name="rt" id="editRt">
+                                    <input type="text" class="form-control" name="editRt" id="editRt">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="kabupaten" class="form-label">RW</label>
-                                    <input type="text" class="form-control" name="rw" id="editRw">
+                                    <input type="text" class="form-control" name="editRw" id="editRw">
                                 </div>
                             </div>
                         </div>
@@ -265,7 +273,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="provinsi" class="form-label">Provinsi</label>
-                                    <select id="provinsi" class="form-control select2" name="provinsi" id>
+                                    <select class="form-control select2" name="editProvinsi" id="editProvinsi">
                                         <option value="">Pilih Provinsi</option>
                                     </select>
                                 </div>
@@ -273,7 +281,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="kabupaten" class="form-label">Kota/Kabupaten</label>
-                                    <select id="kabupaten" class="form-control select2" name="kabupaten">
+                                    <select class="form-control select2" name="editKabupaten" id="editKabupaten">
                                         <option value="">Pilih Kabupaten</option>
                                     </select>
                                 </div>
@@ -283,7 +291,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="kecamatan" class="form-label">Kecamatan</label>
-                                    <select id="kecamatan" class="form-control select2" name="kecamatan">
+                                    <select class="form-control select2" name="editKecamatan" id="editKecamatan">
                                         <option value="">Pilih Kecamatan</option>
                                     </select>
                                 </div>
@@ -291,7 +299,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="desa" class="form-label">Kelurahan/Desa</label>
-                                    <select id="desa" class="form-control select2" name="desa">
+                                    <select class="form-control select2" name="editDesa" id="editDesa">
                                         <option value="">Pilih Desa</option>
                                     </select>
                                 </div>
@@ -301,7 +309,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="kabupaten" class="form-label">Kode Pos</label>
-                                    <input type="text" class="form-control" name="kodePos">                             
+                                    <input type="text" class="form-control" name="editKodePos" id="editKodePos">                             
                                 </div>
                             </div>
                         </div>

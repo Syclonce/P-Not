@@ -39,6 +39,7 @@ Route::middleware(['auth', 'verified', 'role:Super-Admin'])->group(function () {
 
     Route::get('pemilik', [PemilikController::class, 'index'])->name('pemilik');
     Route::post('pemilik/store', [PemilikController::class, 'store'])->name('pemilik.store');
+    Route::post('pemilik/update', [PemilikController::class, 'update'])->name('pemilik.update');
     Route::post('pemilik/destroy', [PemilikController::class, 'destroy'])->name('pemilik.destroy');
 
 

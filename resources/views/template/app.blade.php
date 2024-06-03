@@ -639,10 +639,16 @@
 
             });
 
-            $('.select2').select2({
+            $('#provinsi,#kabupaten,#kecamatan,#desa').select2({
                 theme: 'bootstrap4',
                 width: '100%',
                 dropdownParent: "#addPemilikModal"
+            });
+
+            $('#editProvinsi,#editKabupaten,#editKecamatan,#editDesa').select2({
+                theme: 'bootstrap4',
+                width: '100%',
+                dropdownParent: "#editPemilikModal"
             });
 
             $.ajax({
@@ -1089,6 +1095,157 @@
                 });
         });
 
+        $(document).on('click', '.edit-data-pemilik', function() {
+                var id = $(this).data('id');
+                var no_polisi = $(this).data('no-polisi');
+                var nama_pemilik = $(this).data('nama-pemilik');
+                var alamat = $(this).data('alamat');
+                var rt = $(this).data('rt');
+                var rw = $(this).data('rw');
+                var kodePos = $(this).data('kode-pos');
+
+                var provinsi = $(this).data('provinsi');
+                var kabupaten = $(this).data('kabupaten');
+                var kecamatan = $(this).data('kecamatan');
+                var desa = $(this).data('desa');
+
+
+                $('#editIdPemilik').val(id);
+                $('#editNoPol').val(no_polisi);
+                $('#editnamaPemilik').val(nama_pemilik);
+                $('#editAlamat').val(alamat);
+                $('#editRt').val(rt);
+                $('#editRw').val(rw);
+                $('#editKodePos').val(kodePos);
+
+                $.ajax({
+                    url: `{{ url('api/provinsi') }}`,
+                    method: 'GET',
+                    success: function(response) {
+                        var data = response.data;
+                        var provinsiSelect = $('#editProvinsi');
+                        provinsiSelect.empty().append(new Option('Pilih Provinsi', ''));
+                        data.forEach(function(provinsiData) {
+                            var selected = provinsiData.kode == provinsi;
+                            var option = new Option(provinsiData.name, provinsiData.kode, false, selected);
+                            provinsiSelect.append(option);
+                        });
+
+                        if (provinsi) {
+                            $('#editProvinsi').trigger('change');
+                        }
+
+                        console.log(provinsiData);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error loading provinsi:', error);
+                    }
+                });
+
+                $('#editProvinsi').on('change', function() {
+                    var kodeProvinsi = $(this).val();
+                    var kabupatenSelect = $('#editKabupaten');
+                    kabupatenSelect.empty().append(new Option('Pilih Kabupaten', ''));
+                    $('#editKecamatan').empty().append(new Option('Pilih Kecamatan', ''));
+                    $('#editDesa').empty().append(new Option('Pilih Desa', ''));
+
+                    if (kodeProvinsi) {
+                        $.ajax({
+                            url: `{{ url('api/kabupaten/${kodeProvinsi}') }}`,
+                            method: 'GET',
+                            success: function(response) {
+                                response.data.forEach(function(kabupatenData) {
+                                    var selected = kabupatenData.kode == kabupaten;
+                                    var option = new Option(kabupatenData.name, kabupatenData.kode, false, selected);
+                                    kabupatenSelect.append(option);
+                                });
+
+                                if (kabupaten) {
+                                    $('#editKabupaten').trigger('change');
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('Error loading kabupaten:', error);
+                            }
+                        });
+                    }
+                });
+
+                $('#editKabupaten').on('change', function() {
+                    var kodeKabupaten = $(this).val();
+                    var kecamatanSelect = $('#editKecamatan');
+                    kecamatanSelect.empty().append(new Option('Pilih Kecamatan', ''));
+                    $('#editDesa').empty().append(new Option('Pilih Desa', ''));
+
+                    if (kodeKabupaten) {
+                        $.ajax({
+                            url: `{{ url('api/kecamatan/${kodeKabupaten}') }}`,
+                            method: 'GET',
+                            success: function(response) {
+                                response.data.forEach(function(kecamatanData) {
+                                    var selected = kecamatanData.kode == kecamatan;
+                                    var option = new Option(kecamatanData.name, kecamatanData.kode, false, selected);
+                                    kecamatanSelect.append(option);
+                                });
+
+                                if (kecamatan) {
+                                    $('#editKecamatan').trigger('change');
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('Error loading kecamatan:', error);
+                            }
+                        });
+                    }
+                });
+
+                $('#editKecamatan').on('change', function() {
+                    var kodeKecamatan = $(this).val();
+                    var desaSelect = $('#editDesa');
+                    desaSelect.empty().append(new Option('Pilih Desa', ''));
+
+                    if (kodeKecamatan) {
+                        $.ajax({
+                            url: `{{ url('api/desa/${kodeKecamatan}') }}`,
+                            method: 'GET',
+                            success: function(response) {
+                                response.data.forEach(function(desaData) {
+                                    var selected = desaData.kode == desa;
+                                    var option = new Option(desaData.name, desaData.kode, false, selected);
+                                    desaSelect.append(option);
+                                });
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('Error loading desa:', error);
+                            }
+                        });
+                    }
+                });
+
+
+        });
+
+        $('#editFormPemilik').on('submit', function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#editPemilikModal').modal('hide');        
+                        alert.fire({
+                            icon: 'success',
+                            title: response.message
+                        });
+                        window.location.href = '{{ route("pemilik") }}';
+                    },
+                    error: function(xhr) {
+                        toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
+                    }
+                });
+        });
+
         $(document).on('click', '.delete-data-pemilik', function() {
                 var id = $(this).data('id');
                 var no_polisi = $(this).data('no-polisi');
@@ -1096,7 +1253,7 @@
 
                 $('#pemilikId').val(id);
                 $('#deleteTextPemilik').html(
-                    "<span>Apa anda yakin ingin menghapus kendaraan dengan No.Polisi <b>" + no_polisi +
+                    "<span>Apa anda yakin ingin menghapus pemilik kendaraan dengan No.Polisi <b>" + no_polisi +
                     "</b> a/n <b>" + nama_pemilik + "</b></span>");
 
         });
@@ -1109,12 +1266,12 @@
                     method: $(this).attr('method'),
                     data: $(this).serialize(),
                     success: function(response) {
-                        $('#deletePemilikModal').modal('hide');        
+                        $('#deletePemilikModal').modal('hide');    
+                        window.location.href = '{{ route("pemilik") }}';    
                         alert.fire({
                             icon: 'success',
                             title: response.message
                         });
-                        window.location.href = '{{ route("pemilik") }}';
                     },
                     error: function(xhr) {
                         toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');

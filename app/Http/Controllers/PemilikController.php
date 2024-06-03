@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Pemilik;
 use App\Models\kendaraan;
 use Illuminate\Support\Facades\Auth;
+use GuzzleHttp\Client;
 
 
 
@@ -51,7 +52,71 @@ class PemilikController extends Controller
         $pemilik->updated_by = $user;
         $pemilik->save();
 
+        // Perlu Improve detail Alamat
+        $address = $validatedData['alamat'] . ', ' .
+                   $validatedData['desa'] . ', ' .
+                   $validatedData['kecamatan'] . ', ' .
+                   $validatedData['kabupaten'] . ', ' .
+                   $validatedData['provinsi'] . ', ' .
+                   $validatedData['kodePos'];
+
+        $client = new Client();
+        $apiKey = 'AhQXcTxku41cvwtxg1VIrHx3YcM_hi_7r7peMHPYQht_1tf98FMY-WHW-q6FogCr';
+        $response = $client->get('http://dev.virtualearth.net/REST/v1/Locations', [
+            'query' => [
+                'query' => $address,
+                'key' => $apiKey
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        if (!empty($data['resourceSets'][0]['resources'])) {
+            $location = $data['resourceSets'][0]['resources'][0]['point']['coordinates'];
+            $longitude = $location[1];
+            $latitude = $location[0];
+
+            $pemilik->longitude = $longitude;
+            $pemilik->latitude = $latitude;
+            $pemilik->save();
+        }
+
         return response()->json(['message' => 'Data pemilik berhasil disimpan']);
+    }
+
+    public function update(Request $request)
+    {
+        $id =  $request['editIdPemilik'];
+        $user = Auth::user()->username;
+
+        $validatedData = $request->validate([
+            'editNoPol' => 'required',
+            'editnamaPemilik' => 'required',
+            'editAlamat' => 'required',
+            'editDesa' => 'required',
+            'editKecamatan' => 'required',
+            'editKabupaten' => 'required',
+            'editProvinsi' => 'required',
+            'editKodePos'=> 'required',
+        ]);
+
+
+        $pemilik = Pemilik::findOrFail($id);
+        $pemilik->no_polisi = $validatedData['editNoPol'];
+        $pemilik->nama_pemilik = $validatedData['editnamaPemilik'];
+        $pemilik->alamat = $validatedData['editAlamat'];
+        $pemilik->provinsi = $validatedData['editProvinsi'];
+        $pemilik->kab = $validatedData['editKabupaten'];
+        $pemilik->kec = $validatedData['editKecamatan'];
+        $pemilik->kel_des = $validatedData['editDesa'];
+        $pemilik->kode_pos = $validatedData['editKodePos'];
+        $pemilik->rt = $request['editRt'];
+        $pemilik->rw = $request['editRw'];
+        $pemilik->updated_by = $user;
+        $pemilik->update();
+
+        return response()->json(['message' => 'Data pemilik berhasil diperbarui']);
+
     }
 
     public function destroy(Request $request)

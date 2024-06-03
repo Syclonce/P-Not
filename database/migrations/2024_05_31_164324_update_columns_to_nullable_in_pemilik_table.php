@@ -12,13 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('pemilik', function (Blueprint $table) {
-            Schema::table('pemilik', function (Blueprint $table) {
                 $table->string('created_by')->nullable()->change();
                 $table->string('updated_by')->nullable()->change();
                 $table->string('rt')->nullable()->change();
                 $table->string('rw')->nullable()->change();
                 $table->string('kode_pos')->nullable()->change();
-            });
         });
     }
 
