@@ -13,15 +13,18 @@ return new class extends Migration
     {
         Schema::create('kendaraan', function (Blueprint $table) {
             $table->id();
-            $table->string('no_pol');
-            $table->string('nama_pem');
-            $table->string('merek');
-            $table->text('model');
-            $table->text('kode_merek');
             $table->date('tgl_buat');
             $table->date('tgl_pajak');
             $table->date('tgl_stnk');
             $table->timestamps();
+
+            // Define foreign key columns with the correct data type
+            $table->unsignedBigInteger('pemilik_id');
+            $table->unsignedBigInteger('merek_kendaraan_id');
+
+            // Define foreign key constraints
+            $table->foreign('pemilik_id')->references('id')->on('pemilik')->onDelete('cascade');
+            $table->foreign('merek_kendaraan_id')->references('id')->on('merek_kendaraan')->onDelete('cascade');
         });
     }
 
