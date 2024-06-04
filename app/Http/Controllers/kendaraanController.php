@@ -44,21 +44,25 @@ class kendaraanController extends Controller
 
     public function update(Request $request)
     {
-        $id =  $request['editId'];
+        $id =  $request['editIdKendaraan'];
 
         $kendaraan = kendaraan::findOrFail($id);
 
-        $kendaraan->no_pol = $request['no_pol'];
-        $kendaraan->nama_pem = $request['nama_pem'];
-        $kendaraan->merek = $request['merek'];
-        $kendaraan->model = $request['model'];
-        $kendaraan->kode_merek = $request['kode_merek'];
-        $kendaraan->tgl_buat = Carbon::parse($request['tgl_buat'])->format('Y-m-d');
-        $kendaraan->tgl_pajak = Carbon::parse($request['tgl_pajak'])->format('Y-m-d');
-        $kendaraan->tgl_stnk = Carbon::parse($request['tgl_stnk'])->format('Y-m-d');
+        $validatedData = $request->validate([
+            'editPemilikKendaraan' => 'required',
+            'editModelKendaraan' => 'required',
+            'editTanggalPajak' => 'required',
+            'editTanggalStnk' => 'required',
+        ]);
+
+
+        $kendaraan->pemilik_id = $validatedData['editPemilikKendaraan'];
+        $kendaraan->merek_kendaraan_id = $validatedData['editModelKendaraan'];
+        $kendaraan->tgl_pajak = Carbon::parse($validatedData['editTanggalPajak'])->format('Y-m-d');
+        $kendaraan->tgl_stnk = Carbon::parse($validatedData['editTanggalStnk'])->format('Y-m-d');
         $kendaraan->update();
 
-        return redirect()->back()->with('success', 'Data kendaraan berhasil diperbarui.');
+        return response()->json(['message' => 'Data kendaraan berhasil diperbarui']);
     }
 
     public function destroy(Request $request)

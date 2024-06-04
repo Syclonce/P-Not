@@ -515,28 +515,6 @@
                 }
             });
 
-            $(document).on('click', '.edit-data', function() {
-                var id = $(this).data('id');
-                var no_pol = $(this).data('no-pol');
-                var nama_pem = $(this).data('nama-pem');
-                var merek = $(this).data('merek');
-                var model = $(this).data('model');
-                var kode_merek = $(this).data('kode-merek');
-                var tgl_buat = $(this).data('tgl-buat');
-                var tgl_pajak = $(this).data('tgl-pajak');
-                var tgl_stnk = $(this).data('tgl-stnk');
-
-                $('#editId').val(id);
-                $('#editNoPol').val(no_pol);
-                $('#editNamaPem').val(nama_pem);
-                $('#editMerek').val(merek);
-                $('#editModel').val(model);
-                $('#editKodeMerek').val(kode_merek);
-                $('#editTglBuat').val(tgl_buat);
-                $('#editTglPajak').val(tgl_pajak);
-                $('#editTglStnk').val(tgl_stnk);
-            });
-
             $(document).on('click', '.delete-data', function() {
                 var id = $(this).data('id');
                 var no_pol = $(this).data('no-pol');
@@ -1333,6 +1311,93 @@
                     },
                     error: function(xhr) {
                         toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
+                    }
+                });
+        });
+
+        
+        $(document).on('click', '.edit-data-kendaraan', function() {
+            var id = $(this).data('id');
+            var pemilik_id = $(this).data('pemilik-id');
+            var kendaraan_id = $(this).data('merek-kendaraan-id');
+            var tgl_pajak = $(this).data('tgl-pajak');
+            var tgl_stnk = $(this).data('tgl-stnk');
+
+            $('#editPemilikKendaraan,#editModelKendaraan').select2({
+                theme: 'bootstrap4',
+                width: '100%',
+                dropdownParent: "#editModalKendaraan"
+            });
+        
+            $('#editIdKendaraan').val(id);
+            $('#editTanggalPajak').val(tgl_pajak);
+            $('#editTanggalStnk').val(tgl_stnk);
+            
+
+            $.ajax({
+                url: "{{ url('kendaraan/get-pemilik') }}",
+                method: 'GET',
+                success: function(response) {
+                    var data = response.data;
+                    var pemilikSelect = $('#editPemilikKendaraan');
+                    pemilikSelect.empty().append(new Option('Pilih Pemilik Kendaraan', ''));
+                    data.forEach(function(pemilikData) {
+                        var selected = pemilikData.id == pemilik_id;
+                        var option = new Option(pemilikData.no_polisi + ' - ' + pemilikData.nama_pemilik, pemilikData.id, false,
+                            selected);
+                        pemilikSelect.append(option);
+                    });
+
+                    if (pemilik_id) {
+                        $('#editPemilikKendaraan').trigger('change');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error loading pemilik:', error);
+                }
+            });
+
+            $.ajax({
+                url: "{{ url('kendaraan/get-model') }}",
+                method: 'GET',
+                success: function(response) {
+                    var data = response.data;
+                    var modelSelect = $('#editModelKendaraan');
+                    modelSelect.empty().append(new Option('Pilih Model Kendaraan', ''));
+                    data.forEach(function(modelData) {
+                        var selected = modelData.id == kendaraan_id;
+                        var option = new Option(modelData.merek + ' - ' + modelData.model, modelData.id, false,
+                            selected);
+                            modelSelect.append(option);
+                    });
+
+                    if (pemilik_id) {
+                        $('#editModelKendaraan').trigger('change');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error loading kendaraan:', error);
+                }
+            });
+        });
+
+        $('#editFormKendaraan').on('submit', function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#editModalKendaraan').modal('hide');        
+                        alert.fire({
+                            icon: 'success',
+                            title: response.message
+                        });                   
+                        window.location.href = '{{ route("kendaraan") }}';
+                    },
+                    error: function(xhr) {
+                        toastr.error('Terjadi kesalahan saat memperbarui kendaraan.');
                     }
                 });
         });

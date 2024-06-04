@@ -98,18 +98,15 @@
                                                 <td class="text-center">{{ $tglStnkFormatted }}</td>
                                                 <td class="text-center">{!! $stnkStatus !!}</td>
                                                 <td class="text-center">
-                                                    <a href="#" data-toggle="modal" data-target="#editModal"
+                                                    <a href="#" data-toggle="modal" data-target="#editModalKendaraan"
                                                         data-id="{{ $kendaraan->id }}"
-                                                        data-no-pol="{{ $kendaraan->no_pol }}"
-                                                        data-nama-pem="{{ $kendaraan->nama_pem }}"
-                                                        data-merek="{{ $kendaraan->merek }}"
-                                                        data-model="{{ $kendaraan->model }}"
-                                                        data-kode-merek="{{ $kendaraan->kode_merek }}"
-                                                        data-tgl-buat="{{ $kendaraan->tgl_buat }}"
+                                                        data-pemilik-id="{{ $kendaraan->pemilikRelation->id }}"
+                                                        data-merek-kendaraan-id="{{ $kendaraan->merekKendaraanRelation->id }}"
                                                         data-tgl-pajak="{{ $kendaraan->tgl_pajak }}"
-                                                        data-tgl-stnk="{{ $kendaraan->tgl_stnk }}" class="edit-data">
+                                                        data-tgl-stnk="{{ $kendaraan->tgl_stnk }}" 
+                                                        class="edit-data-kendaraan">
                                                     <i class="fa fa-edit text-secondary"></i></a>
-                                                    <a href="#" data-toggle="modal" data-target="#deleteModal"
+                                                    <a href="#" data-toggle="modal" data-target="#deleteModalKendaraan"
                                                         data-id="{{ $kendaraan->id }}"
                                                         data-no-pol="{{ $kendaraan->pemilikRelation->no_polisi }}"
                                                         data-nama-pem="{{ $kendaraan->pemilikRelation->nama_pemilik }}"
@@ -168,27 +165,13 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Tanggal Akhir Pajak</label>
-                                    <div class="input-group date" id="tanggalPajak" data-target-input="nearest">
-                                        <input type="text" class="form-control datetimepicker-input"
-                                            data-target="#tanggalPajak" name="addTanggalPajak" />
-                                        <div class="input-group-append" data-target="#tanggalPajak"
-                                            data-toggle="datetimepicker">
-                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                        </div>
-                                    </div>
+                                    <input type="date" class="form-control" name="addTanggalPajak" id="addTanggalPajak" />
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Tanggal Akhir STNK</label>
-                                    <div class="input-group date" id="tanggalStnk" data-target-input="nearest">
-                                        <input type="text" class="form-control datetimepicker-input"
-                                            data-target="#tanggalStnk" name="addTanggalStnk" />
-                                        <div class="input-group-append" data-target="#tanggalStnk"
-                                            data-toggle="datetimepicker">
-                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                        </div>
-                                    </div>
+                                    <input type="date" class="form-control" name="addTanggalStnk" id="addTanggalStnk" />
                                 </div>
                             </div>
                         </div>
@@ -202,92 +185,70 @@
         </div>
     </div>
 
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="editModalKendaraan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Edit Data Kendaraan</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="editForm" action="{{ route('kendaraan.update') }}" method="POST">
-                        @csrf
-                        <input type="hidden" id="editId" name="editId">
-                        <div class="row">
-                            <div class="col-sm-6">
+                <form id="editFormKendaraan" action="{{ route('kendaraan.update') }}" method="POST">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Data Kendaraan</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" hidden>
+                            <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label for="editNoPol">No Polisi</label>
-                                    <input type="text" class="form-control" id="editNoPol" name="no_pol" required>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="editNamaPem">Nama Pemilik</label>
-                                    <input type="text" class="form-control" id="editNamaPem" name="nama_pem"
-                                        required>
+                                    <label for="editPemilikKendaraan" class="form-label">ID</label>
+                                    <input type="text" class="form-control" name="editIdKendaraan" id="editIdKendaraan">
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="editMerek">Merek</label>
-                                    <input type="text" class="form-control" id="editMerek" name="merek" required>
+                                    <label for="editPemilikKendaraan" class="form-label">Pemilik Kendaraan</label>
+                                    <select class="form-control select2" name="editPemilikKendaraan" id="editPemilikKendaraan">
+                                        <option value="">Pilih Pemilik Kendaraan</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="editModel">Model</label>
-                                    <input type="text" class="form-control" id="editModel" name="model" required>
+                                    <label for="editModelKendaraan" class="form-label">Model Kendaraan</label>
+                                    <select class="form-control select2" name="editModelKendaraan" id="editModelKendaraan">
+                                        <option value="">Pilih Model Kendaraan</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="editKodeMerek">Kode Merek</label>
-                                    <input type="text" class="form-control" id="editKodeMerek" name="kode_merek"
-                                        required>
+                                    <label>Tanggal Akhir Pajak</label>
+                                    <input type="date" class="form-control" name="editTanggalPajak" id="editTanggalPajak" />
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="editTglBuat">Tanggal Buat</label>
-                                    <input type="date" class="form-control" id="editTglBuat" name="tgl_buat"
-                                        required>
+                                    <label>Tanggal Akhir STNK</label>
+                                    <input type="date" class="form-control" name="editTanggalStnk" id="editTanggalStnk" />
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="editTglPajak">Tanggal Pajak</label>
-                                    <input type="date" class="form-control" id="editTglPajak" name="tgl_pajak"
-                                        required>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="editTglStnk">Tanggal STNK</label>
-                                    <input type="date" class="form-control" id="editTglStnk" name="tgl_stnk"
-                                        required>
-                                </div>
-                            </div>
-                        </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Perbarui</button> <!-- Submit button -->
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Perbarui</button> <!-- Submit button -->
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+
+    <div class="modal fade" id="deleteModalKendaraan" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
