@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('kendaraan', function (Blueprint $table) {
             $table->id();
-            $table->date('tgl_buat');
             $table->date('tgl_pajak');
             $table->date('tgl_stnk');
             $table->timestamps();
