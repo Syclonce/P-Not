@@ -1083,7 +1083,8 @@
                     });
                     $('#addFormPemilik')[0].reset();
                     $('#provinsi').val(null).trigger('change');
-                    window.location.href = '{{ route('pemilik') }}';
+                    window.location.href = '{{ route("pemilik") }}';
+                    
                 },
                 error: function(xhr) {
                     toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
@@ -1238,7 +1239,7 @@
                         icon: 'success',
                         title: response.message
                     });
-                    window.location.href = '{{ route('pemilik') }}';
+                    window.location.href = '{{ route("pemilik") }}';
                 },
                 error: function(xhr) {
                     toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
@@ -1267,7 +1268,7 @@
                 data: $(this).serialize(),
                 success: function(response) {
                     $('#deletePemilikModal').modal('hide');
-                    window.location.href = '{{ route('pemilik') }}';
+                    window.location.href = '{{ route("pemilik") }}';
                     alert.fire({
                         icon: 'success',
                         title: response.message
@@ -1283,56 +1284,59 @@
     <!-- CRUD Kendaraan Script  -->
 
     <script>
-        $.ajax({
-            url: "{{ url('kendaraan/get-pemilik') }}",
-            method: 'GET',
-            success: function(response) {
-                var pemilikSelect = $('#addPemilikKendaraan');
-                response.data.forEach(function(pemilik) {
-                    pemilikSelect.append(new Option(pemilik.nama_pemilik, pemilik.id));
-                });
-            },
-            error: function(xhr) {
-                console.error('Error fetching pemilik data:', xhr);
-            }
+         $.ajax({
+                    url: "{{ url('kendaraan/get-pemilik') }}",
+                    method: 'GET',
+                    success: function(response) {
+                        var pemilikSelect = $('#addPemilikKendaraan');
+                        response.data.forEach(function(pemilik) {
+                            pemilikSelect.append(new Option(pemilik.no_polisi + ' - ' + pemilik.nama_pemilik, pemilik.id));
+                        });
+                    },
+                    error: function(xhr) {
+                        console.error('Error fetching pemilik data:', xhr);
+                    }
         });
 
         $.ajax({
-            url: "{{ url('kendaraan/get-model') }}",
-            method: 'GET',
-            success: function(response) {
-                var modelSelect = $('#addModelKendaraan');
-                response.data.forEach(function(model) {
-                    modelSelect.append(new Option(model.merek, model.id));
-                });
-            },
-            error: function(xhr) {
-                console.error('Error fetching pemilik data:', xhr);
-            }
+                    url: "{{ url('kendaraan/get-model') }}",
+                    method: 'GET',
+                    success: function(response) {
+                        var modelSelect = $('#addModelKendaraan');
+                        response.data.forEach(function(model) {
+                            modelSelect.append(new Option(model.merek + ' - ' + model.model , model.id));
+                        });
+                    },
+                    error: function(xhr) {
+                        console.error('Error fetching pemilik data:', xhr);
+                    }
         });
 
-        $('#addKendaraan-form').on('submit', function(e) {
-            e.preventDefault();
+        $('#addFormKendaraan').on('submit', function(e) {
+                e.preventDefault();
 
-            $.ajax({
-                url: $(this).attr('action'),
-                method: $(this).attr('method'),
-                data: $(this).serialize(),
-                success: function(response) {
-                    $('#addModal').modal('hide');
-                    toastr.success(response.message);
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#addModalKendaraan').modal('hide');        
+                        alert.fire({
+                            icon: 'success',
+                            title: response.message
+                        });
+                        $('#addFormKendaraan')[0].reset();
+                        $('#addPemilikKendaraan').val(null).trigger('change');
+                        $('#addModelKendaraan').val(null).trigger('change');
 
-                    var table = $('#example1').DataTable();
-                    table.ajax.reload();
-                    $('#addForm')[0].reset();
-                },
-                error: function(xhr) {
-                    toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
-                }
-            });
+                        window.location.href = '{{ route("kendaraan") }}';
+                    },
+                    error: function(xhr) {
+                        toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
+                    }
+                });
         });
     </script>
-
 </body>
 
 </html>

@@ -58,7 +58,7 @@
                                         @php $index = 1; @endphp
                                         @foreach ($kendaraan as $kendaraan)
                                              @php
-                                                $tanggalBuatFormatted = Carbon::parse($kendaraan->tgl_buat)->translatedFormat('Y');
+                                                $tanggalBuatFormatted = Carbon::parse($kendaraan->merekKendaraanRelation->tgl_buat)->translatedFormat('Y');
                                                 $tglPajakFormatted = Carbon::parse($kendaraan->tgl_pajak)->translatedFormat('d F Y');
                                                 $tglStnkFormatted = Carbon::parse($kendaraan->tgl_stnk)->translatedFormat('d F Y');
                                                 $tglPajak = Carbon::parse($kendaraan->tgl_pajak);
@@ -87,15 +87,15 @@
                                             @endphp
                                             <tr>
                                                 <td>{{ $index }}</td>
-                                                <td>{{ $kendaraan->no_pol }}</td>
-                                                <td>{{ $kendaraan->nama_pem }}</td>
-                                                <td>{{ $kendaraan->merek }}</td>
-                                                <td>{{ $kendaraan->model }}</td>
-                                                <td>{{ $kendaraan->kode_merek }}</td>
-                                                <td>{{ $tanggalBuatFormatted}}</td>
+                                                <td>{{ $kendaraan->pemilikRelation->no_polisi }}</td>
+                                                <td>{{ $kendaraan->pemilikRelation->nama_pemilik }}</td>
+                                                <td>{{ $kendaraan->merekKendaraanRelation->merek }}</td>
+                                                <td>{{ $kendaraan->merekKendaraanRelation->model }}</td>
+                                                <td>{{ $kendaraan->merekKendaraanRelation->kode_merek }}</td>
+                                                <td class="text-center">{{ $tanggalBuatFormatted}}</td>
                                                 <td>{{ $tglPajakFormatted }}</td>
                                                 <td class="text-center">{!! $pajakStatus !!}</td>
-                                                <td>{{ $tglStnkFormatted }}</td>
+                                                <td class="text-center">{{ $tglStnkFormatted }}</td>
                                                 <td class="text-center">{!! $stnkStatus !!}</td>
                                                 <td class="text-center">
                                                     <a href="#" data-toggle="modal" data-target="#editModal"
@@ -111,8 +111,8 @@
                                                     <i class="fa fa-edit text-secondary"></i></a>
                                                     <a href="#" data-toggle="modal" data-target="#deleteModal"
                                                         data-id="{{ $kendaraan->id }}"
-                                                        data-no-pol="{{ $kendaraan->no_pol }}"
-                                                        data-nama-pem="{{ $kendaraan->nama_pem }}"
+                                                        data-no-pol="{{ $kendaraan->pemilikRelation->no_polisi }}"
+                                                        data-nama-pem="{{ $kendaraan->pemilikRelation->nama_pemilik }}"
                                                        class="delete-data">
                                                     <i class="fa fa-trash-can text-secondary"></i></a>
                                                 </td>
@@ -170,7 +170,7 @@
                                     <label>Tanggal Akhir Pajak</label>
                                     <div class="input-group date" id="tanggalPajak" data-target-input="nearest">
                                         <input type="text" class="form-control datetimepicker-input"
-                                            data-target="#tanggalPajak" name="tanggalPajak" />
+                                            data-target="#tanggalPajak" name="addTanggalPajak" />
                                         <div class="input-group-append" data-target="#tanggalPajak"
                                             data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -183,7 +183,7 @@
                                     <label>Tanggal Akhir STNK</label>
                                     <div class="input-group date" id="tanggalStnk" data-target-input="nearest">
                                         <input type="text" class="form-control datetimepicker-input"
-                                            data-target="#tanggalStnk" name="tanggalStnk" />
+                                            data-target="#tanggalStnk" name="addTanggalStnk" />
                                         <div class="input-group-append" data-target="#tanggalStnk"
                                             data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
