@@ -56,9 +56,8 @@ class PemilikController extends Controller
         $address = $validatedData['alamat'] . ', ' .
                    $validatedData['desa'] . ', ' .
                    $validatedData['kecamatan'] . ', ' .
-                   $validatedData['kabupaten'] . ', ' .
-                   $validatedData['provinsi'] . ', ' .
                    $validatedData['kodePos'];
+        
 
         $client = new Client();
         $apiKey = 'AhQXcTxku41cvwtxg1VIrHx3YcM_hi_7r7peMHPYQht_1tf98FMY-WHW-q6FogCr';
@@ -81,7 +80,7 @@ class PemilikController extends Controller
             $pemilik->save();
         }
 
-        return response()->json(['message' => 'Data pemilik berhasil disimpan']);
+        return response()->json(['message' => 'Data pemilik berhasil disimpan', 'address' => $address]);
     }
 
     public function update(Request $request)

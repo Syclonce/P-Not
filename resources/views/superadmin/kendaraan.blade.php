@@ -26,7 +26,7 @@
                                 <h3 class="card-title">Data Kendaraan</h3>
                                 <div class="card-tools">
                                     <button type="button" class="btn btn-primary" data-toggle="modal"
-                                        data-target="#addModal">
+                                        data-target="#addModalKendaraan">
                                         <i class="fas fa-plus"></i> Tambah Data
                                     </button>
                                 </div>
@@ -134,10 +134,10 @@
     </div>
     <!-- /.content-wrapper -->
 
-    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addModalKendaraan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <form id="addForm" action="{{ route('kendaraan.store') }}" method="POST">
+                <form id="addFormKendaraan" action="{{ route('kendaraan.store') }}" method="POST">
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Tambah Data Kendaraan</h5>
@@ -149,50 +149,18 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label>No Polisi</label>
-                                    <input type="text" class="form-control" name="noPolisi"
-                                        placeholder="Contoh : A 1234">
+                                    <label for="addPemilikKendaraan" class="form-label">Pemilik Kendaraan</label>
+                                    <select class="form-control select2" name="addPemilikKendaraan" id="addPemilikKendaraan">
+                                        <option value="">Pilih Pemilik Kendaraan</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label>Nama Pemilik</label>
-                                    <input type="text" class="form-control" name="namaPemilik">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Nama Merk Kendaraan</label>
-                                    <input type="text" class="form-control" name="namaMerk">
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Nama Model Kendaraan</label>
-                                    <input type="text" class="form-control" name="namaModel">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Kode Merk Kendaraan</label>
-                                    <input type="text" class="form-control" name="kodeMerk">
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Tahun Buatan Kendaraan</label>
-                                    <div class="input-group date" id="tahunBuat" data-target-input="nearest">
-                                        <input type="text" class="form-control datetimepicker-input"
-                                            data-target="#tahunBuat" name="tahunBuat" />
-                                        <div class="input-group-append" data-target="#tahunBuat"
-                                            data-toggle="datetimepicker">
-                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                        </div>
-                                    </div>
+                                    <label for="addModelKendaraan" class="form-label">Model Kendaraan</label>
+                                    <select class="form-control select2" name="addModelKendaraan" id="addModelKendaraan">
+                                        <option value="">Pilih Model Kendaraan</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>

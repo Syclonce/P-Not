@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\kendaraan;
 use App\Models\mkendaraan;
+use App\Models\Pemilik;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 
 
@@ -142,4 +143,20 @@ class kendaraanController extends Controller
 
         return response()->json(['data' => $data]);
     }
+
+    public function getPemilik()
+    {
+        $data = Pemilik::all();
+
+        return response()->json(['data' => $data]);
+    }
+
+    public function getModel()
+    {
+        $data = mkendaraan::all();
+
+        return response()->json(['data' => $data]);
+    }
+
+
 }

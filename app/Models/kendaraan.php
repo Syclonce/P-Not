@@ -10,13 +10,20 @@ class kendaraan extends Model
     use HasFactory;
     protected $table = 'kendaraan';
     protected $fillable = [
-        'no_pol',
-        'nama_pem',
-        'merek',
-        'model',
-        'kode_merek',
+        'pemilik_id',
+        'merek_kendaraan_id',
         'tgl_buat',
         'tgl_pajak',
         'tgl_stnk',
     ];
+
+    public function pemilikRelation()
+    {
+        return $this->belongsTo(Pemilik::class, 'pemilik_id','id');
+    }
+
+    public function merekKendaraanRelation()
+    {
+        return $this->belongsTo(mkendaraan::class, 'merek_kendaraan_id','id');
+    }
 }

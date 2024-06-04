@@ -515,28 +515,6 @@
                 }
             });
 
-
-            $('#addKendaraan-form').on('submit', function(e) {
-                e.preventDefault();
-
-                $.ajax({
-                    url: $(this).attr('action'),
-                    method: $(this).attr('method'),
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        $('#addModal').modal('hide');
-                        toastr.success(response.message);
-
-                        var table = $('#example1').DataTable();
-                        table.ajax.reload();
-                        $('#addForm')[0].reset();
-                    },
-                    error: function(xhr) {
-                        toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
-                    }
-                });
-            });
-
             $(document).on('click', '.edit-data', function() {
                 var id = $(this).data('id');
                 var no_pol = $(this).data('no-pol');
@@ -649,6 +627,24 @@
                 theme: 'bootstrap4',
                 width: '100%',
                 dropdownParent: "#editPemilikModal"
+            });
+
+            
+            $('#addPemilikKendaraan,#addModelKendaraan').select2({
+                theme: 'bootstrap4',
+                width: '100%',
+                dropdownParent: "#addModalKendaraan"
+            });
+
+            $.ajax({
+                url: `{{ url('api/provinsi') }}`,
+                method: 'GET',
+                success: function(response) {
+                    var provinsiSelect = $('#provinsi');
+                    response.data.forEach(function(provinsi) {
+                        provinsiSelect.append(new Option(provinsi.name, provinsi.kode));
+                    });
+                }
             });
 
             $.ajax({
@@ -1279,6 +1275,60 @@
                 });
         });
     </script>
+
+    <!-- CRUD Kendaraan Script  -->
+
+    <script>
+         $.ajax({
+                    url: "{{ url('kendaraan/get-pemilik') }}",
+                    method: 'GET',
+                    success: function(response) {
+                        var pemilikSelect = $('#addPemilikKendaraan');
+                        response.data.forEach(function(pemilik) {
+                            pemilikSelect.append(new Option(pemilik.nama_pemilik, pemilik.id));
+                        });
+                    },
+                    error: function(xhr) {
+                        console.error('Error fetching pemilik data:', xhr);
+                    }
+        });
+
+        $.ajax({
+                    url: "{{ url('kendaraan/get-model') }}",
+                    method: 'GET',
+                    success: function(response) {
+                        var modelSelect = $('#addModelKendaraan');
+                        response.data.forEach(function(model) {
+                            modelSelect.append(new Option(model.merek, model.id));
+                        });
+                    },
+                    error: function(xhr) {
+                        console.error('Error fetching pemilik data:', xhr);
+                    }
+        });
+
+        $('#addKendaraan-form').on('submit', function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#addModal').modal('hide');
+                        toastr.success(response.message);
+
+                        var table = $('#example1').DataTable();
+                        table.ajax.reload();
+                        $('#addForm')[0].reset();
+                    },
+                    error: function(xhr) {
+                        toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
+                    }
+                });
+        });
+    </script>
+
 </body>
 
 </html>
