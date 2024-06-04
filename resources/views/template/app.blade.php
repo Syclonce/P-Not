@@ -325,7 +325,7 @@
                             <a href="{{ route('kendaraan') }}"
                                 class="nav-link {{ \Route::is('kendaraan') ? 'active' : '' }}">
                                 <i class="fas fa-fw fa-car-side"></i>
-                                <p>Kendaraan</p>
+                                <p>Pajak Kendaraan</p>
                             </a>
                         </li>
 
