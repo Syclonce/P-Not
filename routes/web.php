@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\kendaraanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdminController;
@@ -44,14 +45,16 @@ Route::middleware(['auth', 'verified', 'role:Super-Admin'])->group(function () {
     Route::post('pemilik/store', [PemilikController::class, 'store'])->name('pemilik.store');
     Route::post('pemilik/update', [PemilikController::class, 'update'])->name('pemilik.update');
     Route::post('pemilik/destroy', [PemilikController::class, 'destroy'])->name('pemilik.destroy');
-    
+
 
 
 
     Route::get('setweb', [websetController::class, 'index'])->name('setweb');
     Route::post('setweb/update', [websetController::class, 'updates'])->name('setweb.update');
 });
-
+Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin');
+});
 // Route::get('admin', function () {
 //     Route::get('/', [SuperAdminController::class, 'index'])->name('superadmin');
 //     Route::get('/kendaraan', [kendaraanController::class, 'index'])->name('kendaraan');
