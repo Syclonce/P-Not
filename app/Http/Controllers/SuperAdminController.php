@@ -25,6 +25,7 @@ class SuperAdminController extends Controller
         $totalUsers = Pemilik::count();
 
 
+
         // Mendapatkan tanggal sekarang
         $today = Carbon::today()->toDateString();
 
@@ -42,23 +43,32 @@ class SuperAdminController extends Controller
         //     })
         //     ->get();
 
-        $kendaraans = Kendaraan::where(function ($query) use ($today, $date30DaysLater) {
-            $query->where('tgl_pajak', '>', $today)
-                ->where('tgl_pajak', '<=', $date30DaysLater);
-        })->get();
+        $relasikendaraan = kendaraan::with(['pemilikRelation', 'merekKendaraanRelation'])->get();
 
-        $kendaraansss = Kendaraan::where(function ($query) use ($today, $date30DaysLater) {
-            $query->where('tgl_stnk', '>', $today)
-                ->where('tgl_stnk', '<=', $date30DaysLater);
-        })->get();
+        // $kendaraans = Kendaraan::where(function ($query) use ($today, $date30DaysLater) {
+        //     $query->where('tgl_pajak', '>', $today)
+        //         ->where('tgl_pajak', '<=', $date30DaysLater);
+        // })->get();
 
+        $kendaraans = Kendaraan::with(['pemilikRelation', 'merekKendaraanRelation'])
+            ->where(function ($query) use ($today, $date30DaysLater) {
+                $query->where('tgl_pajak', '>', $today)
+                    ->where('tgl_pajak', '<=', $date30DaysLater);
+            })
+            ->get();
+        $kendaraansss = Kendaraan::with(['pemilikRelation', 'merekKendaraanRelation'])
+            ->where(function ($query) use ($today, $date30DaysLater) {
+                $query->where('tgl_stnk', '>', $today)
+                    ->where('tgl_stnk', '<=', $date30DaysLater);
+            })->get();
 
-        $kendaraanss = Kendaraan::whereDate('tgl_stnk', '<=', today())
+        $kendaraanss = Kendaraan::with(['pemilikRelation', 'merekKendaraanRelation'])
+            ->whereDate('tgl_stnk', '<=', today())
+            ->get();
+        $kendaraa = Kendaraan::with(['pemilikRelation', 'merekKendaraanRelation'])
+            ->whereDate('tgl_pajak', '<=', today())
             ->get();
 
-        $kendaraa = Kendaraan::whereDate('tgl_pajak', '<=', today())
-            ->get();
-
-        return view('superadmin.index', compact('title', 'countKadaluarsa', 'kendaraan', 'countKadaluarsap', 'totalKendaraan', 'totalUsers', 'kendaraans', 'kendaraanss', 'kendaraansss', 'kendaraa'));
+        return view('superadmin.index', compact('title', 'countKadaluarsa', 'kendaraan', 'countKadaluarsap', 'totalKendaraan', 'totalUsers', 'kendaraans', 'kendaraanss', 'kendaraansss', 'kendaraa', 'relasikendaraan'));
     }
 }

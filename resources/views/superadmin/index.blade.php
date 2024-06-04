@@ -107,8 +107,9 @@
                                                 );
                                             @endphp
                                             <tr>
-                                                <td>{{ $data->no_pol }}</td>
-                                                <td>{{ $data->merek }} - {{ $data->model }}</td>
+                                                <td>{{ $data->pemilikRelation->no_polisi }}</td>
+                                                <td>{{ $data->merekKendaraanRelation->merek }} -
+                                                    {{ $data->merekKendaraanRelation->model }}</td>
                                                 <td>{{ $tglPajakFormatted }}</td>
                                                 <td> <span class="badge badge-warning">Akan jatuh tempo</span>
                                                 </td>
@@ -147,8 +148,9 @@
                                                 );
                                             @endphp
                                             <tr>
-                                                <td>{{ $data->no_pol }}</td>
-                                                <td>{{ $data->merek }} - {{ $data->model }}</td>
+                                                <td>{{ $data->pemilikRelation->no_polisi }}</td>
+                                                <td>{{ $data->merekKendaraanRelation->merek }} -
+                                                    {{ $data->merekKendaraanRelation->model }}</td>
                                                 <td>{{ $tglStnkFormatted }}</td>
                                                 <td> <span class="badge badge-warning">Akan jatuh tempo</span>
                                                 </td>
@@ -188,8 +190,9 @@
                                                 );
                                             @endphp
                                             <tr>
-                                                <td>{{ $data->no_pol }}</td>
-                                                <td>{{ $data->merek }} - {{ $data->model }}</td>
+                                                <td>{{ $data->pemilikRelation->no_polisi }}</td>
+                                                <td>{{ $data->merekKendaraanRelation->merek }} -
+                                                    {{ $data->merekKendaraanRelation->model }}</td>
                                                 <td>{{ $tglPajakFormatted }}</td>
                                                 <td><span class="badge badge-danger">Terlambat</span></td>
                                             </tr>
@@ -226,8 +229,9 @@
                                                 );
                                             @endphp
                                             <tr>
-                                                <td>{{ $data->no_pol }}</td>
-                                                <td>{{ $data->merek }} - {{ $data->model }}</td>
+                                                <td>{{ $data->pemilikRelation->no_polisi }}</td>
+                                                <td>{{ $data->merekKendaraanRelation->merek }} -
+                                                    {{ $data->merekKendaraanRelation->model }}</td>
                                                 <td>{{ $tglStnkFormatted }}</td>
                                                 <td><span class="badge badge-danger">Terlambat</span></td>
                                             </tr>
