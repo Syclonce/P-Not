@@ -55,3 +55,15 @@ php artisan db:seed
 
 # Serve the application
 php artisan serve
+```
+
+# Cara Penggunaan
+Setelah aplikasi dijalankan, akses http://localhost:8000 untuk memulai menggunakan aplikasi. Anda dapat login menggunakan akun yang telah dibuat melalui proses seeding.
+
+# Kontribusi
+Untuk berkontribusi pada proyek ini:
+- Fork repositori ini.
+- Buat branch baru dengan fitur atau perbaikan (git checkout -b feature/AmazingFeature).
+- Commit perubahan Anda (git commit -m 'Add some AmazingFeature').
+- Push ke branch tersebut (git push origin feature/AmazingFeature).
+- Buka Pull Request.
