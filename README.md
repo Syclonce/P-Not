@@ -1,77 +1,57 @@
-Smart Dashboard Aplikasi Pajak Kendaraan dan PBB dengan Laravel 11
-Deskripsi Proyek
-Aplikasi Smart Dashboard Pajak Kendaraan dan PBB merupakan sebuah sistem informasi yang dirancang untuk membantu pengguna dalam mengelola dan memonitor pembayaran pajak kendaraan serta Pajak Bumi dan Bangunan (PBB) secara efisien dan efektif menggunakan framework Laravel 11.
+# Smart Dashboard Pajak Kendaraan dan PBB
 
-Fitur utama aplikasi ini meliputi:
+Smart Dashboard Pajak Kendaraan dan PBB adalah sebuah aplikasi berbasis web yang dirancang untuk memudahkan pengelolaan dan monitoring pembayaran pajak kendaraan dan Pajak Bumi dan Bangunan (PBB). Aplikasi ini dibangun menggunakan framework Laravel 11.
 
-Dashboard Interaktif: Menampilkan informasi terkini mengenai status pajak kendaraan dan PBB.
-Manajemen Pembayaran: Memfasilitasi pengguna untuk melakukan pembayaran pajak secara online.
-Pengingat Pajak: Notifikasi untuk pembayaran pajak yang akan jatuh tempo.
-Laporan Pembayaran: Menghasilkan laporan detail untuk setiap transaksi yang telah dilakukan.
-Integrasi Data: Sinkronisasi dengan database pemerintah untuk update status pembayaran terkini.
-Teknologi yang Digunakan
-Frontend: HTML, CSS, JavaScript
-Backend: PHP dengan framework Laravel 11
-Database: MySQL
-APIs: Restful API untuk integrasi data
-Server: Apache atau Nginx
-Persyaratan Sistem
-PHP >= 8.1
-Composer
-Node.js dan NPM
-MySQL atau MariaDB
-Server Apache atau Nginx
-Instalasi
-Untuk menginstal aplikasi ini, ikuti langkah-langkah berikut:
+## Fitur Utama
 
-Clone Repository
+- **Dashboard Interaktif**: Tampilan informasi terupdate tentang status pembayaran pajak.
+- **Manajemen Pembayaran**: Kemudahan dalam melakukan transaksi pembayaran pajak secara online.
+- **Notifikasi Pajak**: Fungsi pengingat untuk pajak yang akan jatuh tempo.
+- **Laporan Transaksi**: Laporan rinci tentang pembayaran yang telah dilakukan.
+- **Integrasi Data**: Sistem terintegrasi dengan database pemerintah.
 
-bash
-Copy code
+## Teknologi
+
+- **Frontend**: HTML, CSS, JavaScript
+- **Backend**: PHP dengan Laravel 11
+- **Database**: MySQL
+- **API**: RESTful API
+- **Server**: Apache / Nginx
+
+## Persyaratan Sistem
+
+- PHP >= 8.1
+- Composer
+- Node.js
+- MySQL
+- Apache / Nginx
+
+## Instalasi
+
+Ikuti langkah-langkah di bawah ini untuk menginstal aplikasi:
+
+```bash
+# Clone repository
 git clone https://github.com/username/smart-dashboard-pajak.git
 cd smart-dashboard-pajak
-Instalasi Dependensi
 
-bash
-Copy code
+# Install dependencies
 composer install
 npm install
 npm run dev
-Konfigurasi Environment
-Duplikat file .env.example menjadi .env dan konfigurasikan pengaturan database dan variabel lingkungan lainnya.
 
-bash
-Copy code
+# Setup environment
 cp .env.example .env
-Generate Key
+# Edit .env file to set your database and other configurations
 
-bash
-Copy code
+# Generate app key
 php artisan key:generate
-Migrasi Database
 
-bash
-Copy code
+# Run database migrations
 php artisan migrate
-Seeding Database
 
-bash
-Copy code
+# Seed the database
 php artisan db:seed
-Jalankan Server Lokal
 
-bash
-Copy code
+# Serve the application
 php artisan serve
-Buka http://localhost:8000 di browser Anda.
-
-Penggunaan
-Setelah aplikasi berjalan, Anda dapat login menggunakan credensial yang telah disediakan oleh seeding database untuk mulai menggunakan aplikasi. Navigasikan melalui berbagai menu untuk mengakses fitur-fitur seperti pembayaran pajak, melihat laporan, dan mengatur pengingat pajak.
-
-Kontribusi
-Kontribusi terhadap proyek ini sangat diapresiasi. Jika Anda ingin berkontribusi, silakan fork repositori ini, buat cabang Anda, lakukan perubahan, dan ajukan Pull Request.
-
-Lisensi
-Proyek ini dilisensikan di bawah Lisensi MIT.
-
-Aplikasi ini bertujuan untuk mempermudah proses administrasi pajak, mengurangi risiko kesalahan penghitungan, dan memberikan kemudahan akses informasi pajak untuk pengguna. Selamat menggunakan aplikasi Smart Dashboard Pajak Kendaraan dan PBB!
