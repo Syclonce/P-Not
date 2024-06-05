@@ -20,7 +20,7 @@ Smart Dashboard Pajak Kendaraan dan PBB adalah sebuah aplikasi berbasis web yang
 
 ## Persyaratan Sistem
 
-- PHP >= 8.1
+- PHP 8.3
 - Composer
 - Node.js
 - MySQL
