@@ -8,7 +8,7 @@ use App\Models\kendaraan;
 use App\Models\mkendaraan;
 use App\Models\Pemilik;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
-
+use Illuminate\Support\Facades\Auth;
 
 class kendaraanController extends Controller
 {
@@ -30,13 +30,44 @@ class kendaraanController extends Controller
             'addModelKendaraan' => 'required',
             'addTanggalPajak' => 'required',
             'addTanggalStnk' => 'required',
-        ]);
+        ]);      
+
+        $user = Auth::user()->username;
+
+        $tglPajak = Carbon::parse($validatedData['addTanggalPajak']);
+        $tglStnk = Carbon::parse($validatedData['addTanggalStnk']);
+
+        $currentDate = Carbon::now();
+        $thirtyDaysBefore = $currentDate->copy()->subDays(30);
+    
+        if ($tglPajak->greaterThan($currentDate)) {
+            $statusPajak = '1';
+        } elseif ($tglPajak->between($thirtyDaysBefore, $currentDate)) {
+            $statusPajak = '2'; 
+        } else {
+            $statusPajak = '3';
+        }
+
+        if ($tglStnk->greaterThan($currentDate)) {
+            $statusStnk = '1'; 
+        } elseif ($tglStnk->between($thirtyDaysBefore, $currentDate)) {
+            $statusStnk = '2'; 
+        } else {
+            $statusStnk = '3'; 
+        }
 
         $kendaraan = new kendaraan();
         $kendaraan->pemilik_id = $validatedData['addPemilikKendaraan'];
         $kendaraan->merek_kendaraan_id = $validatedData['addModelKendaraan'];
         $kendaraan->tgl_pajak = Carbon::parse($validatedData['addTanggalPajak'])->format('Y-m-d');
         $kendaraan->tgl_stnk = Carbon::parse($validatedData['addTanggalStnk'])->format('Y-m-d');
+        $kendaraan->tgl_bayar_pajak = Carbon::parse($validatedData['addTanggalPajak'])->format('Y-m-d');
+        $kendaraan->tgl_bayar_stnk = Carbon::parse($validatedData['addTanggalStnk'])->format('Y-m-d');
+        $kendaraan->status_bayar_pajak = $statusPajak;
+        $kendaraan->status_bayar_stnk = $statusStnk;
+        $kendaraan->created_by = $user;
+        $kendaraan->updated_by = $user;
+
         $kendaraan->save();
 
         return response()->json(['message' => 'Data kendaraan berhasil disimpan']);
@@ -55,11 +86,39 @@ class kendaraanController extends Controller
             'editTanggalStnk' => 'required',
         ]);
 
+        $user = Auth::user()->username;
+
+        $tglPajak = Carbon::parse($validatedData['editTanggalPajak']);
+        $tglStnk = Carbon::parse($validatedData['editTanggalStnk']);
+
+        $currentDate = Carbon::now();
+        $thirtyDaysBefore = $currentDate->copy()->subDays(30);
+    
+        if ($tglPajak->greaterThan($currentDate)) {
+            $statusPajak = '1';
+        } elseif ($tglPajak->between($thirtyDaysBefore, $currentDate)) {
+            $statusPajak = '2'; 
+        } else {
+            $statusPajak = '3';
+        }
+
+        if ($tglStnk->greaterThan($currentDate)) {
+            $statusStnk = '1'; 
+        } elseif ($tglStnk->between($thirtyDaysBefore, $currentDate)) {
+            $statusStnk = '2'; 
+        } else {
+            $statusStnk = '3'; 
+        }
 
         $kendaraan->pemilik_id = $validatedData['editPemilikKendaraan'];
         $kendaraan->merek_kendaraan_id = $validatedData['editModelKendaraan'];
         $kendaraan->tgl_pajak = Carbon::parse($validatedData['editTanggalPajak'])->format('Y-m-d');
         $kendaraan->tgl_stnk = Carbon::parse($validatedData['editTanggalStnk'])->format('Y-m-d');
+        $kendaraan->tgl_bayar_pajak = Carbon::parse($validatedData['editTanggalPajak'])->format('Y-m-d');
+        $kendaraan->tgl_bayar_stnk = Carbon::parse($validatedData['editTanggalStnk'])->format('Y-m-d');
+        $kendaraan->status_bayar_pajak = $statusPajak;
+        $kendaraan->status_bayar_stnk = $statusStnk;
+        $kendaraan->updated_by = $user;
         $kendaraan->update();
 
         return response()->json(['message' => 'Data kendaraan berhasil diperbarui']);

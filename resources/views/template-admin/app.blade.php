@@ -315,59 +315,13 @@
                         data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                         <li class="nav-item">
-                            <a href="{{ route('superadmin') }}"
-                                class="nav-link {{ \Route::is('superadmin') ? 'active' : '' }}">
+                            <a href="{{ route('admin') }}"
+                                class="nav-link {{ \Route::is('admin') ? 'active' : '' }}">
                                 <i class="fas fa-fw fa-tachometer-alt"></i>
                                 <p>Dashboard</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ route('kendaraan') }}"
-                                class="nav-link {{ \Route::is('kendaraan') ? 'active' : '' }}">
-                                <i class="fas fa-fw fa-car-side"></i>
-                                <p>Pajak Kendaraan</p>
-                            </a>
-                        </li>
 
-                        <li class="nav-item {{ \Route::is('mkendaraan', 'pemilik') ? 'menu-open' : '' }}">
-                            <a href="#"
-                                class="nav-link {{ \Route::is('mkendaraan', 'pemilik') ? 'active' : '' }}">
-                                <i class="fas fa-fw fa-database"></i>
-                                <p>
-                                    Master Data
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('mkendaraan') }}"
-                                        class="nav-link {{ \Route::is('mkendaraan') ? 'active' : '' }}">
-                                        <i class="nav-icon far fa-circle text-info"></i>
-                                        <p>Merek Kendaraan</p>
-                                    </a>
-                                </li>
-                            </ul>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('pemilik') }}"
-                                        class="nav-link {{ \Route::is('pemilik') ? 'active' : '' }}">
-                                        <i class="nav-icon far fa-circle text-info"></i>
-                                        <p>Pemilik Kendaraan</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="{{ route('setweb') }}"
-                                class="nav-link {{ \Route::is('setweb') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-cogs"></i>
-                                <p>
-                                    Web Seting
-                                </p>
-                            </a>
-                        </li>
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->

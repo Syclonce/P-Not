@@ -15,6 +15,12 @@ class kendaraan extends Model
         'tgl_buat',
         'tgl_pajak',
         'tgl_stnk',
+        'tgl_bayar_pajak',
+        'tgl_bayar_stnk',
+        'status_bayar_stnk',
+        'status_bayar_pajak',
+        'created_by',
+        'updated_by',
     ];
 
     public function pemilikRelation()
