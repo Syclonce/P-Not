@@ -58,111 +58,109 @@
                                             @php
                                                 $tglPajakFormatted = Carbon::parse(
                                                     $kendaraan->tgl_pajak,
-                                                )->translatedFormat('d F Y');
+                                                )->translatedFormat('d/m/Y');
                                                 $tglStnkFormatted = Carbon::parse(
                                                     $kendaraan->tgl_stnk,
-                                                )->translatedFormat('d F Y');
+                                                )->translatedFormat('d/m/Y');
                                                 $tglPajak = Carbon::parse($kendaraan->tgl_pajak);
                                                 $tglStnk = Carbon::parse($kendaraan->tgl_stnk);
-                                                $today = Carbon::now();
-                                                $oneMonthFromNow = $today->copy()->addMonth();
 
-                                                // if ($tglPajak->isPast()) {
-                                                //     $pajakStatus =
-                                                //         '<span class="badge badge-danger">Terlambat</span>
-//     <br>
-//     <a href="' .
-                                                //         route('download-pdf', $kendaraan->id) .
-                                                //         '">
-//     <i class="fa fa-file-pdf text-secondary"></i></a>';
-                                                // } elseif ($tglPajak->lessThanOrEqualTo($oneMonthFromNow)) {
-                                                //     $pajakStatus =
-                                                //         '<span class="badge badge-warning">Akan jatuh tempo</span>';
-                                                // } else {
-                                                //     $pajakStatus =
-                                                //         '<span class="badge badge-success">Pembayaran Masih Lama</span>';
-                                                // }
+                                                $mapsUrl = "https://maps.google.com/?q=" . $kendaraan->pemilikRelation->latitude . ',' . $kendaraan->pemilikRelation->longitude;                                                
 
-                                                if ($tglStnk->isPast()) {
-                                                    $stnkStatus = '<span class="badge badge-danger">Terlambat</span>';
-                                                } elseif ($tglStnk->lessThanOrEqualTo($oneMonthFromNow)) {
-                                                    $stnkStatus =
-                                                        '<span class="badge badge-warning">Akan jatuh tempo</span>';
+                                                if ( $kendaraan->status_bayar_pajak == '1') {
+                                                    $pajakStatus = 
+                                                        '<div class="btn-group">
+                                                        <button type="button" class="btn btn-success btn-xs"><b>Sudah Dibayar</b></button>
+                                                        </div>';
+                                                } elseif ($kendaraan->status_bayar_pajak  == '2') {
+                                                    $pajakStatus = 
+                                                        '<div class="btn-group">
+                                                        <button type="button" class="btn btn-warning btn-xs"><b>Menunggu Pembayaran</b></button>
+                                                        <button type="button" class="btn btn-warning dropdown-toggle dropdown-icon btn-xs" data-toggle="dropdown">
+                                                        <span class="sr-only">Toggle Dropdown</span>
+                                                        </button>
+                                                        <div class="dropdown-menu" role="menu">
+                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="paidStatusModal"><i class="fa fa-circle text-success"></i>&nbsp;Sudah Dibayar</a>
+                                                        <a class="dropdown-item" href="#"><i class="fa fa-circle text-warning"></i>&nbsp;Menunggu Pembayaran</a>
+                                                        <a class="dropdown-item" href="#"><i class="fa fa-circle text-danger"></i>&nbsp;Penangguhan Pembayaran</a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item" href="' . route('download-pdf', $kendaraan->id) . '"><i class="fa fa-print text-secondary"></i>&nbsp;Cetak Surat Penagihan</a>
+                                                        </div>
+                                                        </div>';
                                                 } else {
-                                                    $stnkStatus =
-                                                        '<span class="badge badge-success">Pembayaran Masih Lama</span>';
+                                                    $pajakStatus = 
+                                                        '<div class="btn-group">
+                                                        <button type="button" class="btn btn-danger btn-xs"><b>Penangguhan Pembayaran</b></button>
+                                                        <button type="button" class="btn btn-danger dropdown-toggle dropdown-icon btn-xs" data-toggle="dropdown">
+                                                        <span class="sr-only">Toggle Dropdown</span>
+                                                        </button>
+                                                        <div class="dropdown-menu" role="menu">
+                                                        <a class="dropdown-item" href="#"><i class="fa fa-circle text-success"></i>&nbsp;Sudah Dibayar</a>
+                                                        <a class="dropdown-item" href="#"><i class="fa fa-circle text-warning"></i>&nbsp;Menunggu Pembayaran</a>
+                                                        <a class="dropdown-item" href="#"><i class="fa fa-circle text-danger"></i>&nbsp;Penangguhan Pembayaran</a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item" href="' . route('download-pdf', $kendaraan->id) . '"><i class="fa fa-print text-secondary"></i>&nbsp;Cetak Surat Penagihan</a>
+                                                        </div>
+                                                        </div>';
                                                 }
-                                            @endphp
 
-                                            <?php
-                                            // Contoh variabel tanggal
-                                            $tglStnk = new DateTime('2024-05-01'); // Ganti dengan tanggal STNK yang sesungguhnya
-                                            $oneMonthFromNow = (new DateTime())->modify('+1 month');
-                                            
-                                            // Menentukan status berdasarkan tanggal STNK
-                                            if ($tglStnk < new DateTime()) {
-                                                $currentStatus = 'late';
-                                            } elseif ($tglStnk <= $oneMonthFromNow) {
-                                                $currentStatus = 'dueSoon';
-                                            } else {
-                                                $currentStatus = 'longTime';
-                                            }
-                                            
-                                            // Mengubah status berdasarkan input form (jika ada)
-                                            if (isset($_POST['status'])) {
-                                                $currentStatus = $_POST['status'];
-                                            }
-                                            
-                                            ?>
+                                                if ( $kendaraan->status_bayar_stnk == '1') {
+                                                    $stnkStatus = 
+                                                    '
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-success btn-xs"><b>Sudah Dibayar</b></button>
+                                                    </div>
+                                                    ';
+                                                } elseif ($kendaraan->status_bayar_stnk  == '2') {
+                                                    $stnkStatus = 
+                                                    '
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-warning btn-xs"><b>Menunggu Pembayaran</b></button>
+                                                        <button type="button" class="btn btn-warning dropdown-toggle dropdown-icon btn-xs" data-toggle="dropdown">
+                                                        <span class="sr-only">Toggle Dropdown</span>
+                                                        </button>
+                                                        <div class="dropdown-menu" role="menu">
+                                                        <a class="dropdown-item" href="#"><i class="fa fa-circle text-success"></i>&nbsp;Sudah Dibayar</a>
+                                                        <a class="dropdown-item" href="#"><i class="fa fa-circle text-warning"></i>&nbsp;Menunggu Pembayaran</a>
+                                                        <a class="dropdown-item" href="#"><i class="fa fa-circle text-danger"></i>&nbsp;Penangguhan Pembayaran</a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item" href="' . route('download-pdf', $kendaraan->id) . '"><i class="fa fa-print text-secondary"></i>&nbsp;Cetak Surat Penagihan</a>
+                                                        </div>
+                                                    </div>
+                                                    ';
+                                                } else {
+                                                    $stnkStatus = 
+                                                    '
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-danger btn-xs"><b>Penangguhan Pembayaran</b></button>
+                                                        <button type="button" class="btn btn-danger dropdown-toggle dropdown-icon btn-xs" data-toggle="dropdown">
+                                                        <span class="sr-only">Toggle Dropdown</span>
+                                                        </button>
+                                                        <div class="dropdown-menu" role="menu">
+                                                        <a class="dropdown-item" href="#"><i class="fa fa-circle text-success"></i>&nbsp;Sudah Dibayar</a>
+                                                        <a class="dropdown-item" href="#"><i class="fa fa-circle text-warning"></i>&nbsp;Menunggu Pembayaran</a>
+                                                        <a class="dropdown-item" href="#"><i class="fa fa-circle text-danger"></i>&nbsp;Penangguhan Pembayaran</a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item" href="' . route('download-pdf', $kendaraan->id) . '"><i class="fa fa-print text-secondary"></i>&nbsp;Cetak Surat Penagihan</a>
+                                                        </div>
+                                                        </div>
+                                                    ';
+                                                }
+
+                                                
+                                            @endphp
                                             <tr>
                                                 <td>{{ $index }}</td>
                                                 <td>{{ $kendaraan->pemilikRelation->no_polisi }}</td>
                                                 <td>{{ $kendaraan->pemilikRelation->nama_pemilik }}</td>
                                                 <td>{{ $kendaraan->merekKendaraanRelation->merek }}</td>
                                                 <td>{{ $kendaraan->merekKendaraanRelation->model }}</td>
-                                                <td>{{ $tglPajakFormatted }}</td>
-                                                <td class="text-center">
-                                                    <div class="status-select-container">
-                                                        <div id="statusSelectDisplay" class="status-select-display">
-                                                            <span class="status-badge status-<?php echo $currentStatus; ?>">
-                                                                <?php
-                                                                if ($currentStatus == 'late') {
-                                                                    echo 'Terlambat';
-                                                                } elseif ($currentStatus == 'dueSoon') {
-                                                                    echo 'Akan jatuh tempo';
-                                                                } else {
-                                                                    echo 'Pembayaran Masih Lama';
-                                                                }
-                                                                ?>
-                                                            </span>
-                                                            <span>&#9662;</span> <!-- Down arrow symbol -->
-                                                        </div>
-                                                        <div id="statusOptions" class="status-options">
-                                                            <div class="status-badge status-late" data-value="late">
-                                                                Terlambat</div>
-                                                            <div class="status-badge status-dueSoon" data-value="dueSoon">
-                                                                Akan jatuh tempo</div>
-                                                            <div class="status-badge status-longTime" data-value="longTime">
-                                                                Pembayaran Masih Lama</div>
-                                                        </div>
-                                                        <select name="status" id="statusSelect" class="status-select">
-                                                            <option value="late" <?php if ($currentStatus == 'late') {
-                                                                echo 'selected';
-                                                            } ?>>Terlambat</option>
-                                                            <option value="dueSoon" <?php if ($currentStatus == 'dueSoon') {
-                                                                echo 'selected';
-                                                            } ?>>Akan jatuh tempo
-                                                            </option>
-                                                            <option value="longTime" <?php if ($currentStatus == 'longTime') {
-                                                                echo 'selected';
-                                                            } ?>>Pembayaran Masih
-                                                                Lama</option>
-                                                        </select>
-                                                    </div>
-                                                </td>
+                                                <td class="text-center">{{ $tglPajakFormatted }}</td>
+                                                <td class="text-center">{!! $pajakStatus !!}</td>
                                                 <td class="text-center">{{ $tglStnkFormatted }}</td>
                                                 <td class="text-center">{!! $stnkStatus !!}</td>
                                                 <td class="text-center">
+                                                    <a href='{{ $mapsUrl }}' target="_blank"><i class="fa-solid fa-location-dot text-secondary"></i></a>
                                                     <a href="#" data-toggle="modal" data-target="#editModalKendaraan"
                                                         data-id="{{ $kendaraan->id }}"
                                                         data-pemilik-id="{{ $kendaraan->pemilikRelation->id }}"
@@ -347,42 +345,30 @@
         </div>
     </div>
 
+    <div class="modal fade" id="paidStatusModal" tabindex="-1" role="dialog" aria-labelledby="paidStatusModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Konfirmasi Pembayaran</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        @csrf
+                       
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-danger">Konfirmasi</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var statusSelect = document.getElementById('statusSelect');
-            var statusSelectDisplay = document.getElementById('statusSelectDisplay');
-            var statusOptions = document.getElementById('statusOptions');
 
-            statusSelectDisplay.addEventListener('click', function() {
-                statusOptions.style.display = statusOptions.style.display === 'block' ? 'none' : 'block';
-            });
 
-            statusOptions.addEventListener('click', function(e) {
-                if (e.target && e.target.matches('div[data-value]')) {
-                    var value = e.target.getAttribute('data-value');
-                    var text = e.target.textContent;
-                    statusSelect.value = value;
-
-                    statusSelectDisplay.innerHTML = '<span class="status-badge status-' + value + '">' +
-                        text + '</span>' + '<span>&#9662;</span>';
-                    statusOptions.style.display = 'none';
-                }
-            });
-
-            // Set initial display
-            var initialValue = statusSelect.value;
-            var initialText = statusSelect.options[statusSelect.selectedIndex].text;
-            statusSelectDisplay.innerHTML = '<span class="status-badge status-' + initialValue + '">' +
-                initialText + '</span>' + '<span>&#9662;</span>';
-        });
-
-        // Hide options if click outside of the dropdown
-        document.addEventListener('click', function(event) {
-            var isClickInside = document.querySelector('.status-select-container').contains(event.target);
-            if (!isClickInside) {
-                document.getElementById('statusOptions').style.display = 'none';
-            }
-        });
-    </script>
 @endsection
