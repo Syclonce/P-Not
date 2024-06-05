@@ -20,11 +20,11 @@
             <div class="container-fluid">
                 <!-- Small boxes (Stat box) -->
                 <div class="row">
-                    <div class="col-lg-3 col-6">
+                    <div class="col-lg-4 col-6">
                         <!-- small box -->
                         <div class="small-box bg-success">
                             <div class="inner">
-                                {{-- <h3>{{ $totalKendaraan }} Unit</h3> --}}
+                                <h3>1</h3>
 
                                 <p>Jumlah Asset</p>
                             </div>
@@ -34,12 +34,12 @@
                         </div>
                     </div>
                     <!-- ./col -->
-                    <div class="col-lg-3 col-6">
+                    <div class="col-lg-4 col-6">
                         <!-- small box -->
                         <div class="small-box bg-info">
                             <div class="inner">
-                                {{-- <h3>{{ $totalUsers }} Pemilik</h3> --}}
-                                <p>Jumlah Pemilik Kendaraan</p>
+                                <h3>2</h3>
+                                <p>Jumlah Pemilik Asset</p>
                             </div>
                             <div class="icon">
                                 <i class="fas fa-user"></i>
@@ -47,11 +47,11 @@
                         </div>
                     </div>
                     <!-- ./col -->
-                    <div class="col-lg-3 col-6">
+                    <div class="col-lg-4 col-6">
                         <!-- small box -->
                         <div class="small-box bg-danger">
                             <div class="inner">
-                                {{-- <h3>{{ $countKadaluarsap }} Unit</h3> --}}
+                                <h3>4</h3>
                                 <p>Terlambat Pajak</p>
                             </div>
                             <div class="icon">
@@ -60,20 +60,7 @@
                         </div>
                     </div>
                     <!-- ./col -->
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-danger">
-                            <div class="inner">
-                                {{-- <h3>{{ $countKadaluarsa }} Unit</h3> --}}
 
-                                <p>Terlambat Pajak STNK</p>
-                            </div>
-                            <div class="icon">
-                                <i class="far fa-clock"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- ./col -->
                 </div>
                 <!-- /.row -->
                 <!-- Main row -->
