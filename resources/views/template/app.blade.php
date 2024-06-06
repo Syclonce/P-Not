@@ -787,6 +787,20 @@
                 }
             });
 
+            $('input[name="customRadio"]').change(function() {
+                if ($(this).val() == '0') {
+                    $('#statusTanggalBayarRow').show();
+                } else {
+                    $('#statusTanggalBayarRow').hide();
+                }
+            });
+
+            $('#paidStatusModal').on('hidden.bs.modal', function () {
+                $('#customRadio1').prop('checked', true);
+                $('#statusTanggalBayarRow').hide();
+                $('#statusTanggalBayar').val('');
+            });
+
         });
     </script>
 
@@ -1497,6 +1511,104 @@
             });
         });
     </script>
+
+    <!-- Srcipt Update Status Pajak -->
+    <script>
+
+        $(document).on('click', '#setPaid', function() {
+            var id = $(this).data('id');
+            var tglAkhir = $(this).data('tgl-akhir');
+            var tglBayar = $(this).data('tgl-bayar');
+            var jenisPajak = $(this).data('jenis-pajak');
+            var status = $(this).data('status');
+
+
+            $('#setPaidId').val(id);
+            $('#setPaidTanggalPajak').val(tglAkhir);
+            $('#setPaidBayarPajak').val(tglBayar);
+            $('#setPaidJenis').val(jenisPajak);
+            $('#setPaidStatus').val(status);
+
+            if(status == 'paid') {
+                $('#paidStatusHeader').text('Konfirmasi Pembayaran');  
+                $('#paidLabel').text('Tanggal Pembayaran');
+                $('#tanggalBayarHelp').text('');
+                $('#statusTanggalBayarRow').show();
+                $('#checkBoxTanggalBayarRow').hide();
+                $('#customRadio4').prop('checked', true);
+            } else if (status == 'wait' ) {
+                $('#paidStatusHeader').text('Konfirmasi Penundaan');  
+                $('#paidLabel').text('Tanggal Penundaan');
+                $('#tanggalBayarHelp').text('Penundaan tidak lebih dari 1 bulan setelah tanggal jatuh tempo pajak');
+                $('#statusTanggalBayarRow').hide();
+                $('#checkBoxTanggalBayarRow').show();
+            } else {
+                $('#paidStatusHeader').text('Konfirmasi Penangguhan');  
+                $('#paidLabel').text('Tanggal Penangguhan');
+                $('#tanggalBayarHelp').text('');
+                $('#statusTanggalBayarRow').hide();
+                $('#checkBoxTanggalBayarRow').show();
+            }
+
+        });
+
+        $('#setPaidForm').on('submit', function(e) {
+            e.preventDefault();
+
+            var selectedValue = $('input[name="customRadio"]:checked').val();
+            var paidDate;
+            
+            var setPaidBayarPajak = $('#setPaidBayarPajak').val();
+            if (setPaidBayarPajak) {
+                var baseDate = new Date(setPaidBayarPajak);
+                switch(selectedValue) {
+                    case '7':
+                        paidDate = new Date(baseDate.setDate(baseDate.getDate() + 7)).toISOString().split('T')[0];
+                        break;
+                    case '14':
+                        paidDate = new Date(baseDate.setDate(baseDate.getDate() + 14)).toISOString().split('T')[0];
+                        break;
+                    case '30':
+                        paidDate = new Date(baseDate.setDate(baseDate.getDate() + 30)).toISOString().split('T')[0];
+                        break;
+                    case '0':
+                        paidDate = $('#statusTanggalBayar').val();
+                        break;
+                }
+            } else {
+                alert('Please select a payment date.');
+                return;
+            }
+
+            $.ajax({
+                url: $(this).attr('action'),
+                method: $(this).attr('method'),
+                data: {
+                    _token: `{{ csrf_token() }}`,
+                    setPaidId : $('#setPaidId').val(),
+                    setPaidTanggalPajak : $('#setPaidTanggalPajak').val(),
+                    statusTanggalBayar : paidDate,
+                    setPaidJenis : $('#setPaidJenis').val(),
+                    setPaidStatus : $('#setPaidStatus').val(),
+                },
+                success: function(response) {
+                    $('#paidStatusModal').modal('hide');
+                    alert.fire({
+                        icon: 'success',
+                        title: response.message
+                    });
+                    window.location.href = `{{ route('kendaraan') }}`;
+                },
+                error: function(xhr) {
+                    toastr.error('Terjadi kesalahan saat memperbarui status.');
+                }
+            });
+        });
+
+
+      
+    </script>
+
 </body>
 
 </html>

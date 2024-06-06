@@ -34,6 +34,7 @@ Route::middleware(['auth', 'verified', 'role:Super-Admin'])->group(function () {
     Route::get('kendaraan/download-pdf/{id}', [KendaraanController::class, 'downloadPDF'])->name('download-pdf');
     Route::get('kendaraan/get-pemilik', [KendaraanController::class, 'getPemilik'])->name('get-pemilik');
     Route::get('kendaraan/get-model', [KendaraanController::class, 'getModel'])->name('get-model');
+    Route::post('kendaraan/update-paid-status', [KendaraanController::class, 'updatePaidStatus'])->name('update-paid-status');
 
 
     Route::get('mkendaraan', [kendaraanController::class, 'mekendaran'])->name('mkendaraan');
