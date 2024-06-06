@@ -32,6 +32,23 @@ class PejabatController extends Controller
         return response()->json(['message' => 'Data Nama Pejabat berhasil disimpan']);
     }
 
+    public function update(Request $request)
+    {
+        $id =  $request['meditpejabaId'];
+        $user = Auth::user()->username;
+
+        $validatedData = $request->validate([
+            'meditpModel' => 'required',
+        ]);
+
+
+        $pemilik = Pejabat::findOrFail($id);
+        $pemilik->nama_pejabat = $validatedData['meditpModel'];
+        $pemilik->update();
+
+        return response()->json(['message' => 'Data pemilik berhasil diperbarui']);
+    }
+
     public function destroy(Request $request)
     {
         $id = $request['pejabatId'];

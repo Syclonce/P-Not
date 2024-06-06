@@ -52,14 +52,14 @@
                                                 <td>{{ $index }}</td>
                                                 <td>{{ $pejabat->nama_pejabat }}</td>
                                                 <td class="text-center">
-                                                    <a href="#" data-toggle="modal" data-target="#editModal"
+                                                    <a href="#" data-toggle="modal" data-target="#editpejabatModal"
                                                         data-id="{{ $pejabat->id }}"
-                                                        data-nama-pejabat="{{ $pejabat->nama_pejabat }}"class="edit-mdata">
+                                                        data-nama-pejabat="{{ $pejabat->nama_pejabat }}"class="edit-data-pejabat">
                                                         <i class="fa fa-edit text-secondary"></i></a>
                                                     <a href="#" data-toggle="modal" data-target="#deletePejabatModal"
                                                         data-id="{{ $pejabat->id }}"
                                                         data-nama-pejabat="{{ $pejabat->nama_pejabat }}"
-                                                        class="delete-mdata">
+                                                        class="delete-data-pejabat">
                                                         <i class="fa fa-trash-can text-secondary"></i></a>
                                                 </td>
                                             </tr>
@@ -110,7 +110,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+    <div class="modal fade" id="editpejabatModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -121,45 +121,18 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="editForm" action="{{ route('mkendaraan.update') }}" method="POST">
+                    <form id="editFormpejabat" action="{{ route('pejabat.update') }}" method="POST">
                         @csrf
-                        <input type="hidden" id="meditId" name="editId">
+                        <input type="hidden" id="meditpejabaId" name="meditpejabaId">
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label>Nama Merk Kendaraan</label>
-                                    <input type="text" class="form-control" id="meditMerek" name="namaMerk">
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Nama Model Kendaraan</label>
-                                    <input type="text" class="form-control" id="meditModel" name="namaModel">
+                                    <label>Nama Pejabat</label>
+                                    <input type="text" class="form-control" id="meditpModel" name="meditpModel">
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Kode Merk Kendaraan</label>
-                                    <input type="text" class="form-control" id="meditKodeMerek" name="kodeMerk">
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Tahun Buatan Kendaraan</label>
-                                    <div class="input-group date" id="tahunBuat" data-target-input="nearest">
-                                        <input type="text" class="form-control datetimepicker-input"
-                                            data-target="#tahunBuat" name="tahunBuat" id="meditTglBuat" />
-                                        <div class="input-group-append" data-target="#tahunBuat"
-                                            data-toggle="datetimepicker">
-                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
                 </div>
                 <div class="modal-footer">
@@ -195,56 +168,4 @@
         </div>
     </div>
     </div>
-
-
-    <!-- CRUD Pejabat Script  -->
-    <script>
-        $("#pejabatTable").DataTable({
-            "responsive": true,
-            "lengthChange": false,
-            "autoWidth": false,
-            "buttons": false,
-            "lengthChange": true,
-            "language": {
-                "lengthMenu": "Tampil  _MENU_",
-                "info": "Menampilkan _START_ - _END_ dari _TOTAL_ entri",
-                "search": "Cari :",
-                "paginate": {
-                    "previous": "Sebelumnya",
-                    "next": "Berikutnya"
-                }
-            }
-        });
-
-        const alert = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 10000,
-            timerProgressBar: true
-        });
-
-        $('#addFormpejabat').on('submit', function(e) {
-            e.preventDefault();
-
-            $.ajax({
-                url: $(this).attr('action'),
-                method: $(this).attr('method'),
-                data: $(this).serialize(),
-                success: function(response) {
-                    $('#addpejabatModal').modal('hide');
-                    alert.fire({
-                        icon: 'success',
-                        title: response.message
-                    });
-                    $('#addFormpejabat')[0].reset();
-                    window.location.href = '{{ route('pejabat') }}';
-
-                },
-                error: function(xhr) {
-                    toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
-                }
-            });
-        });
-    </script>
 @endsection

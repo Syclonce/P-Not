@@ -1526,6 +1526,114 @@
         });
     </script>
 
+    {{-- CURD Pejabat --}}
+    <script>
+        $(document).ready(function() {
+            $("#pejabatTable").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "buttons": false,
+                "lengthChange": true, // Corrected: Removed conflicting lengthChange option
+                "language": {
+                    "lengthMenu": "Tampil  _MENU_",
+                    "info": "Menampilkan _START_ - _END_ dari _TOTAL_ entri",
+                    "search": "Cari :",
+                    "paginate": {
+                        "previous": "Sebelumnya",
+                        "next": "Berikutnya"
+                    }
+                }
+            });
+        });
+
+        $('#addFormpejabat').on('submit', function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: $(this).attr('action'),
+                method: $(this).attr('method'),
+                data: $(this).serialize(),
+                success: function(response) {
+                    $('#addpejabatModal').modal('hide');
+                    alert.fire({
+                        icon: 'success',
+                        title: response.message
+                    });
+                    $('#addFormpejabat')[0].reset();
+                    window.location.href = '{{ route('pejabat') }}';
+
+                },
+                error: function(xhr) {
+                    toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
+                }
+            });
+        });
+
+        $(document).on('click', '.edit-data-pejabat', function() {
+            var id = $(this).data('id');
+            var nama_pejabat = $(this).data('nama-pejabat');
+
+
+            $('#meditpejabaId').val(id);
+            $('#meditpModel').val(nama_pejabat);
+
+
+        });
+
+        $('#editFormpejabat').on('submit', function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: $(this).attr('action'),
+                method: $(this).attr('method'),
+                data: $(this).serialize(),
+                success: function(response) {
+                    $('#editpejabatModal').modal('hide');
+                    alert.fire({
+                        icon: 'success',
+                        title: response.message
+                    });
+                    window.location.href = '{{ route('pejabat') }}';
+                },
+                error: function(xhr) {
+                    toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
+                }
+            });
+        });
+
+        $(document).on('click', '.delete-data-pejabat', function() {
+            var id = $(this).data('id');
+            var nama_pejabat = $(this).data('nama-pejabat');
+
+            $('#pejabatId').val(id);
+            $('#deleteTextpejabat').html(
+                "<span>Apa anda yakin ingin menghapus data Pejabat <b>" + nama_pejabat +
+                "</b></span>");
+
+        });
+
+        $('#deleteFormPejabat').on('submit', function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: $(this).attr('action'),
+                method: $(this).attr('method'),
+                data: $(this).serialize(),
+                success: function(response) {
+                    $('#deletePejabatModal').modal('hide');
+                    window.location.href = '{{ route('pejabat') }}';
+                    alert.fire({
+                        icon: 'success',
+                        title: response.message
+                    });
+                },
+                error: function(xhr) {
+                    toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
+                }
+            });
+        });
+    </script>
+
 </body>
 
 </html>
