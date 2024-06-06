@@ -43,7 +43,9 @@ class SuperAdminController extends Controller
         //     })
         //     ->get();
 
-        $relasikendaraan = kendaraan::with(['pemilikRelation', 'merekKendaraanRelation'])->get();
+        $relasikendaraan = kendaraan::with(['pemilikRelation', 'merekKendaraanRelation'])->get()->toArray();
+        $jsonData = json_encode($relasikendaraan);
+
 
         // $kendaraans = Kendaraan::where(function ($query) use ($today, $date30DaysLater) {
         //     $query->where('tgl_pajak', '>', $today)

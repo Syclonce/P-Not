@@ -30,7 +30,7 @@ class kendaraanController extends Controller
             'addModelKendaraan' => 'required',
             'addTanggalPajak' => 'required',
             'addTanggalStnk' => 'required',
-        ]);      
+        ]);
 
         $user = Auth::user()->username;
 
@@ -39,21 +39,21 @@ class kendaraanController extends Controller
 
         $currentDate = Carbon::now();
         $thirtyDaysBefore = $currentDate->copy()->subDays(30);
-    
+
         if ($tglPajak->greaterThan($currentDate)) {
             $statusPajak = '1';
         } elseif ($tglPajak->between($thirtyDaysBefore, $currentDate)) {
-            $statusPajak = '2'; 
+            $statusPajak = '2';
         } else {
             $statusPajak = '3';
         }
 
         if ($tglStnk->greaterThan($currentDate)) {
-            $statusStnk = '1'; 
+            $statusStnk = '1';
         } elseif ($tglStnk->between($thirtyDaysBefore, $currentDate)) {
-            $statusStnk = '2'; 
+            $statusStnk = '2';
         } else {
-            $statusStnk = '3'; 
+            $statusStnk = '3';
         }
 
         $kendaraan = new kendaraan();
@@ -93,21 +93,21 @@ class kendaraanController extends Controller
 
         $currentDate = Carbon::now();
         $thirtyDaysBefore = $currentDate->copy()->subDays(30);
-    
+
         if ($tglPajak->greaterThan($currentDate)) {
             $statusPajak = '1';
         } elseif ($tglPajak->between($thirtyDaysBefore, $currentDate)) {
-            $statusPajak = '2'; 
+            $statusPajak = '2';
         } else {
             $statusPajak = '3';
         }
 
         if ($tglStnk->greaterThan($currentDate)) {
-            $statusStnk = '1'; 
+            $statusStnk = '1';
         } elseif ($tglStnk->between($thirtyDaysBefore, $currentDate)) {
-            $statusStnk = '2'; 
+            $statusStnk = '2';
         } else {
-            $statusStnk = '3'; 
+            $statusStnk = '3';
         }
 
         $kendaraan->pemilik_id = $validatedData['editPemilikKendaraan'];
@@ -160,9 +160,9 @@ class kendaraanController extends Controller
 
         if ($request['setPaidJenis'] == 'pajak' && $request['setPaidStatus'] == 'wait') {
             if ($tglBayarPajak->greaterThanOrEqualTo($thirtyDaysLater)) {
-                $statusPajak = '3'; 
+                $statusPajak = '3';
             } else {
-                $statusPajak = '2'; 
+                $statusPajak = '2';
             }
             $kendaraan->tgl_bayar_pajak = $tglBayarPajak;
             $kendaraan->status_bayar_pajak = $statusPajak;
@@ -172,9 +172,9 @@ class kendaraanController extends Controller
 
         if ($request['setPaidJenis'] == 'stnk' && $request['setPaidStatus'] == 'wait') {
             if ($tglBayarPajak->greaterThanOrEqualTo($thirtyDaysLater)) {
-                $statusPajak = '3'; 
+                $statusPajak = '3';
             } else {
-                $statusPajak = '2'; 
+                $statusPajak = '2';
             }
             $kendaraan->tgl_bayar_stnk = $tglBayarPajak;
             $kendaraan->status_bayar_stnk = $statusPajak;
@@ -272,7 +272,8 @@ class kendaraanController extends Controller
     }
     public function apidata()
     {
-        $data = kendaraan::all();
+        $data = kendaraan::with(['pemilikRelation', 'merekKendaraanRelation'])->get();
+        // $data = kendaraan::all();
 
         return response()->json(['data' => $data]);
     }
@@ -290,6 +291,4 @@ class kendaraanController extends Controller
 
         return response()->json(['data' => $data]);
     }
-
-
 }
