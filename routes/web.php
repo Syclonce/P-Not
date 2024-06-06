@@ -51,6 +51,7 @@ Route::middleware(['auth', 'verified', 'role:Super-Admin'])->group(function () {
 
     Route::get('pejabat', [PejabatController::class, 'index'])->name('pejabat');
     Route::post('pejabat/store', [PejabatController::class, 'store'])->name('pejabat.store');
+    Route::post('pejabat/update', [PejabatController::class, 'update'])->name('pejabat.update');
     Route::post('pejabat/destroy', [PejabatController::class, 'destroy'])->name('pejabat.destroy');
 
 
