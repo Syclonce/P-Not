@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\kendaraanController;
+use App\Http\Controllers\PejabatController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\websetController;
@@ -48,6 +49,9 @@ Route::middleware(['auth', 'verified', 'role:Super-Admin'])->group(function () {
     Route::post('pemilik/destroy', [PemilikController::class, 'destroy'])->name('pemilik.destroy');
 
 
+    Route::get('pejabat', [PejabatController::class, 'index'])->name('pejabat');
+    Route::post('pejabat/store', [PejabatController::class, 'store'])->name('pejabat.store');
+    Route::post('pejabat/destroy', [PejabatController::class, 'destroy'])->name('pejabat.destroy');
 
 
     Route::get('setweb', [websetController::class, 'index'])->name('setweb');

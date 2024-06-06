@@ -289,7 +289,7 @@
 
             var kendaraanIdJatuhTempo = [];
             kendaraan.forEach(function(k) {
-                if (k.tgl_pajak <= currentDate) {
+                if (k.tgl_bayar_pajak <= currentDate) {
                     kendaraanIdJatuhTempo.push(k.id);
                 }
             });
@@ -327,7 +327,7 @@
 
             var kendaraanIdJatuhTempo = [];
             kendaraan.forEach(function(k) {
-                if (k.tgl_stnk <= currentDate) {
+                if (k.tgl_bayar_stnk <= currentDate) {
                     kendaraanIdJatuhTempo.push(k.id);
                 }
             });
