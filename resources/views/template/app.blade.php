@@ -813,6 +813,7 @@
         });
     </script>
 
+    {{-- cart bar  --}}
     <script>
         $(function() {
             var barChartCanvas = $('#barChart').get(0).getContext('2d');
@@ -990,59 +991,6 @@
                 .catch(error => {
                     console.error('There has been a problem with your fetch operation:', error);
                 });
-        }
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/ol@latest/dist/ol.js"></script>
-
-    <script>
-        function initMap() {
-            var latitude = -6.882127;
-            var longitude = 107.594617;
-
-            console.log('Initializing map with coordinates:', latitude, longitude);
-
-            var map = new ol.Map({
-                target: 'map',
-                layers: [
-                    new ol.layer.Tile({
-                        source: new ol.source.OSM()
-                    })
-                ],
-                view: new ol.View({
-                    center: ol.proj.fromLonLat([longitude, latitude]),
-                    zoom: 15
-                })
-            });
-
-            console.log('Map initialized.');
-
-            var markerElement = document.createElement('div');
-            markerElement.style.backgroundImage = 'url(https://openlayers.org/en/v4.6.5/examples/data/icon.png)';
-            markerElement.style.backgroundSize = 'contain';
-            markerElement.style.width = '32px';
-            markerElement.style.height = '32px';
-            markerElement.style.cursor = 'pointer'; // Make the cursor indicate clickable
-            markerElement.title = 'Click to open Google Maps'; // Tooltip for extra user info
-
-            console.log('Marker element created.');
-
-            var marker = new ol.Overlay({
-                position: ol.proj.fromLonLat([longitude, latitude]),
-                positioning: 'center-center',
-                element: markerElement,
-                stopEvent: false
-            });
-
-            markerElement.addEventListener('click', function() {
-                window.open('https://www.google.com/maps/@-6.882127,107.594617,20z?entry=ttu', '_blank');
-            });
-
-            console.log('Marker created at:', longitude, latitude);
-
-            map.addOverlay(marker);
-
-            console.log('Marker added to map.');
         }
     </script>
 

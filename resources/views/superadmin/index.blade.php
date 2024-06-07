@@ -275,6 +275,9 @@
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
+
+
+    {{-- notifikasi popup --}}
     <script>
         function showWarningForId(id) {
             // Functionality can be added here if needed
