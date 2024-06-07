@@ -100,7 +100,7 @@
                                     </thead>
                                     <tbody>
 
-                                        @foreach ($kendaraans as $data)
+                                        @foreach ($tglpajakkdasht as $data)
                                             @php
                                                 $tglPajakFormatted = Carbon::parse($data->tgl_pajak)->translatedFormat(
                                                     'd F Y',
@@ -111,9 +111,8 @@
                                                 <td>{{ $data->merekKendaraanRelation->merek }} -
                                                     {{ $data->merekKendaraanRelation->model }}</td>
                                                 <td>{{ $tglPajakFormatted }}</td>
-                                                <td> <span class="badge badge-warning">Akan jatuh tempo</span>
-                                                </td>
-
+                                                <td><button type="button" class="btn btn-warning btn-xs"><b>Akan jatuh
+                                                            tempo</b></button></td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -141,7 +140,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($kendaraansss as $data)
+                                        @foreach ($tglstnkdasht as $data)
                                             @php
                                                 $tglStnkFormatted = Carbon::parse($data->tgl_stnk)->translatedFormat(
                                                     'd F Y',
@@ -152,9 +151,8 @@
                                                 <td>{{ $data->merekKendaraanRelation->merek }} -
                                                     {{ $data->merekKendaraanRelation->model }}</td>
                                                 <td>{{ $tglStnkFormatted }}</td>
-                                                <td> <span class="badge badge-warning">Akan jatuh tempo</span>
-                                                </td>
-
+                                                <td><button type="button" class="btn btn-warning btn-xs"><b>Akan jatuh
+                                                            tempo</b></button></td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -183,7 +181,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($kendaraa as $data)
+                                        @foreach ($tglpajakkdash as $data)
                                             @php
                                                 $tglPajakFormatted = Carbon::parse($data->tgl_pajak)->translatedFormat(
                                                     'd F Y',
@@ -194,7 +192,8 @@
                                                 <td>{{ $data->merekKendaraanRelation->merek }} -
                                                     {{ $data->merekKendaraanRelation->model }}</td>
                                                 <td>{{ $tglPajakFormatted }}</td>
-                                                <td><span class="badge badge-danger">Terlambat</span></td>
+                                                <td><button type="button"
+                                                        class="btn btn-danger btn-xs"><b>Terlambat</b></button></td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -222,7 +221,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($kendaraanss as $data)
+                                        @foreach ($tglstnkdash as $data)
                                             @php
                                                 $tglStnkFormatted = Carbon::parse($data->tgl_stnk)->translatedFormat(
                                                     'd F Y',
@@ -233,7 +232,8 @@
                                                 <td>{{ $data->merekKendaraanRelation->merek }} -
                                                     {{ $data->merekKendaraanRelation->model }}</td>
                                                 <td>{{ $tglStnkFormatted }}</td>
-                                                <td><span class="badge badge-danger">Terlambat</span></td>
+                                                <td><button type="button"
+                                                        class="btn btn-danger btn-xs"><b>Terlambat</b></button></td>
                                             </tr>
                                         @endforeach
                                     </tbody>

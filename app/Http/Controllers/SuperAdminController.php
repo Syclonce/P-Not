@@ -24,53 +24,22 @@ class SuperAdminController extends Controller
         $totalKendaraan = Kendaraan::count();
         $totalUsers = Pemilik::count();
 
-
-
         // Mendapatkan tanggal sekarang
         $today = Carbon::today()->toDateString();
 
         // Mendapatkan tanggal 30 hari dari sekarang
         $date30DaysLater = Carbon::today()->addDays(30)->toDateString();
 
-        // Mengambil data kendaraan di mana tanggal pajak atau tanggal STNK akan jatuh tempo dalam 30 hari dari tanggal saat ini
-        // $kendaraans = Kendaraan::where(function ($query) use ($today, $date30DaysLater) {
-        //     $query->where('tgl_pajak', '>=', $today)
-        //         ->where('tgl_pajak', '<=', $date30DaysLater);
-        // })
-        //     ->orWhere(function ($query) use ($today, $date30DaysLater) {
-        //         $query->where('tgl_stnk', '>=', $today)
-        //             ->where('tgl_stnk', '<=', $date30DaysLater);
-        //     })
-        //     ->get();
-
         $relasikendaraan = kendaraan::with(['pemilikRelation', 'merekKendaraanRelation'])->get()->toArray();
-        $jsonData = json_encode($relasikendaraan);
+
+        $tglstnkdash = kendaraan::with(['pemilikRelation', 'merekKendaraanRelation'])->where('status_bayar_stnk', '=', 4)->where('tgl_stnk', '=', $today)->get();
+        $tglpajakkdash = kendaraan::with(['pemilikRelation', 'merekKendaraanRelation'])->where('status_bayar_pajak', '=', 4)->where('tgl_pajak', '=', $today)->get();
+
+        $tglstnkdasht = kendaraan::with(['pemilikRelation', 'merekKendaraanRelation'])->where('status_bayar_stnk', '=', 2)->where('tgl_stnk', '=', $today)->get();
+        $tglpajakkdasht = kendaraan::with(['pemilikRelation', 'merekKendaraanRelation'])->where('status_bayar_pajak', '=', 2)->where('tgl_pajak', '=', $today)->get();
 
 
-        // $kendaraans = Kendaraan::where(function ($query) use ($today, $date30DaysLater) {
-        //     $query->where('tgl_pajak', '>', $today)
-        //         ->where('tgl_pajak', '<=', $date30DaysLater);
-        // })->get();
 
-        $kendaraans = Kendaraan::with(['pemilikRelation', 'merekKendaraanRelation'])
-            ->where(function ($query) use ($today, $date30DaysLater) {
-                $query->where('tgl_pajak', '>', $today)
-                    ->where('tgl_pajak', '<=', $date30DaysLater);
-            })
-            ->get();
-        $kendaraansss = Kendaraan::with(['pemilikRelation', 'merekKendaraanRelation'])
-            ->where(function ($query) use ($today, $date30DaysLater) {
-                $query->where('tgl_stnk', '>', $today)
-                    ->where('tgl_stnk', '<=', $date30DaysLater);
-            })->get();
-
-        $kendaraanss = Kendaraan::with(['pemilikRelation', 'merekKendaraanRelation'])
-            ->whereDate('tgl_stnk', '<=', today())
-            ->get();
-        $kendaraa = Kendaraan::with(['pemilikRelation', 'merekKendaraanRelation'])
-            ->whereDate('tgl_pajak', '<=', today())
-            ->get();
-
-        return view('superadmin.index', compact('title', 'countKadaluarsa', 'kendaraan', 'countKadaluarsap', 'totalKendaraan', 'totalUsers', 'kendaraans', 'kendaraanss', 'kendaraansss', 'kendaraa', 'relasikendaraan'));
+        return view('superadmin.index', compact('title', 'countKadaluarsa', 'kendaraan', 'countKadaluarsap', 'totalKendaraan', 'totalUsers', 'tglpajakkdasht', 'tglstnkdasht', 'relasikendaraan', 'tglstnkdash', 'tglpajakkdash'));
     }
 }
