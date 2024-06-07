@@ -259,7 +259,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="chart">
-                                    <canvas id="lineChart"
+                                    <canvas id="barChart"
                                         style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
                                 </div>
                             </div>
@@ -275,4 +275,134 @@
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
+    <script>
+        function showWarningForId(id) {
+            // Functionality can be added here if needed
+        }
+
+        function loadDataAndCheckExpired(callback) {
+            var currentDate = new Date().toISOString().split('T')[0];
+            var kendaraan = {!! json_encode($relasikendaraan) !!};
+            if (!Array.isArray(kendaraan)) {
+                kendaraan = [kendaraan];
+            }
+
+            var kendaraanIdJatuhTempo = [];
+            kendaraan.forEach(function(k) {
+                if (k.tgl_bayar_pajak <= currentDate) {
+                    kendaraanIdJatuhTempo.push(k.id);
+                }
+            });
+
+            console.log('Jumlah kendaraan yang sudah jatuh tempo: ' + kendaraanIdJatuhTempo.length);
+
+            function showWarningsSequentially(id) {
+                if (id < kendaraanIdJatuhTempo.length) {
+                    showWarningForId(kendaraanIdJatuhTempo[id]);
+                    var noPolisi = kendaraan.find(k => k.id === kendaraanIdJatuhTempo[id]).pemilik_relation.no_polisi;
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Peringatan!',
+                        text: 'Kendaraan dengan nomor polisi ' + noPolisi +
+                            ' memiliki PAJAK yang sudah jatuh tempo!',
+                        confirmButtonText: 'Tutup'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            showWarningsSequentially(id + 1);
+                        }
+                    });
+                } else if (callback) {
+                    callback();
+                }
+            }
+            showWarningsSequentially(0);
+        }
+
+        function loadDataAndCheckExpired1(callback) {
+            var currentDate = new Date().toISOString().split('T')[0];
+            var kendaraan = {!! json_encode($relasikendaraan) !!};
+            if (!Array.isArray(kendaraan)) {
+                kendaraan = [kendaraan];
+            }
+
+            var kendaraanIdJatuhTempo = [];
+            kendaraan.forEach(function(k) {
+                if (k.tgl_bayar_stnk <= currentDate) {
+                    kendaraanIdJatuhTempo.push(k.id);
+                }
+            });
+
+            console.log('Jumlah kendaraan yang sudah jatuh tempo: ' + kendaraanIdJatuhTempo.length);
+
+            function showWarningsSequentially(id) {
+                if (id < kendaraanIdJatuhTempo.length) {
+                    showWarningForId(kendaraanIdJatuhTempo[id]);
+                    var noPolisi = kendaraan.find(k => k.id === kendaraanIdJatuhTempo[id]).pemilik_relation.no_polisi;
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Peringatan!',
+                        text: 'Kendaraan dengan nomor polisi ' + noPolisi +
+                            ' memiliki STNK yang sudah jatuh tempo!',
+                        confirmButtonText: 'Tutup'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            showWarningsSequentially(id + 1);
+                        }
+                    });
+                } else if (callback) {
+                    callback();
+                }
+            }
+            showWarningsSequentially(0);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            function checkWarnings() {
+                var warningsEnabled = localStorage.getItem('warningsEnabled') === 'true';
+                var warningsEnabled1 = localStorage.getItem('warningsEnabled1') === 'true';
+
+                if (warningsEnabled && warningsEnabled1) {
+                    loadDataAndCheckExpired(function() {
+                        loadDataAndCheckExpired1();
+                    });
+                } else if (warningsEnabled) {
+                    loadDataAndCheckExpired();
+                } else if (warningsEnabled1) {
+                    loadDataAndCheckExpired1();
+                }
+            }
+
+            function runAtSpecificTime(hour, minute, callback) {
+                var now = new Date();
+                var then = new Date();
+
+                then.setHours(hour);
+                then.setMinutes(minute);
+                then.setSeconds(0);
+
+                if (then <= now) {
+                    then.setDate(then.getDate() + 1);
+                }
+
+                var timeout = then.getTime() - now.getTime();
+                setTimeout(function() {
+                    callback();
+                    setInterval(callback, 24 * 60 * 60 * 1000);
+                }, timeout);
+            }
+
+            var reminderTime = localStorage.getItem('reminderTime') || '08:00';
+            var timeParts = reminderTime.split(':');
+            var hour = parseInt(timeParts[0], 10);
+            var minute = parseInt(timeParts[1], 10);
+
+            // Jalankan checkWarnings saat halaman dimuat
+            if (window.location.pathname === '/superadmin') {
+                checkWarnings();
+
+                // Jalankan checkWarnings pada waktu yang ditentukan
+                runAtSpecificTime(hour, minute, checkWarnings);
+            }
+        });
+    </script>
 @endsection

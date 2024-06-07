@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\kendaraanController;
+use App\Http\Controllers\PejabatController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\websetController;
@@ -34,6 +35,7 @@ Route::middleware(['auth', 'verified', 'role:Super-Admin'])->group(function () {
     Route::get('kendaraan/download-pdf/{id}', [KendaraanController::class, 'downloadPDF'])->name('download-pdf');
     Route::get('kendaraan/get-pemilik', [KendaraanController::class, 'getPemilik'])->name('get-pemilik');
     Route::get('kendaraan/get-model', [KendaraanController::class, 'getModel'])->name('get-model');
+    Route::post('kendaraan/update-paid-status', [KendaraanController::class, 'updatePaidStatus'])->name('update-paid-status');
 
 
     Route::get('mkendaraan', [kendaraanController::class, 'mekendaran'])->name('mkendaraan');
@@ -47,6 +49,10 @@ Route::middleware(['auth', 'verified', 'role:Super-Admin'])->group(function () {
     Route::post('pemilik/destroy', [PemilikController::class, 'destroy'])->name('pemilik.destroy');
 
 
+    Route::get('pejabat', [PejabatController::class, 'index'])->name('pejabat');
+    Route::post('pejabat/store', [PejabatController::class, 'store'])->name('pejabat.store');
+    Route::post('pejabat/update', [PejabatController::class, 'update'])->name('pejabat.update');
+    Route::post('pejabat/destroy', [PejabatController::class, 'destroy'])->name('pejabat.destroy');
 
 
     Route::get('setweb', [websetController::class, 'index'])->name('setweb');

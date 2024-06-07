@@ -357,6 +357,15 @@
                                     </a>
                                 </li>
                             </ul>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('pejabat') }}"
+                                        class="nav-link {{ \Route::is('pejabat') ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-circle text-info"></i>
+                                        <p>Nama Pejabat</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
 
                         <li class="nav-item">
@@ -787,235 +796,160 @@
                 }
             });
 
-        });
-    </script>
-
-    <script>
-        function showWarningForId(id) {
-            // Functionality can be added here if needed
-        }
-
-        function loadDataAndCheckExpired(callback) {
-            var currentDate = new Date().toISOString().split('T')[0];
-            var kendaraan = {!! json_encode($kendaraan) !!};
-            if (!Array.isArray(kendaraan)) {
-                kendaraan = [kendaraan];
-            }
-
-            var kendaraanIdJatuhTempo = [];
-            kendaraan.forEach(function(k) {
-                if (k.tgl_pajak <= currentDate) {
-                    kendaraanIdJatuhTempo.push(k.id);
+            $('input[name="customRadio"]').change(function() {
+                if ($(this).val() == '0') {
+                    $('#statusTanggalBayarRow').show();
+                } else {
+                    $('#statusTanggalBayarRow').hide();
                 }
             });
 
-            console.log('Jumlah kendaraan yang sudah jatuh tempo: ' + kendaraanIdJatuhTempo.length);
-
-            function showWarningsSequentially(id) {
-                if (id < kendaraanIdJatuhTempo.length) {
-                    showWarningForId(kendaraanIdJatuhTempo[id]);
-                    var noPolisi = kendaraan.find(k => k.id === kendaraanIdJatuhTempo[id]).no_pol;
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Peringatan!',
-                        text: 'Kendaraan dengan nomor polisi ' + noPolisi +
-                            ' memiliki PAJAK yang sudah jatuh tempo!',
-                        confirmButtonText: 'Tutup'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            showWarningsSequentially(id + 1);
-                        }
-                    });
-                } else if (callback) {
-                    callback();
-                }
-            }
-            showWarningsSequentially(0);
-        }
-
-        function loadDataAndCheckExpired1(callback) {
-            var currentDate = new Date().toISOString().split('T')[0];
-            var kendaraan = {!! json_encode($kendaraan) !!};
-            if (!Array.isArray(kendaraan)) {
-                kendaraan = [kendaraan];
-            }
-
-            var kendaraanIdJatuhTempo = [];
-            kendaraan.forEach(function(k) {
-                if (k.tgl_stnk <= currentDate) {
-                    kendaraanIdJatuhTempo.push(k.id);
-                }
+            $('#paidStatusModal').on('hidden.bs.modal', function() {
+                $('#customRadio1').prop('checked', true);
+                $('#statusTanggalBayarRow').hide();
+                $('#statusTanggalBayar').val('');
             });
 
-            console.log('Jumlah kendaraan yang sudah jatuh tempo: ' + kendaraanIdJatuhTempo.length);
-
-            function showWarningsSequentially(id) {
-                if (id < kendaraanIdJatuhTempo.length) {
-                    showWarningForId(kendaraanIdJatuhTempo[id]);
-                    var noPolisi = kendaraan.find(k => k.id === kendaraanIdJatuhTempo[id]).no_pol;
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Peringatan!',
-                        text: 'Kendaraan dengan nomor polisi ' + noPolisi +
-                            ' memiliki STNK yang sudah jatuh tempo!',
-                        confirmButtonText: 'Tutup'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            showWarningsSequentially(id + 1);
-                        }
-                    });
-                } else if (callback) {
-                    callback();
-                }
-            }
-            showWarningsSequentially(0);
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            function checkWarnings() {
-                var warningsEnabled = localStorage.getItem('warningsEnabled') === 'true';
-                var warningsEnabled1 = localStorage.getItem('warningsEnabled1') === 'true';
-
-                if (warningsEnabled && warningsEnabled1) {
-                    loadDataAndCheckExpired(function() {
-                        loadDataAndCheckExpired1();
-                    });
-                } else if (warningsEnabled) {
-                    loadDataAndCheckExpired();
-                } else if (warningsEnabled1) {
-                    loadDataAndCheckExpired1();
-                }
-            }
-
-            function runAtSpecificTime(hour, minute, callback) {
-                var now = new Date();
-                var then = new Date();
-
-                then.setHours(hour);
-                then.setMinutes(minute);
-                then.setSeconds(0);
-
-                if (then <= now) {
-                    then.setDate(then.getDate() + 1);
-                }
-
-                var timeout = then.getTime() - now.getTime();
-                setTimeout(function() {
-                    callback();
-                    setInterval(callback, 24 * 60 * 60 * 1000);
-                }, timeout);
-            }
-
-            var reminderTime = localStorage.getItem('reminderTime') || '08:00';
-            var timeParts = reminderTime.split(':');
-            var hour = parseInt(timeParts[0], 10);
-            var minute = parseInt(timeParts[1], 10);
-
-            // Jalankan checkWarnings saat halaman dimuat
-            if (window.location.pathname === '/superadmin') {
-                checkWarnings();
-
-                // Jalankan checkWarnings pada waktu yang ditentukan
-                runAtSpecificTime(hour, minute, checkWarnings);
-            }
         });
     </script>
 
     <script>
         $(function() {
-            // Get context with jQuery - using jQuery's .get() method.
-            var lineChartCanvas = $('#lineChart');
+            var barChartCanvas = $('#barChart').get(0).getContext('2d');
 
-            // Fetch data from the database using AJAX
             $.ajax({
-                url: `{{ url('api/fetch-data') }}`,
+                url: "/api/fetch-data",
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
                     var data = response.data;
 
-                    var labels = data.map(function(item) {
-                        return item.no_pol; // Assuming 'no_pol' is the label field
+                    // Prepare data structures
+                    var countPerMonth = {};
+
+                    data.forEach(item => {
+                        var month = new Date(item.tgl_pajak).toISOString().substring(0,
+                            7); // YYYY-MM
+
+                        // Initialize counters for the month
+                        if (!countPerMonth[month]) {
+                            countPerMonth[month] = {
+                                pajakPaid: 0,
+                                pajakPaids: 0,
+                                pajakUnpaid: 0,
+                                stnkPaid: 0,
+                                stnkPaids: 0,
+                                stnkUnpaid: 0
+                            };
+                        }
+
+                        // Increment counters based on payment status
+                        if (item.status_bayar_pajak == 1) {
+                            countPerMonth[month].pajakPaid++;
+                        } else if (item.status_bayar_pajak == 2) {
+                            countPerMonth[month].pajakUnpaid++;
+                        } else if (item.status_bayar_pajak == 3) {
+                            countPerMonth[month].pajakPaids++;
+                        }
+
+                        if (item.status_bayar_stnk == 1) {
+                            countPerMonth[month].stnkPaid++;
+                        } else if (item.status_bayar_stnk == 2) {
+                            countPerMonth[month].stnkPaids++;
+                        } else if (item.status_bayar_stnk == 3) {
+                            countPerMonth[month].stnkUnpaid++;
+                        }
                     });
 
-                    var tgl_pajak = data.map(function(item) {
-                        return new Date(item.tgl_pajak) < new Date() ? 1 : 0;
-                    });
+                    // Generate labels for all 12 months
+                    var allMonths = [];
+                    for (var i = 1; i <= 12; i++) {
+                        var monthLabel = (i < 10 ? '0' : '') + i;
+                        allMonths.push(new Date().getFullYear() + '-' +
+                            monthLabel); // Format 'YYYY-MM'
+                    }
 
-                    var tgl_stnk = data.map(function(item) {
-                        return new Date(item.tgl_stnk) < new Date() ? 1 : 0;
-                    });
+                    var labels = allMonths.filter(month => Object.keys(countPerMonth)
+                        .includes(month));
 
-                    var akan_jatuh_tempo_pajak = data.map(function(item) {
-                        var tgl_pajak = new Date(item.tgl_pajak);
-                        tgl_pajak.setDate(tgl_pajak.getDate() - 7);
-                        return new Date() > tgl_pajak ? 1 : 0;
-                    });
+                    // Convert object to array for charting
+                    var dataPerMonth = labels.map(month => [
+                        countPerMonth[month].pajakPaid || 0,
+                        countPerMonth[month].pajakUnpaid || 0,
+                        countPerMonth[month].pajakPaids || 0,
+                        countPerMonth[month].stnkPaid || 0,
+                        countPerMonth[month].stnkUnpaid || 0,
+                        countPerMonth[month].stnkPaids || 0
+                    ]);
 
-                    var akan_jatuh_tempo_stnk = data.map(function(item) {
-                        var tgl_stnk = new Date(item.tgl_stnk);
-                        tgl_stnk.setDate(tgl_stnk.getDate() - 7);
-                        return new Date() > tgl_stnk ? 1 : 0;
-                    });
-
-                    var lineChartData = {
+                    // Prepare data for horizontal bar chart
+                    var barChartData = {
                         labels: labels,
                         datasets: [{
-                                label: 'Tgl Pajak',
-                                data: tgl_pajak,
-                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                label: 'Pajak Sudah Dibayar',
+                                data: dataPerMonth.map(entry => entry[0]),
+                                backgroundColor: 'rgba(75, 192, 192, 0.7)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Pajak Belum Dibayar',
+                                data: dataPerMonth.map(entry => entry[1]),
+                                backgroundColor: 'rgba(255, 99, 132, 0.7)',
                                 borderColor: 'rgba(255, 99, 132, 1)',
                                 borderWidth: 1
                             },
                             {
-                                label: 'Tgl STNK',
-                                data: tgl_stnk,
-                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                label: 'Pajak Akan Jatoh Tempo',
+                                data: dataPerMonth.map(entry => entry[2]),
+                                backgroundColor: 'rgba(255, 205, 86, 0.7)',
+                                borderColor: 'rgba(255, 205, 86, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'STNK Sudah Dibayar',
+                                data: dataPerMonth.map(entry => entry[3]),
+                                backgroundColor: 'rgba(54, 162, 235, 0.7)',
                                 borderColor: 'rgba(54, 162, 235, 1)',
                                 borderWidth: 1
                             },
                             {
-                                label: 'Akan Jatuh Tempo Pajak',
-                                data: akan_jatuh_tempo_pajak,
-                                backgroundColor: 'rgba(255, 206, 86, 0.2)',
-                                borderColor: 'rgba(255, 206, 86, 1)',
+                                label: 'STNK Belum Dibayar',
+                                data: dataPerMonth.map(entry => entry[4]),
+                                backgroundColor: 'rgba(255, 159, 64, 0.7)',
+                                borderColor: 'rgba(255, 159, 64, 1)',
                                 borderWidth: 1
                             },
                             {
-                                label: 'Akan Jatuh Tempo STNK',
-                                data: akan_jatuh_tempo_stnk,
-                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                borderColor: 'rgba(75, 192, 192, 1)',
+                                label: 'STNK Akan Jatoh Tempo',
+                                data: dataPerMonth.map(entry => entry[5]),
+                                backgroundColor: 'rgba(153, 102, 255, 0.7)',
+                                borderColor: 'rgba(153, 102, 255, 1)',
                                 borderWidth: 1
                             }
                         ]
                     };
 
-                    var lineChartOptions = {
+                    var barChartOptions = {
                         maintainAspectRatio: false,
                         responsive: true,
-                        legend: {
-                            display: false
-                        },
                         scales: {
                             xAxes: [{
-                                gridLines: {
-                                    display: false,
+                                stacked: true,
+                                ticks: {
+                                    beginAtZero: true
                                 }
                             }],
                             yAxes: [{
-                                gridLines: {
-                                    display: false,
-                                }
+                                stacked: true
                             }]
                         }
                     };
 
-                    // This will get the first returned node in the jQuery collection.
-                    new Chart(lineChartCanvas, {
-                        type: 'line',
-                        data: lineChartData,
-                        options: lineChartOptions
+                    new Chart(barChartCanvas, {
+                        type: 'bar',
+                        data: barChartData,
+                        options: barChartOptions
                     });
                 },
                 error: function(xhr, status, error) {
@@ -1024,6 +958,7 @@
             });
         });
     </script>
+
 
 
     <script>
@@ -1497,6 +1432,208 @@
             });
         });
     </script>
+
+    <!-- Srcipt Update Status Pajak -->
+    <script>
+        $(document).on('click', '#setPaid', function() {
+            var id = $(this).data('id');
+            var tglAkhir = $(this).data('tgl-akhir');
+            var tglBayar = $(this).data('tgl-bayar');
+            var jenisPajak = $(this).data('jenis-pajak');
+            var status = $(this).data('status');
+
+
+            $('#setPaidId').val(id);
+            $('#setPaidTanggalPajak').val(tglAkhir);
+            $('#setPaidBayarPajak').val(tglBayar);
+            $('#setPaidJenis').val(jenisPajak);
+            $('#setPaidStatus').val(status);
+
+            if (status == 'paid') {
+                $('#paidStatusHeader').text('Konfirmasi Pembayaran');
+                $('#paidLabel').text('Tanggal Pembayaran');
+                $('#tanggalBayarHelp').text('');
+                $('#statusTanggalBayarRow').show();
+                $('#checkBoxTanggalBayarRow').hide();
+                $('#customRadio4').prop('checked', true);
+            } else if (status == 'wait') {
+                $('#paidStatusHeader').text('Konfirmasi Penundaan');
+                $('#paidLabel').text('Tanggal Penundaan');
+                $('#tanggalBayarHelp').text('Penundaan tidak lebih dari 1 bulan setelah tanggal jatuh tempo pajak');
+                $('#statusTanggalBayarRow').hide();
+                $('#checkBoxTanggalBayarRow').show();
+            } else {
+                $('#paidStatusHeader').text('Konfirmasi Penangguhan');
+                $('#paidLabel').text('Tanggal Penangguhan');
+                $('#tanggalBayarHelp').text('');
+                $('#statusTanggalBayarRow').hide();
+                $('#checkBoxTanggalBayarRow').show();
+            }
+
+        });
+
+        $('#setPaidForm').on('submit', function(e) {
+            e.preventDefault();
+
+            var selectedValue = $('input[name="customRadio"]:checked').val();
+            var paidDate;
+
+            var setPaidBayarPajak = $('#setPaidBayarPajak').val();
+            if (setPaidBayarPajak) {
+                var baseDate = new Date(setPaidBayarPajak);
+                switch (selectedValue) {
+                    case '7':
+                        paidDate = new Date(baseDate.setDate(baseDate.getDate() + 7)).toISOString().split('T')[0];
+                        break;
+                    case '14':
+                        paidDate = new Date(baseDate.setDate(baseDate.getDate() + 14)).toISOString().split('T')[0];
+                        break;
+                    case '30':
+                        paidDate = new Date(baseDate.setDate(baseDate.getDate() + 30)).toISOString().split('T')[0];
+                        break;
+                    case '0':
+                        paidDate = $('#statusTanggalBayar').val();
+                        break;
+                }
+            } else {
+                alert('Please select a payment date.');
+                return;
+            }
+
+            $.ajax({
+                url: $(this).attr('action'),
+                method: $(this).attr('method'),
+                data: {
+                    _token: `{{ csrf_token() }}`,
+                    setPaidId: $('#setPaidId').val(),
+                    setPaidTanggalPajak: $('#setPaidTanggalPajak').val(),
+                    statusTanggalBayar: paidDate,
+                    setPaidJenis: $('#setPaidJenis').val(),
+                    setPaidStatus: $('#setPaidStatus').val(),
+                },
+                success: function(response) {
+                    $('#paidStatusModal').modal('hide');
+                    alert.fire({
+                        icon: 'success',
+                        title: response.message
+                    });
+                    window.location.href = `{{ route('kendaraan') }}`;
+                },
+                error: function(xhr) {
+                    toastr.error('Terjadi kesalahan saat memperbarui status.');
+                }
+            });
+        });
+    </script>
+
+    {{-- CURD Pejabat --}}
+    <script>
+        $(document).ready(function() {
+            $("#pejabatTable").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "buttons": false,
+                "lengthChange": true, // Corrected: Removed conflicting lengthChange option
+                "language": {
+                    "lengthMenu": "Tampil  _MENU_",
+                    "info": "Menampilkan _START_ - _END_ dari _TOTAL_ entri",
+                    "search": "Cari :",
+                    "paginate": {
+                        "previous": "Sebelumnya",
+                        "next": "Berikutnya"
+                    }
+                }
+            });
+        });
+
+        $('#addFormpejabat').on('submit', function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: $(this).attr('action'),
+                method: $(this).attr('method'),
+                data: $(this).serialize(),
+                success: function(response) {
+                    $('#addpejabatModal').modal('hide');
+                    alert.fire({
+                        icon: 'success',
+                        title: response.message
+                    });
+                    $('#addFormpejabat')[0].reset();
+                    window.location.href = '{{ route('pejabat') }}';
+
+                },
+                error: function(xhr) {
+                    toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
+                }
+            });
+        });
+
+        $(document).on('click', '.edit-data-pejabat', function() {
+            var id = $(this).data('id');
+            var nama_pejabat = $(this).data('nama-pejabat');
+
+
+            $('#meditpejabaId').val(id);
+            $('#meditpModel').val(nama_pejabat);
+
+
+        });
+
+        $('#editFormpejabat').on('submit', function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: $(this).attr('action'),
+                method: $(this).attr('method'),
+                data: $(this).serialize(),
+                success: function(response) {
+                    $('#editpejabatModal').modal('hide');
+                    alert.fire({
+                        icon: 'success',
+                        title: response.message
+                    });
+                    window.location.href = '{{ route('pejabat') }}';
+                },
+                error: function(xhr) {
+                    toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
+                }
+            });
+        });
+
+        $(document).on('click', '.delete-data-pejabat', function() {
+            var id = $(this).data('id');
+            var nama_pejabat = $(this).data('nama-pejabat');
+
+            $('#pejabatId').val(id);
+            $('#deleteTextpejabat').html(
+                "<span>Apa anda yakin ingin menghapus data Pejabat <b>" + nama_pejabat +
+                "</b></span>");
+
+        });
+
+        $('#deleteFormPejabat').on('submit', function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: $(this).attr('action'),
+                method: $(this).attr('method'),
+                data: $(this).serialize(),
+                success: function(response) {
+                    $('#deletePejabatModal').modal('hide');
+                    window.location.href = '{{ route('pejabat') }}';
+                    alert.fire({
+                        icon: 'success',
+                        title: response.message
+                    });
+                },
+                error: function(xhr) {
+                    toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
+                }
+            });
+        });
+    </script>
+
 </body>
 
 </html>

@@ -30,7 +30,7 @@ class kendaraanController extends Controller
             'addModelKendaraan' => 'required',
             'addTanggalPajak' => 'required',
             'addTanggalStnk' => 'required',
-        ]);      
+        ]);
 
         $user = Auth::user()->username;
 
@@ -39,21 +39,21 @@ class kendaraanController extends Controller
 
         $currentDate = Carbon::now();
         $thirtyDaysBefore = $currentDate->copy()->subDays(30);
-    
+
         if ($tglPajak->greaterThan($currentDate)) {
             $statusPajak = '1';
         } elseif ($tglPajak->between($thirtyDaysBefore, $currentDate)) {
-            $statusPajak = '2'; 
+            $statusPajak = '2';
         } else {
             $statusPajak = '3';
         }
 
         if ($tglStnk->greaterThan($currentDate)) {
-            $statusStnk = '1'; 
+            $statusStnk = '1';
         } elseif ($tglStnk->between($thirtyDaysBefore, $currentDate)) {
-            $statusStnk = '2'; 
+            $statusStnk = '2';
         } else {
-            $statusStnk = '3'; 
+            $statusStnk = '3';
         }
 
         $kendaraan = new kendaraan();
@@ -93,21 +93,21 @@ class kendaraanController extends Controller
 
         $currentDate = Carbon::now();
         $thirtyDaysBefore = $currentDate->copy()->subDays(30);
-    
+
         if ($tglPajak->greaterThan($currentDate)) {
             $statusPajak = '1';
         } elseif ($tglPajak->between($thirtyDaysBefore, $currentDate)) {
-            $statusPajak = '2'; 
+            $statusPajak = '2';
         } else {
             $statusPajak = '3';
         }
 
         if ($tglStnk->greaterThan($currentDate)) {
-            $statusStnk = '1'; 
+            $statusStnk = '1';
         } elseif ($tglStnk->between($thirtyDaysBefore, $currentDate)) {
-            $statusStnk = '2'; 
+            $statusStnk = '2';
         } else {
-            $statusStnk = '3'; 
+            $statusStnk = '3';
         }
 
         $kendaraan->pemilik_id = $validatedData['editPemilikKendaraan'];
@@ -123,6 +123,82 @@ class kendaraanController extends Controller
 
         return response()->json(['message' => 'Data kendaraan berhasil diperbarui']);
     }
+
+    public function updatePaidStatus(Request $request)
+    {
+        $id =  $request['setPaidId'];
+
+        $kendaraan = kendaraan::findOrFail($id);
+
+        $user = Auth::user()->username;
+
+        $tglAkhirPajak = Carbon::parse($request['setPaidTanggalPajak']);
+        $tglBayarPajak = Carbon::parse($request['statusTanggalBayar']);
+
+        $tglPajak = $tglAkhirPajak->copy()->addYear()->format('Y-m-d');
+        $tglPajakStnk = $tglAkhirPajak->copy()->addYear(5)->format('Y-m-d');
+
+        $thirtyDaysLater = $tglAkhirPajak->copy()->addDays(30);
+
+
+
+        if ($request['setPaidJenis'] == 'pajak' && $request['setPaidStatus'] == 'paid') {
+            $kendaraan->tgl_pajak = $tglPajak;
+            $kendaraan->tgl_bayar_pajak = Carbon::parse($request['statusTanggalBayar'])->format('Y-m-d');
+            $kendaraan->status_bayar_pajak = '1';
+            $kendaraan->updated_by = $user;
+            $kendaraan->update();
+        }
+
+        if ($request['setPaidJenis'] == 'stnk' && $request['setPaidStatus'] == 'paid') {
+            $kendaraan->tgl_stnk = $tglPajakStnk;
+            $kendaraan->tgl_bayar_stnk = Carbon::parse($request['statusTanggalBayar'])->format('Y-m-d');
+            $kendaraan->status_bayar_stnk = '1';
+            $kendaraan->updated_by = $user;
+            $kendaraan->update();
+        }
+
+        if ($request['setPaidJenis'] == 'pajak' && $request['setPaidStatus'] == 'wait') {
+            if ($tglBayarPajak->greaterThanOrEqualTo($thirtyDaysLater)) {
+                $statusPajak = '3';
+            } else {
+                $statusPajak = '2';
+            }
+            $kendaraan->tgl_bayar_pajak = $tglBayarPajak;
+            $kendaraan->status_bayar_pajak = $statusPajak;
+            $kendaraan->updated_by = $user;
+            $kendaraan->update();
+        }
+
+        if ($request['setPaidJenis'] == 'stnk' && $request['setPaidStatus'] == 'wait') {
+            if ($tglBayarPajak->greaterThanOrEqualTo($thirtyDaysLater)) {
+                $statusPajak = '3';
+            } else {
+                $statusPajak = '2';
+            }
+            $kendaraan->tgl_bayar_stnk = $tglBayarPajak;
+            $kendaraan->status_bayar_stnk = $statusPajak;
+            $kendaraan->updated_by = $user;
+            $kendaraan->update();
+        }
+
+        if ($request['setPaidJenis'] == 'pajak' && $request['setPaidStatus'] == 'suspend') {
+            $kendaraan->tgl_bayar_pajak = Carbon::parse($request['statusTanggalBayar'])->format('Y-m-d');
+            $kendaraan->status_bayar_pajak = '3';
+            $kendaraan->updated_by = $user;
+            $kendaraan->update();
+        }
+
+        if ($request['setPaidJenis'] == 'stnk' && $request['setPaidStatus'] == 'suspend') {
+            $kendaraan->tgl_bayar_stnk = Carbon::parse($request['statusTanggalBayar'])->format('Y-m-d');
+            $kendaraan->status_bayar_stnk = '3';
+            $kendaraan->updated_by = $user;
+            $kendaraan->update();
+        }
+
+        return response()->json(['message' => 'Status pajak kendaraan berhasil diperbarui']);
+    }
+
 
     public function destroy(Request $request)
     {
@@ -140,6 +216,7 @@ class kendaraanController extends Controller
         $pdf = FacadePdf::loadView('pdf.kendaraan', compact('kendaraan'));
         return $pdf->download('kendaraan-' . $kendaraan->id . '.pdf');
     }
+
 
 
     public function mekendaran()
@@ -195,7 +272,8 @@ class kendaraanController extends Controller
     }
     public function apidata()
     {
-        $data = kendaraan::all();
+        $data = kendaraan::with(['pemilikRelation', 'merekKendaraanRelation'])->get();
+        // $data = kendaraan::all();
 
         return response()->json(['data' => $data]);
     }
@@ -213,6 +291,4 @@ class kendaraanController extends Controller
 
         return response()->json(['data' => $data]);
     }
-
-
 }
