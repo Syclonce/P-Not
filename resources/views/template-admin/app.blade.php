@@ -506,6 +506,12 @@
                     title: "{{ session('error') }}"
                 });
             }
+            if ("{{ session('status') === 'profile-updated' }}") {
+                Toast.fire({
+                    icon: 'success',
+                    title: "{{ session('success') }}"
+                });
+            }
         });
 
         $(function() {

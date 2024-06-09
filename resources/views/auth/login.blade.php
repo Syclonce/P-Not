@@ -1,48 +1,78 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+@extends('templateauth.app')
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+@section('content')
+    <div class="login-box">
+        @php
+            // Mengambil data menggunakan model Webset
+            $setweb = App\Models\setweb::first(); // Anda bisa sesuaikan query ini dengan kebutuhan Anda
+        @endphp
+        <div class="login-logo">
+            <a href="../../index2.html">
+                <img src="{{ asset('webset/' . $setweb->logo_app) }}" style="width: 200px; height: auto;">
+            </a>
 
-        <!-- Email Address / Username -->
-        <div>
-            <x-input-label for="input_type" :value="__('Email/Username')" />
-            <x-text-input id="input_type" class="block mt-1 w-full" type="text" name="input_type" :value="old('input_type')" required autofocus />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-            <x-input-error :messages="$errors->get('username')" class="mt-2" />
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+        <!-- /.login-logo -->
+        <div class="card card-outline card-primary">
+            <div class="card-body login-card-body ">
+                <p class="login-box-msg">Sign in to start {{ $setweb->name_app }}</p>
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+                <form action="{{ route('login') }}" method="post">
+                    @csrf
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" name="input_type" id="input_type"
+                            value="<?= htmlspecialchars(old('input_type')) ?>" required autofocus placeholder="Email">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <input type="password" class="form-control" id="password" name="password" equired
+                            autocomplete="current-password" placeholder="Password">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="icheck-primary">
+                                <input type="checkbox" id="remember" id="remember_me" name="remember">
+                                <label for="remember">
+                                    Remember Me
+                                </label>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
+                <br>
+                <hr>
+                <!-- /.social-auth-links -->
+
+                <p class="mb-1">
+                    <a href="{{ __('forgot-password')}}">I forgot my password</a>
+                </p>
+                <p class="mb-0">
+                    <a href="{{ __('register') }}" class="text-center">Register a new membership</a>
+                </p>
+            </div>
+            <!-- /.login-card-body -->
         </div>
-
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-            </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+    </div>
+@endsection

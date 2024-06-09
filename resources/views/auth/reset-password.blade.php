@@ -1,39 +1,73 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('password.store') }}">
-        @csrf
+@extends('templateauth.app')
 
-        <!-- Password Reset Token -->
-        <input type="hidden" name="token" value="{{ $request->route('token') }}">
+@section('content')
+    <div class="login-box">
+        @php
+            // Mengambil data menggunakan model Webset
+            $setweb = App\Models\setweb::first(); // Anda bisa sesuaikan query ini dengan kebutuhan Anda
+        @endphp
+        <div class="login-logo">
+            <a href="../../index2.html">
+                <img src="{{ asset('webset/' . $setweb->logo_app) }}" style="width: 200px; height: auto;">
+            </a>
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        <!-- /.login-logo -->
+        <div class="card  card-outline card-primary card-outline card-primary">
+            <div class="card-body login-card-body">
+                <p class="login-box-msg">You are only one step a way from your new password, recover your password now.</p>
+                <form action="{{ route('password.store') }}" method="post">
+                    @csrf
+
+                    <input type="hidden" name="token" value="{{ $request->route('token') }}">
+
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" id="email" required autofocus
+                            autocomplete="username" value="{{ old('email', $request->email) }}" placeholder="email" disabled>
+                        <input type="hidden" name="email" value="{{ old('email', $request->email) }}">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="input-group mb-3">
+                        <input type="password" class="form-control" id="password" name="password" equired
+                            autocomplete="new-password" placeholder="Password">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation"
+                            equired autocomplete="new-password" placeholder="Confirm Password">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary btn-block">Request new password</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
+
+                <hr>
+
+                <p class="mb-1">
+                    <a href="{{ __('login') }}">Login</a>
+                </p>
+            </div>
+            <!-- /.login-card-body -->
         </div>
-
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Reset Password') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+    </div>
+@endsection

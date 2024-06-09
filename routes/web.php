@@ -13,9 +13,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -66,8 +66,8 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
 //     Route::get('/kendaraan', [kendaraanController::class, 'index'])->name('kendaraan');
 // })->middleware(['auth', 'verified', 'role:Admin|Super-Admin']);
 
-// Route::get('user', function () {
-//     return '<h1> user </h1>';
-// })->middleware(['auth', 'verified', 'role:User|Super-Admin']);
+Route::get('user', function () {
+    return '<h1> user </h1>';
+})->middleware(['auth', 'verified', 'role:User|Super-Admin']);
 
 require __DIR__ . '/auth.php';

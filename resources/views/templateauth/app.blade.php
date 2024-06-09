@@ -74,6 +74,13 @@ $passwordErrorString = createErrorString($passwordErrors);
         });
     }
 
+    if ("{{session('status') == 'verification-link-sent'}}"){
+        Toast.fire({
+        icon: 'success',
+        title: 'A new verification link has been sent to the email address you provided during registration.'
+        });
+    }
+
     // Display Toast for username errors
     <?php if ($usernameErrorString): ?>
         Toast.fire({
