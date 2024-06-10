@@ -9,6 +9,9 @@ use App\Models\mkendaraan;
 use App\Models\Pemilik;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+
 
 class kendaraanController extends Controller
 {
@@ -26,10 +29,18 @@ class kendaraanController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'addPemilikKendaraan' => 'required',
+            'addPemilikKendaraan' => 'required|unique:kendaraan,pemilik_id',
             'addModelKendaraan' => 'required',
-            'addTanggalPajak' => 'required',
-            'addTanggalStnk' => 'required',
+            'addTanggalPajak' => 'required|date',
+            'addTanggalStnk' => 'required|date',
+        ],[
+            'addPemilikKendaraan.required' => 'Pemilik Kendaraan tidak boleh kosong',
+            'addPemilikKendaraan.unique' => 'Pemilik Kendaraan sudah terdaftar.',
+            'addModelKendaraan.required' => 'Model Kendaraan tidak boleh kosong.',
+            'addTanggalPajak.required' => 'Tanggal Akhir Pajak tidak boleh kosong.',
+            'addTanggalPajak.date' => 'Format Tanggal Akhir Pajak tidak valid.',
+            'addTanggalStnk.required' => 'Tanggal Akhir STNK tidak boleh kosong.',
+            'addTanggalStnk.date' => 'Format Tanggal Akhir STNK tidak valid.',
         ]);
 
         $user = Auth::user()->username;
@@ -37,34 +48,15 @@ class kendaraanController extends Controller
         $tglPajak = Carbon::parse($validatedData['addTanggalPajak']);
         $tglStnk = Carbon::parse($validatedData['addTanggalStnk']);
 
-        $currentDate = Carbon::now();
-        $thirtyDaysBefore = $currentDate->copy()->subDays(30);
-
-        if ($tglPajak->greaterThan($currentDate)) {
-            $statusPajak = '1';
-        } elseif ($tglPajak->between($thirtyDaysBefore, $currentDate)) {
-            $statusPajak = '2';
-        } else {
-            $statusPajak = '3';
-        }
-
-        if ($tglStnk->greaterThan($currentDate)) {
-            $statusStnk = '1';
-        } elseif ($tglStnk->between($thirtyDaysBefore, $currentDate)) {
-            $statusStnk = '2';
-        } else {
-            $statusStnk = '3';
-        }
-
         $kendaraan = new kendaraan();
         $kendaraan->pemilik_id = $validatedData['addPemilikKendaraan'];
         $kendaraan->merek_kendaraan_id = $validatedData['addModelKendaraan'];
-        $kendaraan->tgl_pajak = Carbon::parse($validatedData['addTanggalPajak'])->format('Y-m-d');
-        $kendaraan->tgl_stnk = Carbon::parse($validatedData['addTanggalStnk'])->format('Y-m-d');
-        $kendaraan->tgl_bayar_pajak = Carbon::parse($validatedData['addTanggalPajak'])->format('Y-m-d');
-        $kendaraan->tgl_bayar_stnk = Carbon::parse($validatedData['addTanggalStnk'])->format('Y-m-d');
-        $kendaraan->status_bayar_pajak = $statusPajak;
-        $kendaraan->status_bayar_stnk = $statusStnk;
+        $kendaraan->tgl_pajak = $tglPajak->format('Y-m-d');
+        $kendaraan->tgl_stnk = $tglStnk->format('Y-m-d');;
+        $kendaraan->tgl_bayar_pajak = $tglPajak->format('Y-m-d');
+        $kendaraan->tgl_bayar_stnk = $tglStnk->format('Y-m-d');
+        $kendaraan->status_bayar_pajak = $this->calculateStatus($tglPajak);
+        $kendaraan->status_bayar_stnk = $this->calculateStatus($tglStnk );
         $kendaraan->created_by = $user;
         $kendaraan->updated_by = $user;
 
@@ -80,10 +72,21 @@ class kendaraanController extends Controller
         $kendaraan = kendaraan::findOrFail($id);
 
         $validatedData = $request->validate([
-            'editPemilikKendaraan' => 'required',
+            'editPemilikKendaraan' => [
+                'required',
+                Rule::unique('kendaraan', 'pemilik_id')->ignore($id),
+            ],
             'editModelKendaraan' => 'required',
-            'editTanggalPajak' => 'required',
-            'editTanggalStnk' => 'required',
+            'editTanggalPajak' => 'required|date',
+            'editTanggalStnk' => 'required|date',
+        ], [
+            'editPemilikKendaraan.required' => 'Pemilik Kendaraan tidak boleh kosong',
+            'editPemilikKendaraan.unique' => 'Pemilik Kendaraan sudah terdaftar.',
+            'editModelKendaraan.required' => 'Model Kendaraan tidak boleh kosong.',
+            'editTanggalPajak.required' => 'Tanggal Akhir Pajak tidak boleh kosong.',
+            'editTanggalPajak.date' => 'Format Tanggal Akhir Pajak tidak valid.',
+            'editTanggalStnk.required' => 'Tanggal Akhir STNK tidak boleh kosong.',
+            'editTanggalStnk.date' => 'Format Tanggal Akhir STNK tidak valid.',
         ]);
 
         $user = Auth::user()->username;
@@ -91,37 +94,48 @@ class kendaraanController extends Controller
         $tglPajak = Carbon::parse($validatedData['editTanggalPajak']);
         $tglStnk = Carbon::parse($validatedData['editTanggalStnk']);
 
-        $currentDate = Carbon::now();
-        $thirtyDaysBefore = $currentDate->copy()->subDays(30);
-
-        if ($tglPajak->greaterThan($currentDate)) {
-            $statusPajak = '1';
-        } elseif ($tglPajak->between($thirtyDaysBefore, $currentDate)) {
-            $statusPajak = '2';
-        } else {
-            $statusPajak = '3';
-        }
-
-        if ($tglStnk->greaterThan($currentDate)) {
-            $statusStnk = '1';
-        } elseif ($tglStnk->between($thirtyDaysBefore, $currentDate)) {
-            $statusStnk = '2';
-        } else {
-            $statusStnk = '3';
-        }
-
         $kendaraan->pemilik_id = $validatedData['editPemilikKendaraan'];
         $kendaraan->merek_kendaraan_id = $validatedData['editModelKendaraan'];
         $kendaraan->tgl_pajak = Carbon::parse($validatedData['editTanggalPajak'])->format('Y-m-d');
         $kendaraan->tgl_stnk = Carbon::parse($validatedData['editTanggalStnk'])->format('Y-m-d');
         $kendaraan->tgl_bayar_pajak = Carbon::parse($validatedData['editTanggalPajak'])->format('Y-m-d');
         $kendaraan->tgl_bayar_stnk = Carbon::parse($validatedData['editTanggalStnk'])->format('Y-m-d');
-        $kendaraan->status_bayar_pajak = $statusPajak;
-        $kendaraan->status_bayar_stnk = $statusStnk;
+        $kendaraan->status_bayar_pajak = $this->calculateStatus($tglPajak);
+        $kendaraan->status_bayar_stnk = $this->calculateStatus($tglStnk );
         $kendaraan->updated_by = $user;
         $kendaraan->update();
 
         return response()->json(['message' => 'Data kendaraan berhasil diperbarui']);
+    }
+
+    private function calculateStatus($date)
+    {
+        $daysDifference = Carbon::now()->diffInDays(Carbon::parse($date), false);
+
+        if ($daysDifference > 30) {
+            return '1';
+        } elseif ($daysDifference <= 30 && $daysDifference >= 0) {
+            return '2';
+        } elseif ($daysDifference >= -30 && $daysDifference < 0) {
+            return '3';
+        } else {
+            return '4';
+        }
+    }
+
+    private function calculateStatusSuspend($currentDate,$date)
+    {
+        $daysDifference = $currentDate->diffInDays(Carbon::parse($date), false);
+
+        if ($daysDifference > 30) {
+            return '1';
+        } elseif ($daysDifference <= 30 && $daysDifference >= 0) {
+            return '2';
+        } elseif ($daysDifference >= -30 && $daysDifference < 0) {
+            return '3';
+        } else {
+            return '4';
+        }
     }
 
     public function updatePaidStatus(Request $request)
@@ -135,64 +149,44 @@ class kendaraanController extends Controller
         $tglAkhirPajak = Carbon::parse($request['setPaidTanggalPajak']);
         $tglBayarPajak = Carbon::parse($request['statusTanggalBayar']);
 
+        // Perpanjangan Tanggal Pajak
         $tglPajak = $tglAkhirPajak->copy()->addYear()->format('Y-m-d');
         $tglPajakStnk = $tglAkhirPajak->copy()->addYear(5)->format('Y-m-d');
-
-        $thirtyDaysLater = $tglAkhirPajak->copy()->addDays(30);
-
 
 
         if ($request['setPaidJenis'] == 'pajak' && $request['setPaidStatus'] == 'paid') {
             $kendaraan->tgl_pajak = $tglPajak;
             $kendaraan->tgl_bayar_pajak = Carbon::parse($request['statusTanggalBayar'])->format('Y-m-d');
-            $kendaraan->status_bayar_pajak = '1';
             $kendaraan->updated_by = $user;
+            $kendaraan->update();
+
+            $kendaraan->status_bayar_pajak = $this->calculateStatus($tglPajak);
             $kendaraan->update();
         }
 
         if ($request['setPaidJenis'] == 'stnk' && $request['setPaidStatus'] == 'paid') {
             $kendaraan->tgl_stnk = $tglPajakStnk;
             $kendaraan->tgl_bayar_stnk = Carbon::parse($request['statusTanggalBayar'])->format('Y-m-d');
-            $kendaraan->status_bayar_stnk = '1';
             $kendaraan->updated_by = $user;
+            $kendaraan->update();
+
+            $kendaraan->status_bayar_stnk = $this->calculateStatus($tglPajakStnk);
             $kendaraan->update();
         }
 
-        if ($request['setPaidJenis'] == 'pajak' && $request['setPaidStatus'] == 'wait') {
-            if ($tglBayarPajak->greaterThanOrEqualTo($thirtyDaysLater)) {
-                $statusPajak = '3';
-            } else {
-                $statusPajak = '2';
-            }
-            $kendaraan->tgl_bayar_pajak = $tglBayarPajak;
-            $kendaraan->status_bayar_pajak = $statusPajak;
-            $kendaraan->updated_by = $user;
-            $kendaraan->update();
-        }
-
-        if ($request['setPaidJenis'] == 'stnk' && $request['setPaidStatus'] == 'wait') {
-            if ($tglBayarPajak->greaterThanOrEqualTo($thirtyDaysLater)) {
-                $statusPajak = '3';
-            } else {
-                $statusPajak = '2';
-            }
-            $kendaraan->tgl_bayar_stnk = $tglBayarPajak;
-            $kendaraan->status_bayar_stnk = $statusPajak;
-            $kendaraan->updated_by = $user;
-            $kendaraan->update();
-        }
 
         if ($request['setPaidJenis'] == 'pajak' && $request['setPaidStatus'] == 'suspend') {
             $kendaraan->tgl_bayar_pajak = Carbon::parse($request['statusTanggalBayar'])->format('Y-m-d');
-            $kendaraan->status_bayar_pajak = '3';
             $kendaraan->updated_by = $user;
+            $kendaraan->status_bayar_pajak = $this->calculateStatusSuspend($tglBayarPajak,$tglAkhirPajak);
             $kendaraan->update();
+
         }
 
         if ($request['setPaidJenis'] == 'stnk' && $request['setPaidStatus'] == 'suspend') {
             $kendaraan->tgl_bayar_stnk = Carbon::parse($request['statusTanggalBayar'])->format('Y-m-d');
-            $kendaraan->status_bayar_stnk = '3';
             $kendaraan->updated_by = $user;
+            $kendaraan->status_bayar_stnk = $this->calculateStatusSuspend($tglBayarPajak,$tglAkhirPajak);
             $kendaraan->update();
         }
 
@@ -213,7 +207,7 @@ class kendaraanController extends Controller
     {
         $kendaraan = Kendaraan::findOrFail($id);
 
-        $pdf = FacadePdf::loadView('pdf.kendaraan', compact('kendaraan'));
+        $pdf = FacadePdf::loadView('pdf.surat', compact('kendaraan'));
         return $pdf->download('kendaraan-' . $kendaraan->id . '.pdf');
     }
 

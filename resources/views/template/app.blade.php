@@ -824,7 +824,7 @@
                 dataType: 'json',
                 success: function(response) {
                     var data = response.data;
-
+                    console.log(data);
                     // Prepare data structures
                     var countPerMonth = {};
 
@@ -1269,6 +1269,9 @@
         $('#addFormKendaraan').on('submit', function(e) {
             e.preventDefault();
 
+            $('.form-control').removeClass('is-invalid');
+            $('.text-danger').text(''); 
+
             $.ajax({
                 url: $(this).attr('action'),
                 method: $(this).attr('method'),
@@ -1286,7 +1289,13 @@
                     window.location.href = '{{ route('kendaraan') }}';
                 },
                 error: function(xhr) {
-                    toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
+                    if (xhr.status === 422) {
+                            var errors = xhr.responseJSON.errors;
+                            $.each(errors, function(key, value) {
+                                $('#' + key).addClass('is-invalid');
+                                $('#' + key + 'Error').text(value[0]);
+                            });
+                    }
                 }
             });
         });
@@ -1362,6 +1371,9 @@
         $('#editFormKendaraan').on('submit', function(e) {
             e.preventDefault();
 
+            $('.form-control').removeClass('is-invalid');
+            $('.text-danger').text(''); 
+
             $.ajax({
                 url: $(this).attr('action'),
                 method: $(this).attr('method'),
@@ -1372,10 +1384,16 @@
                         icon: 'success',
                         title: response.message
                     });
-                    window.location.href = '{{ route('kendaraan') }}';
+                    window.location.href = `{{ route('kendaraan') }}`;
                 },
                 error: function(xhr) {
-                    toastr.error('Terjadi kesalahan saat memperbarui kendaraan.');
+                    if (xhr.status === 422) {
+                            var errors = xhr.responseJSON.errors;
+                            $.each(errors, function(key, value) {
+                                $('#' + key).addClass('is-invalid');
+                                $('#' + key + 'Error').text(value[0]);
+                            });
+                    }
                 }
             });
         });
@@ -1389,13 +1407,31 @@
             var tglBayar = $(this).data('tgl-bayar');
             var jenisPajak = $(this).data('jenis-pajak');
             var status = $(this).data('status');
-
+            var ownerNopol = $(this).data('owner-nopol');
+            var ownerNama = $(this).data('owner-nama');
+            var currentState = $(this).data('current-state');
 
             $('#setPaidId').val(id);
             $('#setPaidTanggalPajak').val(tglAkhir);
             $('#setPaidBayarPajak').val(tglBayar);
             $('#setPaidJenis').val(jenisPajak);
             $('#setPaidStatus').val(status);
+            $('#setPaidOwnerPlat').text(ownerNopol);
+            $('#setPaidOwnerName').text(ownerNama);
+
+            if (currentState == '4') {
+                var htmlState =  '<i class="fa fa-circle text-danger"></i>&nbsp;PENANGGUHAN PEMBAYARAN';
+            } else if (currentState == '3') {
+                var htmlState =  '<i class="fa fa-circle text-orange"></i>&nbsp;MENUNGGU PEMBAYARAN';
+            } else if (currentState == '2') {
+                var htmlState =  '<i class="fa fa-circle text-warning"></i>&nbsp;SEGERA JATUH TEMPO';
+            } else {
+                var htmlState =  '<i class="fa fa-circle text-success"></i>&nbsp;SUDAH DIBAYAR';
+            }
+
+            $('#setPaidCurrentStatus').html(htmlState);
+            $('#setPaidEndDate').text(tglAkhir);
+
 
             if (status == 'paid') {
                 $('#paidStatusHeader').text('Konfirmasi Pembayaran');
@@ -1404,13 +1440,7 @@
                 $('#statusTanggalBayarRow').show();
                 $('#checkBoxTanggalBayarRow').hide();
                 $('#customRadio4').prop('checked', true);
-            } else if (status == 'wait') {
-                $('#paidStatusHeader').text('Konfirmasi Penundaan');
-                $('#paidLabel').text('Tanggal Penundaan');
-                $('#tanggalBayarHelp').text('Penundaan tidak lebih dari 1 bulan setelah tanggal jatuh tempo pajak');
-                $('#statusTanggalBayarRow').hide();
-                $('#checkBoxTanggalBayarRow').show();
-            } else {
+            }  else {
                 $('#paidStatusHeader').text('Konfirmasi Penangguhan');
                 $('#paidLabel').text('Tanggal Penangguhan');
                 $('#tanggalBayarHelp').text('');
