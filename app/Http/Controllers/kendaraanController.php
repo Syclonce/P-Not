@@ -208,7 +208,7 @@ class kendaraanController extends Controller
         $kendaraan = Kendaraan::findOrFail($id);
          // Define the paper size and orientation for mPDF
     $pdfOptions = [
-        'format' => 'B2', // You can also use 'letter', 'legal', etc.
+        'format' => 'f4', // You can also use 'letter', 'legal', etc.
         'orientation' => 'P' // 'P' for Portrait and 'L' for Landscape
     ];
 
