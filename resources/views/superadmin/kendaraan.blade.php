@@ -70,6 +70,8 @@
                                                 $currentDate = Carbon::parse($now);
 
                                                 $daysDifference = $tglPajak->diffInDays($currentDate, false);
+                                                $daysDifferenceStnk = $tglStnk->diffInDays($currentDate, false);
+
 
                                                 $downloadLink = route('download-pdf', ['id' => $kendaraan->id]);
 
@@ -226,7 +228,7 @@
                                                                 </div>';
                                                 };
 
-                                                if ($daysDifference > 30) {
+                                                if ($daysDifferenceStnk > 30) {
                                                     $stnkState = '
                                                     <div class="btn-group">
                                                                     <button type="button" class="btn btn-danger btn-xs" data-toggle="dropdown" aria-expanded="false"><b>PENANGGUHAN PEMBAYARAN</b></button>
@@ -262,7 +264,7 @@
                                                                     </a>
                                                                     </div>
                                                                 </div>';     
-                                                    } else if ($daysDifference <= 30 && $daysDifference >= 0 && $kendaraan->status_bayar_stnk == '4' ) {
+                                                    } else if ($daysDifferenceStnk <= 30 && $daysDifferenceStnk >= 0 && $kendaraan->status_bayar_stnk == '4' ) {
                                                     $stnkState = '
                                                     <div class="btn-group">
                                                                     <button type="button" class="btn btn-danger btn-xs" data-toggle="dropdown" aria-expanded="false"><b>PENANGGUHAN PEMBAYARAN</b></button>
@@ -299,7 +301,7 @@
                                                                     </div>
                                                                 </div>';
                                                    
-                                                } elseif ($daysDifference <= 30 && $daysDifference >= 0) {
+                                                } elseif ($daysDifferenceStnk <= 30 && $daysDifferenceStnk >= 0) {
                                                     $stnkState = '
                                                                 <div class="btn-group">
                                                                     <button type="button" class="btn bg-orange btn-xs" data-toggle="dropdown" aria-expanded="false"><b>MENUNGGU PEMBAYARAN</b></button>
@@ -335,7 +337,7 @@
                                                                     </a>
                                                                     </div>
                                                                 </div>';
-                                                } elseif ($daysDifference >= -30 && $daysDifference < 0) {
+                                                } elseif ($daysDifferenceStnk >= -30 && $daysDifferenceStnk < 0) {
                                                     $stnkState = '
                                                                 <div class="btn-group">
                                                                     <button type="button" class="btn btn-warning btn-xs" data-toggle="dropdown" aria-expanded="false"><b>SEGERA JATUH TEMPO</b></button>
@@ -355,7 +357,7 @@
                                                                         </a>
                                                                     </div>
                                                                 </div>';
-                                                } elseif ($daysDifference < -30) {
+                                                } elseif ($daysDifferenceStnk < -30) {
                                                     $stnkState = '
                                                                 <div class="btn-group">
                                                                     <button type="button" class="btn btn-success btn-xs" data-toggle="dropdown" aria-expanded="false"><b>SUDAH DIBAYAR</b></button>
