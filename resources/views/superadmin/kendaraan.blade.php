@@ -71,6 +71,10 @@
 
                                                 $daysDifference = $tglPajak->diffInDays($currentDate, false);
 
+                                                $downloadLink = route('download-pdf', ['id' => $kendaraan->id]);
+
+
+
                                                 if ($daysDifference > 30) {
                                                     $pajakState = '
                                                     <div class="btn-group">
@@ -102,12 +106,12 @@
                                                                             Penangguhan Pembayaran
                                                                         </a>
                                                                     <div class="dropdown-divider"></div>
-                                                                    <a class="dropdown-item" href="http://127.0.0.1:8000/kendaraan/download-pdf/12">
+                                                                    <a class="dropdown-item" href="' . $downloadLink . '">
                                                                         <i class="fa fa-print text-secondary"></i>&nbsp;Cetak Surat Penagihan
                                                                     </a>
                                                                     </div>
                                                                 </div>';     
-                                                    } else if ($daysDifference <= 30 && $daysDifference >= 0 && $kendaraan->status_bayar_pajak == '4' ) {
+                                                } else if ($daysDifference <= 30 && $daysDifference >= 0 && $kendaraan->status_bayar_pajak == '4' ) {
                                                     $pajakState = '
                                                     <div class="btn-group">
                                                                     <button type="button" class="btn btn-danger btn-xs" data-toggle="dropdown" aria-expanded="false"><b>PENANGGUHAN PEMBAYARAN</b></button>
@@ -138,7 +142,7 @@
                                                                             Penangguhan Pembayaran
                                                                         </a>
                                                                     <div class="dropdown-divider"></div>
-                                                                    <a class="dropdown-item" href="http://127.0.0.1:8000/kendaraan/download-pdf/12">
+                                                                    <a class="dropdown-item" href="' . $downloadLink . '">
                                                                         <i class="fa fa-print text-secondary"></i>&nbsp;Cetak Surat Penagihan
                                                                     </a>
                                                                     </div>
@@ -175,7 +179,7 @@
                                                                             Penangguhan Pembayaran
                                                                         </a>
                                                                     <div class="dropdown-divider"></div>
-                                                                    <a class="dropdown-item" href="http://127.0.0.1:8000/kendaraan/download-pdf/12">
+                                                                    <a class="dropdown-item" href="' . $downloadLink . '">
                                                                         <i class="fa fa-print text-secondary"></i>&nbsp;Cetak Surat Penagihan
                                                                     </a>
                                                                     </div>
@@ -253,7 +257,7 @@
                                                                             Penangguhan Pembayaran
                                                                         </a>
                                                                     <div class="dropdown-divider"></div>
-                                                                    <a class="dropdown-item" href="http://127.0.0.1:8000/kendaraan/download-pdf/12">
+                                                                    <a class="dropdown-item" href="' . $downloadLink . '">
                                                                         <i class="fa fa-print text-secondary"></i>&nbsp;Cetak Surat Penagihan
                                                                     </a>
                                                                     </div>
@@ -289,7 +293,7 @@
                                                                             Penangguhan Pembayaran
                                                                         </a>
                                                                     <div class="dropdown-divider"></div>
-                                                                    <a class="dropdown-item" href="http://127.0.0.1:8000/kendaraan/download-pdf/12">
+                                                                    <a class="dropdown-item" href="' . $downloadLink . '">
                                                                         <i class="fa fa-print text-secondary"></i>&nbsp;Cetak Surat Penagihan
                                                                     </a>
                                                                     </div>
@@ -326,7 +330,7 @@
                                                                             Penangguhan Pembayaran
                                                                         </a>
                                                                     <div class="dropdown-divider"></div>
-                                                                    <a class="dropdown-item" href="http://127.0.0.1:8000/kendaraan/download-pdf/12">
+                                                                    <a class="dropdown-item" href="' . $downloadLink . '">
                                                                         <i class="fa fa-print text-secondary"></i>&nbsp;Cetak Surat Penagihan
                                                                     </a>
                                                                     </div>
