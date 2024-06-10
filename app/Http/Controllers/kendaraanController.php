@@ -206,9 +206,17 @@ class kendaraanController extends Controller
     public function downloadPDF($id)
     {
         $kendaraan = Kendaraan::findOrFail($id);
+         // Define the paper size and orientation for mPDF
+    $pdfOptions = [
+        'format' => 'B2', // You can also use 'letter', 'legal', etc.
+        'orientation' => 'P' // 'P' for Portrait and 'L' for Landscape
+    ];
 
-        $pdf = FacadePdf::loadView('pdf.surat', compact('kendaraan'));
-        return $pdf->download('kendaraan-' . $kendaraan->id . '.pdf');
+        // Pass the options to the loadView method
+    $pdf = FacadePdf::loadView('pdf.surat', compact('kendaraan'))
+    ->setPaper($pdfOptions['format'], $pdfOptions['orientation']);
+
+return $pdf->stream('kendaraan-' . $kendaraan->id . '.pdf');
     }
 
 
