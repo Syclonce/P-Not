@@ -170,11 +170,13 @@
         <p>Dengan ini diberitahukan bahwa berdasarkan administrasi data kendaraan pada kantor Bersama Samsat, kendaraan
             milik saudara :</p>
         <br>
+        @php
+        use Carbon\Carbon;
+        @endphp
         <p><span class="text-label">Nomor Registrasi</span> : <span class="text-value">ZYH 1723</span></p>
         <p><span class="text-label">Tahun/CC</span> : <span class="text-value">2008</span></p>
         <p><span class="text-label">Merk Type</span> : <span class="text-value">23</span></p>
-        <p><span class="text-label">Masa pajak berakhir pada tanggal</span> : <span class="text-value">27 September
-                2023</span></p>
+        <p><span class="text-label">Masa pajak berakhir pada tanggal</span> : <span class="text-value"> {{ Carbon::parse($kendaraan->tgl_pajak)->translatedFormat('d F Y'); }}</span></p>
         <br>
         <p>Sehubungan dengan hal tersebut agar Saudara melakukan pendaftaran dan pembayaran Pajak Kendaraan Bermotor
             (PKB) pada kantor Bersama SAMSAT setempat, Keterlambatan melakukan pembayaran pada tanggal yang dimaksud
@@ -226,6 +228,7 @@
         <p>…………………………………………………..</p>
         <p>No HP :..........................................</p>
     </div>
+
 </body>
 
 </html>

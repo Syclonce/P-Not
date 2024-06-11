@@ -56,13 +56,13 @@
                                         @foreach ($kendaraan as $kendaraan)
                                             @php
 
-                                                $now = Carbon::now();   
+                                                $now = Carbon::now();
                                                 $tglPajakFormatted = Carbon::parse(
                                                     $kendaraan->tgl_pajak,
-                                                )->translatedFormat('d/m/Y');
+                                                )->translatedFormat('d F Y');
                                                 $tglStnkFormatted = Carbon::parse(
                                                     $kendaraan->tgl_stnk,
-                                                )->translatedFormat('d/m/Y');
+                                                )->translatedFormat('d F Y');
 
                                                 $tglPajak = Carbon::parse($kendaraan->tgl_pajak);
                                                 $tglStnk = Carbon::parse($kendaraan->tgl_stnk);
@@ -83,62 +83,26 @@
                                                                     <button type="button" class="btn btn-danger btn-xs" data-toggle="dropdown" aria-expanded="false"><b>PENANGGUHAN PEMBAYARAN</b></button>
                                                                     <span class="sr-only">Toggle Dropdown</span></button>
                                                                     <div class="dropdown-menu" role="menu">
-                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal" 
-                                                                            data-id="' . $kendaraan->id . '" 
+                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal"
+                                                                            data-id="' . $kendaraan->id . '"
                                                                             data-tgl-akhir="' . $kendaraan->tgl_pajak  . '"
                                                                             data-tgl-bayar="' . $kendaraan->tgl_bayar_pajak . '"
-                                                                            data-status="paid" 
-                                                                            data-current-state="4" 
-                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '" 
-                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '" 
+                                                                            data-status="paid"
+                                                                            data-current-state="4"
+                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '"
+                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '"
                                                                             data-jenis-pajak="pajak">
                                                                             <i class="fa fa-circle-check text-success"></i>&nbsp;
                                                                             Pembayaran
                                                                         </a>
-                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal" 
-                                                                            data-id="' . $kendaraan->id . '" 
+                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal"
+                                                                            data-id="' . $kendaraan->id . '"
                                                                             data-tgl-akhir="' . $kendaraan->tgl_pajak  . '"
                                                                             data-tgl-bayar="' . $kendaraan->tgl_bayar_pajak . '"
-                                                                            data-status="suspend" 
-                                                                            data-current-state="4" 
-                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '" 
-                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '" 
-                                                                            data-jenis-pajak="pajak">
-                                                                            <i class="fa fa-circle-pause text-secondary"></i>&nbsp;
-                                                                            Penangguhan Pembayaran
-                                                                        </a>
-                                                                    <div class="dropdown-divider"></div>
-                                                                    <a class="dropdown-item" href="' . $downloadLink . '">
-                                                                        <i class="fa fa-print text-secondary"></i>&nbsp;Cetak Surat Penagihan
-                                                                    </a>
-                                                                    </div>
-                                                                </div>';     
-                                                } else if ($daysDifference <= 30 && $daysDifference >= 0 && $kendaraan->status_bayar_pajak == '4' ) {
-                                                    $pajakState = '
-                                                    <div class="btn-group">
-                                                                    <button type="button" class="btn btn-danger btn-xs" data-toggle="dropdown" aria-expanded="false"><b>PENANGGUHAN PEMBAYARAN</b></button>
-                                                                    <span class="sr-only">Toggle Dropdown</span></button>
-                                                                    <div class="dropdown-menu" role="menu">
-                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal" 
-                                                                            data-id="' . $kendaraan->id . '" 
-                                                                            data-tgl-akhir="' . $kendaraan->tgl_pajak  . '"
-                                                                            data-tgl-bayar="' . $kendaraan->tgl_bayar_pajak . '"
-                                                                            data-status="paid" 
-                                                                            data-current-state="4" 
-                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '" 
-                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '" 
-                                                                            data-jenis-pajak="pajak">
-                                                                            <i class="fa fa-circle-check text-success"></i>&nbsp;
-                                                                            Pembayaran
-                                                                        </a>
-                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal" 
-                                                                            data-id="' . $kendaraan->id . '" 
-                                                                            data-tgl-akhir="' . $kendaraan->tgl_pajak  . '"
-                                                                            data-tgl-bayar="' . $kendaraan->tgl_bayar_pajak . '"
-                                                                            data-status="suspend" 
-                                                                            data-current-state="4" 
-                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '" 
-                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '" 
+                                                                            data-status="suspend"
+                                                                            data-current-state="4"
+                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '"
+                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '"
                                                                             data-jenis-pajak="pajak">
                                                                             <i class="fa fa-circle-pause text-secondary"></i>&nbsp;
                                                                             Penangguhan Pembayaran
@@ -149,33 +113,69 @@
                                                                     </a>
                                                                     </div>
                                                                 </div>';
-                                                   
+                                                } else if ($daysDifference <= 30 && $daysDifference >= 0 && $kendaraan->status_bayar_pajak == '4' ) {
+                                                    $pajakState = '
+                                                    <div class="btn-group">
+                                                                    <button type="button" class="btn btn-danger btn-xs" data-toggle="dropdown" aria-expanded="false"><b>PENANGGUHAN PEMBAYARAN</b></button>
+                                                                    <span class="sr-only">Toggle Dropdown</span></button>
+                                                                    <div class="dropdown-menu" role="menu">
+                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal"
+                                                                            data-id="' . $kendaraan->id . '"
+                                                                            data-tgl-akhir="' . $kendaraan->tgl_pajak  . '"
+                                                                            data-tgl-bayar="' . $kendaraan->tgl_bayar_pajak . '"
+                                                                            data-status="paid"
+                                                                            data-current-state="4"
+                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '"
+                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '"
+                                                                            data-jenis-pajak="pajak">
+                                                                            <i class="fa fa-circle-check text-success"></i>&nbsp;
+                                                                            Pembayaran
+                                                                        </a>
+                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal"
+                                                                            data-id="' . $kendaraan->id . '"
+                                                                            data-tgl-akhir="' . $kendaraan->tgl_pajak  . '"
+                                                                            data-tgl-bayar="' . $kendaraan->tgl_bayar_pajak . '"
+                                                                            data-status="suspend"
+                                                                            data-current-state="4"
+                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '"
+                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '"
+                                                                            data-jenis-pajak="pajak">
+                                                                            <i class="fa fa-circle-pause text-secondary"></i>&nbsp;
+                                                                            Penangguhan Pembayaran
+                                                                        </a>
+                                                                    <div class="dropdown-divider"></div>
+                                                                    <a class="dropdown-item" href="' . $downloadLink . '">
+                                                                        <i class="fa fa-print text-secondary"></i>&nbsp;Cetak Surat Penagihan
+                                                                    </a>
+                                                                    </div>
+                                                                </div>';
+
                                                 } elseif ($daysDifference <= 30 && $daysDifference >= 0) {
                                                     $pajakState = '
                                                                 <div class="btn-group">
                                                                     <button type="button" class="btn bg-orange btn-xs" data-toggle="dropdown" aria-expanded="false"><b>MENUNGGU PEMBAYARAN</b></button>
                                                                     <span class="sr-only">Toggle Dropdown</span></button>
                                                                     <div class="dropdown-menu" role="menu">
-                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal" 
-                                                                            data-id="' . $kendaraan->id . '" 
+                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal"
+                                                                            data-id="' . $kendaraan->id . '"
                                                                             data-tgl-akhir="' . $kendaraan->tgl_pajak  . '"
                                                                             data-tgl-bayar="' . $kendaraan->tgl_bayar_pajak . '"
-                                                                            data-status="paid" 
-                                                                            data-current-state="3" 
-                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '" 
-                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '" 
+                                                                            data-status="paid"
+                                                                            data-current-state="3"
+                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '"
+                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '"
                                                                             data-jenis-pajak="pajak">
                                                                             <i class="fa fa-circle-check text-success"></i>&nbsp;
                                                                             Pembayaran
                                                                         </a>
-                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal" 
-                                                                            data-id="' . $kendaraan->id . '" 
+                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal"
+                                                                            data-id="' . $kendaraan->id . '"
                                                                             data-tgl-akhir="' . $kendaraan->tgl_pajak  . '"
                                                                             data-tgl-bayar="' . $kendaraan->tgl_bayar_pajak . '"
-                                                                            data-status="suspend" 
-                                                                            data-current-state="3" 
-                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '" 
-                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '" 
+                                                                            data-status="suspend"
+                                                                            data-current-state="3"
+                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '"
+                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '"
                                                                             data-jenis-pajak="pajak">
                                                                             <i class="fa fa-circle-pause text-secondary"></i>&nbsp;
                                                                             Penangguhan Pembayaran
@@ -192,14 +192,14 @@
                                                                     <button type="button" class="btn btn-warning btn-xs" data-toggle="dropdown" aria-expanded="false"><b>SEGERA JATUH TEMPO</b></button>
                                                                     <span class="sr-only">Toggle Dropdown</span></button>
                                                                     <div class="dropdown-menu" role="menu">
-                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal" 
-                                                                            data-id="' . $kendaraan->id . '" 
+                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal"
+                                                                            data-id="' . $kendaraan->id . '"
                                                                             data-tgl-akhir="' . $kendaraan->tgl_pajak  . '"
                                                                             data-tgl-bayar="' . $kendaraan->tgl_bayar_pajak . '"
-                                                                            data-status="paid" 
-                                                                            data-current-state="2" 
-                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '" 
-                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '" 
+                                                                            data-status="paid"
+                                                                            data-current-state="2"
+                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '"
+                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '"
                                                                             data-jenis-pajak="pajak">
                                                                             <i class="fa fa-circle-check text-success"></i>&nbsp;
                                                                             Pembayaran
@@ -212,14 +212,14 @@
                                                                     <button type="button" class="btn btn-success btn-xs" data-toggle="dropdown" aria-expanded="false"><b>SUDAH DIBAYAR</b></button>
                                                                     <span class="sr-only">Toggle Dropdown</span></button>
                                                                     <div class="dropdown-menu" role="menu">
-                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal" 
-                                                                            data-id="' . $kendaraan->id . '" 
+                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal"
+                                                                            data-id="' . $kendaraan->id . '"
                                                                             data-tgl-akhir="' . $kendaraan->tgl_pajak  . '"
                                                                             data-tgl-bayar="' . $kendaraan->tgl_bayar_pajak . '"
-                                                                            data-status="paid" 
-                                                                            data-current-state="1" 
-                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '" 
-                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '" 
+                                                                            data-status="paid"
+                                                                            data-current-state="1"
+                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '"
+                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '"
                                                                             data-jenis-pajak="pajak">
                                                                             <i class="fa fa-circle-check text-success"></i>&nbsp;
                                                                             Pembayaran
@@ -234,62 +234,26 @@
                                                                     <button type="button" class="btn btn-danger btn-xs" data-toggle="dropdown" aria-expanded="false"><b>PENANGGUHAN PEMBAYARAN</b></button>
                                                                     <span class="sr-only">Toggle Dropdown</span></button>
                                                                     <div class="dropdown-menu" role="menu">
-                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal" 
-                                                                            data-id="' . $kendaraan->id . '" 
+                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal"
+                                                                            data-id="' . $kendaraan->id . '"
                                                                             data-tgl-akhir="' . $kendaraan->tgl_stnk  . '"
                                                                             data-tgl-bayar="' . $kendaraan->tgl_bayar_stnk . '"
-                                                                            data-status="paid" 
-                                                                            data-current-state="4" 
-                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '" 
-                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '" 
+                                                                            data-status="paid"
+                                                                            data-current-state="4"
+                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '"
+                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '"
                                                                             data-jenis-pajak="stnk">
                                                                             <i class="fa fa-circle-check text-success"></i>&nbsp;
                                                                             Pembayaran
                                                                         </a>
-                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal" 
-                                                                            data-id="' . $kendaraan->id . '" 
+                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal"
+                                                                            data-id="' . $kendaraan->id . '"
                                                                             data-tgl-akhir="' . $kendaraan->tgl_stnk  . '"
                                                                             data-tgl-bayar="' . $kendaraan->tgl_bayar_stnk . '"
-                                                                            data-status="suspend" 
-                                                                            data-current-state="4" 
-                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '" 
-                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '" 
-                                                                            data-jenis-pajak="stnk">
-                                                                            <i class="fa fa-circle-pause text-secondary"></i>&nbsp;
-                                                                            Penangguhan Pembayaran
-                                                                        </a>
-                                                                    <div class="dropdown-divider"></div>
-                                                                    <a class="dropdown-item" href="' . $downloadLink . '">
-                                                                        <i class="fa fa-print text-secondary"></i>&nbsp;Cetak Surat Penagihan
-                                                                    </a>
-                                                                    </div>
-                                                                </div>';     
-                                                    } else if ($daysDifferenceStnk <= 30 && $daysDifferenceStnk >= 0 && $kendaraan->status_bayar_stnk == '4' ) {
-                                                    $stnkState = '
-                                                    <div class="btn-group">
-                                                                    <button type="button" class="btn btn-danger btn-xs" data-toggle="dropdown" aria-expanded="false"><b>PENANGGUHAN PEMBAYARAN</b></button>
-                                                                    <span class="sr-only">Toggle Dropdown</span></button>
-                                                                    <div class="dropdown-menu" role="menu">
-                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal" 
-                                                                            data-id="' . $kendaraan->id . '" 
-                                                                            data-tgl-akhir="' . $kendaraan->tgl_stnk  . '"
-                                                                            data-tgl-bayar="' . $kendaraan->tgl_bayar_stnk . '"
-                                                                            data-status="paid" 
-                                                                            data-current-state="4" 
-                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '" 
-                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '" 
-                                                                            data-jenis-pajak="stnk">
-                                                                            <i class="fa fa-circle-check text-success"></i>&nbsp;
-                                                                            Pembayaran
-                                                                        </a>
-                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal" 
-                                                                            data-id="' . $kendaraan->id . '" 
-                                                                            data-tgl-akhir="' . $kendaraan->tgl_stnk  . '"
-                                                                            data-tgl-bayar="' . $kendaraan->tgl_bayar_stnk . '"
-                                                                            data-status="suspend" 
-                                                                            data-current-state="4" 
-                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '" 
-                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '" 
+                                                                            data-status="suspend"
+                                                                            data-current-state="4"
+                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '"
+                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '"
                                                                             data-jenis-pajak="stnk">
                                                                             <i class="fa fa-circle-pause text-secondary"></i>&nbsp;
                                                                             Penangguhan Pembayaran
@@ -300,33 +264,69 @@
                                                                     </a>
                                                                     </div>
                                                                 </div>';
-                                                   
+                                                    } else if ($daysDifferenceStnk <= 30 && $daysDifferenceStnk >= 0 && $kendaraan->status_bayar_stnk == '4' ) {
+                                                    $stnkState = '
+                                                    <div class="btn-group">
+                                                                    <button type="button" class="btn btn-danger btn-xs" data-toggle="dropdown" aria-expanded="false"><b>PENANGGUHAN PEMBAYARAN</b></button>
+                                                                    <span class="sr-only">Toggle Dropdown</span></button>
+                                                                    <div class="dropdown-menu" role="menu">
+                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal"
+                                                                            data-id="' . $kendaraan->id . '"
+                                                                            data-tgl-akhir="' . $kendaraan->tgl_stnk  . '"
+                                                                            data-tgl-bayar="' . $kendaraan->tgl_bayar_stnk . '"
+                                                                            data-status="paid"
+                                                                            data-current-state="4"
+                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '"
+                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '"
+                                                                            data-jenis-pajak="stnk">
+                                                                            <i class="fa fa-circle-check text-success"></i>&nbsp;
+                                                                            Pembayaran
+                                                                        </a>
+                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal"
+                                                                            data-id="' . $kendaraan->id . '"
+                                                                            data-tgl-akhir="' . $kendaraan->tgl_stnk  . '"
+                                                                            data-tgl-bayar="' . $kendaraan->tgl_bayar_stnk . '"
+                                                                            data-status="suspend"
+                                                                            data-current-state="4"
+                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '"
+                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '"
+                                                                            data-jenis-pajak="stnk">
+                                                                            <i class="fa fa-circle-pause text-secondary"></i>&nbsp;
+                                                                            Penangguhan Pembayaran
+                                                                        </a>
+                                                                    <div class="dropdown-divider"></div>
+                                                                    <a class="dropdown-item" href="' . $downloadLink . '">
+                                                                        <i class="fa fa-print text-secondary"></i>&nbsp;Cetak Surat Penagihan
+                                                                    </a>
+                                                                    </div>
+                                                                </div>';
+
                                                 } elseif ($daysDifferenceStnk <= 30 && $daysDifferenceStnk >= 0) {
                                                     $stnkState = '
                                                                 <div class="btn-group">
                                                                     <button type="button" class="btn bg-orange btn-xs" data-toggle="dropdown" aria-expanded="false"><b>MENUNGGU PEMBAYARAN</b></button>
                                                                     <span class="sr-only">Toggle Dropdown</span></button>
                                                                     <div class="dropdown-menu" role="menu">
-                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal" 
-                                                                            data-id="' . $kendaraan->id . '" 
+                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal"
+                                                                            data-id="' . $kendaraan->id . '"
                                                                             data-tgl-akhir="' . $kendaraan->tgl_stnk  . '"
                                                                             data-tgl-bayar="' . $kendaraan->tgl_bayar_stnk . '"
-                                                                            data-status="paid" 
-                                                                            data-current-state="3" 
-                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '" 
-                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '" 
+                                                                            data-status="paid"
+                                                                            data-current-state="3"
+                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '"
+                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '"
                                                                             data-jenis-pajak="stnk">
                                                                             <i class="fa fa-circle-check text-success"></i>&nbsp;
                                                                             Pembayaran
                                                                         </a>
-                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal" 
-                                                                            data-id="' . $kendaraan->id . '" 
+                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal"
+                                                                            data-id="' . $kendaraan->id . '"
                                                                             data-tgl-akhir="' . $kendaraan->tgl_stnk  . '"
                                                                             data-tgl-bayar="' . $kendaraan->tgl_bayar_stnk . '"
-                                                                            data-status="suspend" 
-                                                                            data-current-state="3" 
-                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '" 
-                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '" 
+                                                                            data-status="suspend"
+                                                                            data-current-state="3"
+                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '"
+                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '"
                                                                             data-jenis-pajak="stnk">
                                                                             <i class="fa fa-circle-pause text-secondary"></i>&nbsp;
                                                                             Penangguhan Pembayaran
@@ -343,14 +343,14 @@
                                                                     <button type="button" class="btn btn-warning btn-xs" data-toggle="dropdown" aria-expanded="false"><b>SEGERA JATUH TEMPO</b></button>
                                                                     <span class="sr-only">Toggle Dropdown</span></button>
                                                                     <div class="dropdown-menu" role="menu">
-                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal" 
-                                                                            data-id="' . $kendaraan->id . '" 
+                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal"
+                                                                            data-id="' . $kendaraan->id . '"
                                                                             data-tgl-akhir="' . $kendaraan->tgl_stnk  . '"
                                                                             data-tgl-bayar="' . $kendaraan->tgl_bayar_stnk . '"
-                                                                            data-status="paid" 
-                                                                            data-current-state="2" 
-                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '" 
-                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '" 
+                                                                            data-status="paid"
+                                                                            data-current-state="2"
+                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '"
+                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '"
                                                                             data-jenis-pajak="stnk">
                                                                             <i class="fa fa-circle-check text-success"></i>&nbsp;
                                                                             Pembayaran
@@ -363,14 +363,14 @@
                                                                     <button type="button" class="btn btn-success btn-xs" data-toggle="dropdown" aria-expanded="false"><b>SUDAH DIBAYAR</b></button>
                                                                     <span class="sr-only">Toggle Dropdown</span></button>
                                                                     <div class="dropdown-menu" role="menu">
-                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal" 
-                                                                            data-id="' . $kendaraan->id . '" 
+                                                                        <a class="dropdown-item" id="setPaid" href="#" data-toggle="modal" data-target="#paidStatusModal"
+                                                                            data-id="' . $kendaraan->id . '"
                                                                             data-tgl-akhir="' . $kendaraan->tgl_stnk  . '"
                                                                             data-tgl-bayar="' . $kendaraan->tgl_bayar_stnk . '"
-                                                                            data-status="paid" 
-                                                                            data-current-state="1" 
-                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '" 
-                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '" 
+                                                                            data-status="paid"
+                                                                            data-current-state="1"
+                                                                            data-owner-nopol= "' . $kendaraan->pemilikRelation->no_polisi. '"
+                                                                            data-owner-nama= "' . $kendaraan->pemilikRelation->nama_pemilik. '"
                                                                             data-jenis-pajak="stnk">
                                                                             <i class="fa fa-circle-check text-success"></i>&nbsp;
                                                                             Pembayaran
@@ -379,9 +379,9 @@
                                                                 </div>';
                                                 };
 
-                                                $mapsUrl = "https://maps.google.com/?q=" . $kendaraan->pemilikRelation->latitude . ',' . $kendaraan->pemilikRelation->longitude;                                                
+                                                $mapsUrl = "https://maps.google.com/?q=" . $kendaraan->pemilikRelation->latitude . ',' . $kendaraan->pemilikRelation->longitude;
 
-                                                
+
                                             @endphp
                                             <tr>
                                                 <td>{{ $index }}</td>
@@ -675,7 +675,7 @@
                                         <label for="customRadio4" class="custom-control-label">Pilih Tanggal</label>
                                     </div>
                                 </div>
-                            </div>            
+                            </div>
                         </div>
                         <div class="row" id="statusTanggalBayarRow" style="display: none;">
                             <div class="col-sm-12">
@@ -707,14 +707,14 @@
                 </div>
                 <div class="modal-body">
                     <div class="embed-responsive embed-responsive-16by9">
-                    <iframe 
+                    <iframe
                         id="mapIframe"
-                        class="embed-responsive-item" 
-                        src="" 
-                        frameborder="0" 
-                        style="border:0;" 
-                        allowfullscreen="" 
-                        aria-hidden="false" 
+                        class="embed-responsive-item"
+                        src=""
+                        frameborder="0"
+                        style="border:0;"
+                        allowfullscreen=""
+                        aria-hidden="false"
                         tabindex="0">
                     </iframe>
                     </div>
