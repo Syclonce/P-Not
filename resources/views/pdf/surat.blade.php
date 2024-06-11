@@ -13,16 +13,13 @@
             margin-right: auto;
             box-sizing: border-box;
             overflow: auto;
-            /* Menambahkan overflow auto untuk menghindari keterlaluanan float */
         }
 
         .logo-section {
             float: left;
             width: 45%;
-            /* Mengurangi lebar untuk memberikan ruang */
             text-align: center;
             margin-right: 5%;
-            /* Menambahkan margin kanan */
         }
 
         .logo-section img {
@@ -40,87 +37,59 @@
 
         .code-box {
             float: right;
-            /* Mengatur float ke kanan */
             width: 45%;
-            /* Mengurangi lebar untuk memberikan ruang */
             padding: 10px;
             background-color: lightblue;
             font-size: 12px;
             font-weight: bold;
             text-align: center;
             margin-bottom: 12px;
-            /* Menambahkan margin bawah untuk memberikan ruang antara .code-box dan .additional-text */
         }
 
         .additional-text {
             clear: both;
-            /* Membersihkan float */
             padding: 10px;
             margin-top: 12px;
-            /* Menambahkan margin atas */
             text-align: center;
-            /* Mengatur posisi teks ke tengah */
             width: 45%;
-            /* Mengurangi lebar untuk memberikan ruang */
             float: right;
-            /* Mengatur float ke kanan */
             font-size: 12px;
-            /* Menyesuaikan ukuran teks dengan code-box */
         }
 
         .additional-text p {
             margin: 0;
-            /* Menghapus margin bawaan paragraf */
         }
 
         .custom-text {
             width: 100%;
-            /* Lebar 100% agar teks terletak di bawah */
             text-align: left;
-            /* Posisi teks ke kiri */
             margin-top: 12px;
-            /* Menambahkan margin atas */
             font-size: 12px;
-            /* Ukuran teks */
         }
 
         .custom-text p {
             text-align: left;
-            /* Posisi titik dua ke kanan */
             margin: 5px 0;
-            /* Menambahkan margin atas dan bawah pada setiap paragraf */
         }
 
         .blanko-section {
             clear: both;
-            /* Membersihkan float */
             padding: 10px;
             margin-top: 12px;
-            /* Menambahkan margin atas */
             text-align: center;
-            /* Mengatur posisi teks ke tengah */
             width: 45%;
-            /* Mengurangi lebar untuk memberikan ruang */
             float: right;
-            /* Mengatur float ke kanan */
             font-size: 12px;
-            /* Menyesuaikan ukuran teks dengan code-box */
         }
 
         .left-info {
             clear: both;
-            /* Membersihkan float */
             padding: 10px;
             margin-top: 12px;
-            /* Menambahkan margin atas */
             text-align: center;
-            /* Mengatur posisi teks ke tengah */
             width: 45%;
-            /* Mengurangi lebar untuk memberikan ruang */
             float: left;
-            /* Mengatur float ke kiri */
             font-size: 12px;
-            /* Menyesuaikan ukuran teks dengan code-box */
         }
 
         @media screen and (min-width: 768px) {
@@ -134,62 +103,35 @@
 
             .additional-text {
                 font-size: 16px;
-                /* Menyesuaikan ukuran teks dengan code-box */
             }
 
             .custom-text {
                 font-size: 16px;
-                /* Menyesuaikan ukuran teks dengan code-box */
             }
 
             .custom-text p {
                 margin: 5px 0;
-                /* Menambahkan margin atas dan bawah pada setiap paragraf */
             }
 
             .blanko-section {
                 clear: both;
-                /* Membersihkan float */
                 padding: 10px;
                 margin-top: 12px;
-                /* Menambahkan margin atas */
                 text-align: center;
-                /* Mengatur posisi teks ke tengah */
                 width: 45%;
-                /* Mengurangi lebar untuk memberikan ruang */
                 float: left;
-                /* Mengatur float ke kiri */
                 font-size: 12px;
-                /* Menyesuaikan ukuran teks dengan code-box */
             }
 
             .left-info {
                 clear: both;
-                /* Membersihkan float */
                 padding: 10px;
                 margin-top: 12px;
-                /* Menambahkan margin atas */
                 text-align: center;
-                /* Mengatur posisi teks ke tengah */
                 width: 45%;
-                /* Mengurangi lebar untuk memberikan ruang */
                 float: left;
-                /* Mengatur float ke kiri */
                 font-size: 12px;
-                /* Menyesuaikan ukuran teks dengan code-box */
             }
-            .option-column {
-        flex: 1 1 50%; /* 50% lebar di layar medium (md) */
-    }
-        }
-
-        .options {
-            padding: 10px;
-            margin-top: 12px;
-
-            width: 100%;
-            font-size: 12px;
-
         }
     </style>
 </head>
@@ -261,24 +203,29 @@
         <p> BENNY SURANATA, S.E., M.M </p>
         <p> NIP 10680507 198903 1 006 </p>
     </div>
-    <div style="display: flex; justify-content: space-between;">
-        <div class="options" style="flex: 1;">
-            <p> Kendaraan hilang tidak melapor ke polisi1</p>
-            <p>Kendaraan hilang tidak melapor ke polisi2</p>
-            <p> Kendaraan hilang tidak melapor ke polisi3</p>
-            <p> Kendaraan hilang tidak melapor ke polisi4</p>
-        </div>
-
-        <div class="options" style="float: ring;">
-            <p> Kendaraan hilang tidak melapor ke polisi5</p>
-            <p> Kendaraan hilang tidak melapor ke polisi6</p>
-            <p> Kendaraan hilang tidak melapor ke polisi7</p>
-        </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="image-section text-center ">
+        <img src="./body-opsi.png" alt="Options Image" width="80%">
     </div>
-
-
-
-
+    <div class="blanko-section">
+        <p>Yang Menerangkan/Wajib Pajak.. </p>
+        <br>
+        <br>
+        <p>…………………………………………………..</p>
+        <p>No HP :..........................................</p>
+    </div>
 </body>
 
 </html>
