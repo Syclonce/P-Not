@@ -13,9 +13,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -33,6 +33,7 @@ Route::middleware(['auth', 'verified', 'role:Super-Admin'])->group(function () {
     Route::post('kendaraan/update', [KendaraanController::class, 'update'])->name('kendaraan.update');
     Route::post('kendaraan/destroy', [KendaraanController::class, 'destroy'])->name('kendaraan.destroy');
     Route::get('kendaraan/download-pdf/{id}', [KendaraanController::class, 'downloadPDF'])->name('download-pdf');
+    Route::get('kendaraan/download-pdfs/{id}', [KendaraanController::class, 'downloadPDFs'])->name('download-pdfs');
     Route::get('kendaraan/get-pemilik', [KendaraanController::class, 'getPemilik'])->name('get-pemilik');
     Route::get('kendaraan/get-model', [KendaraanController::class, 'getModel'])->name('get-model');
     Route::post('kendaraan/update-paid-status', [KendaraanController::class, 'updatePaidStatus'])->name('update-paid-status');
@@ -61,13 +62,9 @@ Route::middleware(['auth', 'verified', 'role:Super-Admin'])->group(function () {
 Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin');
 });
-// Route::get('admin', function () {
-//     Route::get('/', [SuperAdminController::class, 'index'])->name('superadmin');
-//     Route::get('/kendaraan', [kendaraanController::class, 'index'])->name('kendaraan');
-// })->middleware(['auth', 'verified', 'role:Admin|Super-Admin']);
 
-Route::get('user', function () {
-    return '<h1> user </h1>';
-})->middleware(['auth', 'verified', 'role:User|Super-Admin']);
+// Route::get('user', function () {
+//     return '<h1> user </h1>';
+// })->middleware(['auth', 'verified', 'role:User|Super-Admin']);
 
 require __DIR__ . '/auth.php';

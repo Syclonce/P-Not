@@ -74,6 +74,7 @@
 
 
                                                 $downloadLink = route('download-pdf', ['id' => $kendaraan->id]);
+                                                $downloadLinks = route('download-pdfs', ['id' => $kendaraan->id]);
 
 
 
@@ -259,7 +260,7 @@
                                                                             Penangguhan Pembayaran
                                                                         </a>
                                                                     <div class="dropdown-divider"></div>
-                                                                    <a class="dropdown-item" href="' . $downloadLink . '">
+                                                                    <a class="dropdown-item" href="' . $downloadLinks . '">
                                                                         <i class="fa fa-print text-secondary"></i>&nbsp;Cetak Surat Penagihan
                                                                     </a>
                                                                     </div>
@@ -295,7 +296,7 @@
                                                                             Penangguhan Pembayaran
                                                                         </a>
                                                                     <div class="dropdown-divider"></div>
-                                                                    <a class="dropdown-item" href="' . $downloadLink . '">
+                                                                    <a class="dropdown-item" href="' . $downloadLinks . '">
                                                                         <i class="fa fa-print text-secondary"></i>&nbsp;Cetak Surat Penagihan
                                                                     </a>
                                                                     </div>
@@ -332,7 +333,7 @@
                                                                             Penangguhan Pembayaran
                                                                         </a>
                                                                     <div class="dropdown-divider"></div>
-                                                                    <a class="dropdown-item" href="' . $downloadLink . '">
+                                                                    <a class="dropdown-item" href="' . $downloadLinks . '">
                                                                         <i class="fa fa-print text-secondary"></i>&nbsp;Cetak Surat Penagihan
                                                                     </a>
                                                                     </div>

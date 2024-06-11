@@ -205,7 +205,9 @@ class kendaraanController extends Controller
 
     public function downloadPDF($id)
     {
-        $kendaraan = Kendaraan::findOrFail($id);
+        $kendaraan = Kendaraan::with(['pemilikRelation', 'merekKendaraanRelation'])
+        ->findOrFail($id);
+
          // Define the paper size and orientation for mPDF
     $pdfOptions = [
         'format' => 'f4', // You can also use 'letter', 'legal', etc.
@@ -216,7 +218,25 @@ class kendaraanController extends Controller
     $pdf = FacadePdf::loadView('pdf.surat', compact('kendaraan'))
     ->setPaper($pdfOptions['format'], $pdfOptions['orientation']);
 
-return $pdf->stream('kendaraan-' . $kendaraan->id . '.pdf');
+    return $pdf->stream('kendaraan-' . $kendaraan->id . '.pdf');
+    }
+
+    public function downloadPDFs($id)
+    {
+        $kendaraan = Kendaraan::with(['pemilikRelation', 'merekKendaraanRelation'])
+        ->findOrFail($id);
+
+         // Define the paper size and orientation for mPDF
+    $pdfOptions = [
+        'format' => 'f4', // You can also use 'letter', 'legal', etc.
+        'orientation' => 'P' // 'P' for Portrait and 'L' for Landscape
+    ];
+
+        // Pass the options to the loadView method
+    $pdf = FacadePdf::loadView('pdf.surats', compact('kendaraan'))
+    ->setPaper($pdfOptions['format'], $pdfOptions['orientation']);
+
+    return $pdf->stream('kendaraan-' . $kendaraan->id . '.pdf');
     }
 
 

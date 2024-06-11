@@ -234,34 +234,29 @@
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
                 <!-- Navbar Search -->
-                <li class="nav-item">
-                    <form action="{{ route('logout') }}" method="POST" style="border: none; padding: 0; margin: 0;">
-                        @csrf
-                        <button type="submit" class="nav-link" style="background: none; border: none;">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
+                        <i class="fas fa-fw fa-power-off"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <button type="submit" class="dropdown-item" onclick="window.location.href='{{ route('profile.edit') }}'">
+                            <i class="fas fa-user"></i> Profile
                         </button>
-                    </form>
-                </li>
-                <li class="nav-item">
-                    {{-- <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                        <label class="btn btn-secondary active">
-                            <input type="radio" name="options" autocomplete="off" checked>
-                            <i class="fa-regular fa-sun"></i>
-                        </label>
-                        <label class="btn btn-secondary">
-                            <input type="radio" name="options" autocomplete="off">
-                            <i class="fa-solid fa-moon"></i>
-                        </label>
-                    </div> --}}
-
-                    <div class="theme-switch-wrapper  ">
-                        <label class="theme-switch" for="checkbox">
-                            <input type="checkbox" id="checkbox">
-                            <span class="slider round"></span>
-                        </label>
+                        <div class="dropdown-divider"></div>
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="dropdown-item">
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+                            </button>
+                        </form>
+                        <div class="dropdown-divider"></div>
+                        <div class="theme-switch-wrapper">
+                            <label class="theme-switch" for="checkbox">
+                                <input type="checkbox" id="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
                     </div>
-
-
                 </li>
             </ul>
         </nav>
@@ -1270,7 +1265,7 @@
             e.preventDefault();
 
             $('.form-control').removeClass('is-invalid');
-            $('.text-danger').text(''); 
+            $('.text-danger').text('');
 
             $.ajax({
                 url: $(this).attr('action'),
@@ -1290,11 +1285,11 @@
                 },
                 error: function(xhr) {
                     if (xhr.status === 422) {
-                            var errors = xhr.responseJSON.errors;
-                            $.each(errors, function(key, value) {
-                                $('#' + key).addClass('is-invalid');
-                                $('#' + key + 'Error').text(value[0]);
-                            });
+                        var errors = xhr.responseJSON.errors;
+                        $.each(errors, function(key, value) {
+                            $('#' + key).addClass('is-invalid');
+                            $('#' + key + 'Error').text(value[0]);
+                        });
                     }
                 }
             });
@@ -1372,7 +1367,7 @@
             e.preventDefault();
 
             $('.form-control').removeClass('is-invalid');
-            $('.text-danger').text(''); 
+            $('.text-danger').text('');
 
             $.ajax({
                 url: $(this).attr('action'),
@@ -1388,11 +1383,11 @@
                 },
                 error: function(xhr) {
                     if (xhr.status === 422) {
-                            var errors = xhr.responseJSON.errors;
-                            $.each(errors, function(key, value) {
-                                $('#' + key).addClass('is-invalid');
-                                $('#' + key + 'Error').text(value[0]);
-                            });
+                        var errors = xhr.responseJSON.errors;
+                        $.each(errors, function(key, value) {
+                            $('#' + key).addClass('is-invalid');
+                            $('#' + key + 'Error').text(value[0]);
+                        });
                     }
                 }
             });
@@ -1420,13 +1415,13 @@
             $('#setPaidOwnerName').text(ownerNama);
 
             if (currentState == '4') {
-                var htmlState =  '<i class="fa fa-circle text-danger"></i>&nbsp;PENANGGUHAN PEMBAYARAN';
+                var htmlState = '<i class="fa fa-circle text-danger"></i>&nbsp;PENANGGUHAN PEMBAYARAN';
             } else if (currentState == '3') {
-                var htmlState =  '<i class="fa fa-circle text-orange"></i>&nbsp;MENUNGGU PEMBAYARAN';
+                var htmlState = '<i class="fa fa-circle text-orange"></i>&nbsp;MENUNGGU PEMBAYARAN';
             } else if (currentState == '2') {
-                var htmlState =  '<i class="fa fa-circle text-warning"></i>&nbsp;SEGERA JATUH TEMPO';
+                var htmlState = '<i class="fa fa-circle text-warning"></i>&nbsp;SEGERA JATUH TEMPO';
             } else {
-                var htmlState =  '<i class="fa fa-circle text-success"></i>&nbsp;SUDAH DIBAYAR';
+                var htmlState = '<i class="fa fa-circle text-success"></i>&nbsp;SUDAH DIBAYAR';
             }
 
             $('#setPaidCurrentStatus').html(htmlState);
@@ -1440,7 +1435,7 @@
                 $('#statusTanggalBayarRow').show();
                 $('#checkBoxTanggalBayarRow').hide();
                 $('#customRadio4').prop('checked', true);
-            }  else {
+            } else {
                 $('#paidStatusHeader').text('Konfirmasi Penangguhan');
                 $('#paidLabel').text('Tanggal Penangguhan');
                 $('#tanggalBayarHelp').text('');

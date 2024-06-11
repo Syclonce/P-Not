@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width">
-    <title>Surat Penagihan Pajak</title>
+    <title>Surat Penagihan STNK</title>
     <style>
         .header {
             width: 100%;
@@ -176,7 +176,7 @@
         <p><span class="text-label">Nomor Registrasi</span> : <span class="text-value">{{ $kendaraan->pemilikRelation->no_polisi }}</span></p>
         <p><span class="text-label">Tahun/CC</span> : <span class="text-value">{{ Carbon::parse($kendaraan->merekKendaraanRelation->tgl_buat)->translatedFormat('Y'); }}</span></p>
         <p><span class="text-label">Merk Type</span> : <span class="text-value">{{ $kendaraan->merekKendaraanRelation->merek . " - ".  $kendaraan->merekKendaraanRelation->model }}</span></p>
-        <p><span class="text-label">Masa pajak berakhir pada tanggal</span> : <span class="text-value"> {{ Carbon::parse($kendaraan->tgl_pajak)->translatedFormat('d F Y'); }}</span></p>
+        <p><span class="text-label">Masa pajak berakhir pada tanggal</span> : <span class="text-value"> {{ Carbon::parse($kendaraan->tgl_stnk)->translatedFormat('d F Y'); }}</span></p>
         <br>
         <p>Sehubungan dengan hal tersebut agar Saudara melakukan pendaftaran dan pembayaran Pajak Kendaraan Bermotor
             (PKB) pada kantor Bersama SAMSAT setempat, Keterlambatan melakukan pembayaran pada tanggal yang dimaksud
