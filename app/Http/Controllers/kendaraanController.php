@@ -278,7 +278,7 @@ class kendaraanController extends Controller
         $kendaraan->merek = $request['namaMerk'];
         $kendaraan->model = $request['namaModel'];
         $kendaraan->kode_merek = $request['kodeMerk'];
-        $kendaraan->tgl_buat = Carbon::parse($request['tgl_buat'])->format('Y-m-d');
+        $kendaraan->tgl_buat = Carbon::parse($request['tahunBuat'])->format('Y-m-d');
         $kendaraan->update();
 
         return redirect()->back()->with('success', 'Data kendaraan berhasil diperbarui.');
