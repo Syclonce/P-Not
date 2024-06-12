@@ -66,6 +66,16 @@
             font-family: Cambria38;
         }
 
+        table {
+        width: 80%; /* Adjust width as needed */
+        }
+        th, td {
+            padding: 0px; /* Adjust general padding as needed */
+            padding-left: 0px; /* Specific left padding */
+            text-align: left; /* Adjust alignment as needed */
+        }
+
+        
         .custom-text p {
             text-align: left;
             margin: 5px 0;
@@ -99,6 +109,14 @@
             width: 45%;
             float: right;
             font-size: 15px;
+        }
+
+        .square {
+        width: 12px; /* Adjust width as needed */
+        height: 12px; /* Adjust height as needed */
+        border: 1px solid black; /* Border style */
+        display: inline-block;
+        vertical-align: middle; /* Aligns the square vertically */
         }
 
         @media screen and (min-width: 768px) {
@@ -135,7 +153,7 @@
                 text-align: center;
                 width: 45%;
                 float: left;
-                font-size: 12px;
+                font-size: 14px;
             }
 
             .left-info {
@@ -145,7 +163,7 @@
                 text-align: center;
                 width: 45%;
                 float: left;
-                font-size: 12px;
+                font-size: 14px;
             }
 
          
@@ -154,6 +172,12 @@
             }
             .regular-text {
                 font-weight: 100;
+            }
+
+            .square {
+                width: 20px;
+                height: 20px;
+                background-color: black;
             }
 
                        
@@ -199,10 +223,31 @@
         @php
         use Carbon\Carbon;
         @endphp
-        <p><span class="text-label">Nomor Registrasi</span> : <span class="text-value">{{ $kendaraan->pemilikRelation->no_polisi }}</span></p>
-        <p><span class="text-label">Tahun/CC</span> : <span class="text-value">{{ Carbon::parse($kendaraan->merekKendaraanRelation->tgl_buat)->translatedFormat('Y'); }}</span></p>
-        <p><span class="text-label">Merk Type</span> : <span class="text-value">{{ $kendaraan->merekKendaraanRelation->merek . " - ".  $kendaraan->merekKendaraanRelation->model }}</span></p>
-        <p><span class="text-label">Masa pajak berakhir pada tanggal</span> : <span class="text-value"> {{ Carbon::parse($kendaraan->tgl_stnk)->translatedFormat('d F Y'); }}</span></p>
+        <table>
+        <tr>
+            <td>Nomor Registrasi</td>
+            <td>:</td>
+            <td> {{ $kendaraan->pemilikRelation->no_polisi }}</td>
+        </tr>
+        
+        <tr>
+            <td>Tahun/CC</td>
+            <td>:</td>
+            <td> {{ Carbon::parse($kendaraan->merekKendaraanRelation->tgl_buat)->translatedFormat('Y'); }}</td>
+        </tr>
+        
+        <tr>
+            <td>Merk Type</td>
+            <td>:</td>
+            <td> {{ $kendaraan->merekKendaraanRelation->merek . " - ".  $kendaraan->merekKendaraanRelation->model }}</td>
+        </tr>
+        <tr>
+            <td>Masa pajak berakhir pada tanggal</td>
+            <td>:</td>
+            <td> {{ Carbon::parse($kendaraan->tgl_stnk)->translatedFormat('d F Y'); }}</td>
+        </tr>
+        </table>
+      
         <br>
         <p style="text-align: justify;">Sehubungan dengan hal tersebut agar Saudara melakukan pendaftaran dan pembayaran Pajak Kendaraan Bermotor
             (PKB) pada kantor Bersama SAMSAT setempat, Keterlambatan melakukan pembayaran pada tanggal yang dimaksud
@@ -210,6 +255,7 @@
         <p style="text-align: justify;">Bilamana kendaraan bermotor saudara telah berubah data kepemilikan/penguasaan objek dan subjek kendaraan, 
             maka diminta segera melapor dengan cara mengisi dan mengirimkan Kembali blanko yang tersedia dibawah ini berupa informasi status kendaraan.</p>
     </div>
+  
     <div class="left-info">
         <br>
         <br>
@@ -254,14 +300,23 @@
     <br>
 
     <div class="left-info">    
-        <p>Kendaraan hilang tidak melapor ke polisi</p>
-        <p>Kendaraan ditarik leasing/penjamin</p>
-        <p>&#9633; Kendaraan sudah dipindah tangankan</p>
+        <p><div class="square"></div> Kendaraan hilang tidak melapor ke polisi<br>
+        <div class="square"></div> Kendaraan ditarik leasing/penjamin<br>
+        <div class="square"></div> Kendaraan sudah dipindah tangankan<br>
+        <div class="square"></div> Kendaraan rusak berat</p>
     </div>
     <div class="right-info">    
-        <p>Kendaraan hilang tidak melapor ke polisi</p>
-        <p>Kendaraan ditarik leasing/penjamin</p>
+        <p><div class="square"></div> Alamat tidak dikenal/ tidak sesuai<br>
+        <div class="square"></div> Wajib pajak tidak merasa memiliki kendaraan<br>
+        <div class="square"></div> Alasan lainnya .......</p>
     </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
     <br>
     <br>
     <br>
