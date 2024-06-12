@@ -482,11 +482,12 @@
             $("#example2").DataTable({
                 "responsive": true,
                 "lengthChange": false,
-                "autoWidth": false,
+                "autoWidth": true,
                 "buttons": false,
                 "lengthChange": false,
                 "bPaginate": false,
                 "bInfo": false,
+                "searching": false, // Hides the search box
                 "language": {
                     "search": "Cari :", // Custom text for the search input
                 }
@@ -500,6 +501,7 @@
                 "lengthChange": false,
                 "bPaginate": false,
                 "bInfo": false,
+                "searching": false, // Hides the search box
                 "language": {
                     "search": "Cari :", // Custom text for the search input
                 }
@@ -513,6 +515,7 @@
                 "lengthChange": false,
                 "bPaginate": false,
                 "bInfo": false,
+                "searching": false, // Hides the search box
                 "language": {
                     "search": "Cari :", // Custom text for the search input
                 }
@@ -526,6 +529,7 @@
                 "lengthChange": false,
                 "bPaginate": false,
                 "bInfo": false,
+                "searching": false, // Hides the search box
                 "language": {
                     "search": "Cari :", // Custom text for the search input
                 }
@@ -1545,12 +1549,11 @@
         $(document).on('click', '.edit-data-pejabat', function() {
             var id = $(this).data('id');
             var nama_pejabat = $(this).data('nama-pejabat');
-
+            var nip_pejabat = $(this).data('nip-pejabat');
 
             $('#meditpejabaId').val(id);
             $('#meditpModel').val(nama_pejabat);
-
-
+            $('#meditnModel').val(nip_pejabat);
         });
 
         $('#editFormpejabat').on('submit', function(e) {

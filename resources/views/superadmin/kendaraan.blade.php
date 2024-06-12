@@ -109,7 +109,7 @@
                                                                             Penangguhan Pembayaran
                                                                         </a>
                                                                     <div class="dropdown-divider"></div>
-                                                                    <a class="dropdown-item" href="' . $downloadLink . '">
+                                                                    <a class="dropdown-item" href="' . $downloadLink . '" target="_blank">
                                                                         <i class="fa fa-print text-secondary"></i>&nbsp;Cetak Surat Penagihan
                                                                     </a>
                                                                     </div>
@@ -145,7 +145,7 @@
                                                                             Penangguhan Pembayaran
                                                                         </a>
                                                                     <div class="dropdown-divider"></div>
-                                                                    <a class="dropdown-item" href="' . $downloadLink . '">
+                                                                    <a class="dropdown-item" href="' . $downloadLink . '" target="_blank">
                                                                         <i class="fa fa-print text-secondary"></i>&nbsp;Cetak Surat Penagihan
                                                                     </a>
                                                                     </div>
@@ -182,7 +182,7 @@
                                                                             Penangguhan Pembayaran
                                                                         </a>
                                                                     <div class="dropdown-divider"></div>
-                                                                    <a class="dropdown-item" href="' . $downloadLink . '">
+                                                                    <a class="dropdown-item" href="' . $downloadLink . '" target="_blank">
                                                                         <i class="fa fa-print text-secondary"></i>&nbsp;Cetak Surat Penagihan
                                                                     </a>
                                                                     </div>
@@ -260,7 +260,7 @@
                                                                             Penangguhan Pembayaran
                                                                         </a>
                                                                     <div class="dropdown-divider"></div>
-                                                                    <a class="dropdown-item" href="' . $downloadLinks . '">
+                                                                    <a class="dropdown-item" href="' . $downloadLinks . '" target="_blank">
                                                                         <i class="fa fa-print text-secondary"></i>&nbsp;Cetak Surat Penagihan
                                                                     </a>
                                                                     </div>
@@ -296,7 +296,7 @@
                                                                             Penangguhan Pembayaran
                                                                         </a>
                                                                     <div class="dropdown-divider"></div>
-                                                                    <a class="dropdown-item" href="' . $downloadLinks . '">
+                                                                    <a class="dropdown-item" href="' . $downloadLinks . '" target="_blank">
                                                                         <i class="fa fa-print text-secondary"></i>&nbsp;Cetak Surat Penagihan
                                                                     </a>
                                                                     </div>
@@ -333,7 +333,7 @@
                                                                             Penangguhan Pembayaran
                                                                         </a>
                                                                     <div class="dropdown-divider"></div>
-                                                                    <a class="dropdown-item" href="' . $downloadLinks . '">
+                                                                    <a class="dropdown-item" href="' . $downloadLinks . '" target="_blank">
                                                                         <i class="fa fa-print text-secondary"></i>&nbsp;Cetak Surat Penagihan
                                                                     </a>
                                                                     </div>

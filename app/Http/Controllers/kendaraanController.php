@@ -209,10 +209,10 @@ class kendaraanController extends Controller
         ->findOrFail($id);
 
          // Define the paper size and orientation for mPDF
-    $pdfOptions = [
-        'format' => 'f4', // You can also use 'letter', 'legal', etc.
-        'orientation' => 'P' // 'P' for Portrait and 'L' for Landscape
-    ];
+         $pdfOptions = [
+            'format' => 'legal', // You can also use 'letter', 'legal', etc.
+            'orientation' => 'P' // 'P' for Portrait and 'L' for Landscape
+        ];
 
         // Pass the options to the loadView method
     $pdf = FacadePdf::loadView('pdf.surat', compact('kendaraan'))
@@ -227,11 +227,10 @@ class kendaraanController extends Controller
         ->findOrFail($id);
 
          // Define the paper size and orientation for mPDF
-    $pdfOptions = [
-        'format' => 'f4', // You can also use 'letter', 'legal', etc.
-        'orientation' => 'P' // 'P' for Portrait and 'L' for Landscape
-    ];
-
+         $pdfOptions = [
+            'format' => 'legal', // You can also use 'letter', 'legal', etc.
+            'orientation' => 'P' // 'P' for Portrait and 'L' for Landscape
+        ];
         // Pass the options to the loadView method
     $pdf = FacadePdf::loadView('pdf.surats', compact('kendaraan'))
     ->setPaper($pdfOptions['format'], $pdfOptions['orientation']);
