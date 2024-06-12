@@ -35,6 +35,7 @@
                             <div class="card-body">
                                 @php
                                     use Carbon\Carbon;
+                                    Carbon::setLocale('id');
                                 @endphp
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
@@ -44,10 +45,11 @@
                                             <th>Nama Pemilik</th>
                                             <th>Merek</th>
                                             <th>Model</th>
-                                            <th>Tanggal Pajak</th>
-                                            <th class="text-center" style="width:18%">Status Pajak</th>
+                                            <th class="text-center">Thn Pembuatan</th>
+                                            <th class="text-center">Tanggal Pajak</th>
+                                            <th class="text-center" style="width:30%">Status Pajak</th>
                                             <th>Tanggal STNK</th>
-                                            <th class="text-center" style="width:18%">Status STNK</th>
+                                            <th class="text-center" style="width:30%">Status STNK</th>
                                             <th class="text-center">Action</th>
                                         </tr>
                                     </thead>
@@ -63,6 +65,10 @@
                                                 $tglStnkFormatted = Carbon::parse(
                                                     $kendaraan->tgl_stnk,
                                                 )->translatedFormat('d F Y');
+
+                                                $tglBuat = Carbon::parse(
+                                                    $kendaraan->merekKendaraanRelation->tgl_buat,
+                                                )->translatedFormat('Y');
 
                                                 $tglPajak = Carbon::parse($kendaraan->tgl_pajak);
                                                 $tglStnk = Carbon::parse($kendaraan->tgl_stnk);
@@ -390,10 +396,11 @@
                                                 <td>{{ $kendaraan->pemilikRelation->nama_pemilik }}</td>
                                                 <td>{{ $kendaraan->merekKendaraanRelation->merek }}</td>
                                                 <td>{{ $kendaraan->merekKendaraanRelation->model }}</td>
+                                                <td class="text-center">{{ $tglBuat }}</td>
                                                 <td class="text-center">{{ $tglPajakFormatted }}</td>
-                                                <td class="text-center">{!! $pajakState !!}</td>
+                                                <td class="text-center" style="width:30%">{!! $pajakState !!}</td>
                                                 <td class="text-center">{{ $tglStnkFormatted }}</td>
-                                                <td class="text-center">{!! $stnkState !!}</td>
+                                                <td class="text-center" style="width:30%">{!! $stnkState !!}</td>
                                                 <td class="text-center">
                                                     <a href='{{ $mapsUrl }}' target="_blank"><i class="fa-solid fa-location-dot text-secondary"></i></a>
                                                     <!-- <a href='#' data-toggle="modal" data-target="#openMaps" data-longitude="{{ $kendaraan->pemilikRelation->longitude }}" data-latitude="{{ $kendaraan->pemilikRelation->latitude }}" class="open-maps" ><i class="fa-solid fa-location-dot text-secondary"></i></a> -->
