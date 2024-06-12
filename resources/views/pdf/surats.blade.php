@@ -50,7 +50,7 @@
             text-align: center;
             width: 45%;
             float: right;
-            font-size: 15px;
+            font-size: 14px;
             font-family: Cambria38, serif;
 
         }
@@ -146,15 +146,6 @@
                 margin: 5px 0;
             }
 
-            .blanko-section {
-                clear: both;
-                padding: 10px;
-                margin-top: 12px;
-                text-align: center;
-                width: 45%;
-                float: left;
-                font-size: 14px;
-            }
 
             .left-info {
                 clear: both;
@@ -208,7 +199,7 @@
     <div class="additional-text">
         <p>Kepada Yth. Bpk/Ibu/</p><br>
         <p>{{ $kendaraan->pemilikRelation->nama_pemilik }}</p>
-        <p>{{ $kendaraan->pemilikRelation->alamat }}</p>
+        <p>{{ strtoupper($kendaraan->pemilikRelation->alamat) }} {{ strtoupper($kecamatan->name) }} {{ strtoupper($kabupaten->name) }}</p>
     </div>
     <br>
     <br>
@@ -222,6 +213,7 @@
         <br>
         @php
         use Carbon\Carbon;
+        Carbon::setLocale('id');
         @endphp
         <table>
         <tr>
@@ -269,11 +261,11 @@
         <br>
         <br>
         <br>
-        <p>Nopol: {{ $kendaraan->pemilikRelation->no_polisi }}</p>
-        <p>Nama: {{ $kendaraan->pemilikRelation->nama_pemilik }}</p>
+        <p>Nopol    : {{ $kendaraan->pemilikRelation->no_polisi }}</p>
+        <p>Nama     : {{ $kendaraan->pemilikRelation->nama_pemilik }}</p>
     </div>
     <div class="blanko-section">
-        <p>Banjar, <?= date('d M Y'); ?> </p>
+        <p>Banjar, {{Carbon::now()->translatedFormat('d F Y');}} </p>
         <p> PUSAT PENGELOLAAN PENDAPATAN DAERAH 
         <br> WILAYAH KOTA BANJAR </p>
         <br>
@@ -296,8 +288,7 @@
     <br>
     <br>
     <br>
-    <br>
-    <br>
+
 
     <div class="left-info">    
         <p><div class="square"></div> Kendaraan hilang tidak melapor ke polisi<br>

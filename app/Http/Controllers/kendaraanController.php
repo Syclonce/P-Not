@@ -205,8 +205,12 @@ class kendaraanController extends Controller
 
     public function downloadPDF($id)
     {
-        $kendaraan = Kendaraan::with(['pemilikRelation', 'merekKendaraanRelation'])
+        $kendaraan = Kendaraan::with(['pemilikRelation', 'merekKendaraanRelation','pemilikRelation.kecamatanRelation','pemilikRelation.kabupatenRelation'
+        ])
         ->findOrFail($id);
+
+        $kecamatan = $kendaraan->pemilikRelation->kecamatanRelation;
+        $kabupaten = $kendaraan->pemilikRelation->kabupatenRelation;
 
          // Define the paper size and orientation for mPDF
          $pdfOptions = [
@@ -215,7 +219,7 @@ class kendaraanController extends Controller
         ];
 
         // Pass the options to the loadView method
-    $pdf = FacadePdf::loadView('pdf.surat', compact('kendaraan'))
+    $pdf = FacadePdf::loadView('pdf.surat', compact('kendaraan','kecamatan','kabupaten'))
     ->setPaper($pdfOptions['format'], $pdfOptions['orientation']);
 
     return $pdf->stream('kendaraan-' . $kendaraan->id . '.pdf');
@@ -223,8 +227,12 @@ class kendaraanController extends Controller
 
     public function downloadPDFs($id)
     {
-        $kendaraan = Kendaraan::with(['pemilikRelation', 'merekKendaraanRelation'])
+        $kendaraan = Kendaraan::with(['pemilikRelation', 'merekKendaraanRelation','pemilikRelation.kecamatanRelation','pemilikRelation.kabupatenRelation'
+        ])
         ->findOrFail($id);
+
+        $kecamatan = $kendaraan->pemilikRelation->kecamatanRelation;
+        $kabupaten = $kendaraan->pemilikRelation->kabupatenRelation;
 
          // Define the paper size and orientation for mPDF
          $pdfOptions = [
@@ -232,10 +240,10 @@ class kendaraanController extends Controller
             'orientation' => 'P' // 'P' for Portrait and 'L' for Landscape
         ];
         // Pass the options to the loadView method
-    $pdf = FacadePdf::loadView('pdf.surats', compact('kendaraan'))
-    ->setPaper($pdfOptions['format'], $pdfOptions['orientation']);
+        $pdf = FacadePdf::loadView('pdf.surats', compact('kendaraan','kecamatan','kabupaten'))
+        ->setPaper($pdfOptions['format'], $pdfOptions['orientation']);
 
-    return $pdf->stream('kendaraan-' . $kendaraan->id . '.pdf');
+        return $pdf->stream('kendaraan-' . $kendaraan->id . '.pdf');
     }
 
 
