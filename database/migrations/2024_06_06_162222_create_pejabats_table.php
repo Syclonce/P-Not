@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('pejabats', function (Blueprint $table) {
             $table->id();
             $table->string('nama_pejabat');
+            $table->string('nip');
             $table->timestamps();
         });
     }

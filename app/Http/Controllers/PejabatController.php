@@ -20,6 +20,7 @@ class PejabatController extends Controller
     {
         $validatedData = $request->validate([
             'nama' => 'required',
+            'nip' => 'required',
         ]);
 
         $user = Auth::user()->username;
@@ -27,6 +28,7 @@ class PejabatController extends Controller
 
         $pejabat = new Pejabat();
         $pejabat->nama_pejabat = $validatedData['nama'];
+        $pejabat->nip_pejabat = $validatedData['nip'];
         $pejabat->save();
 
         return response()->json(['message' => 'Data Nama Pejabat berhasil disimpan']);
@@ -39,11 +41,13 @@ class PejabatController extends Controller
 
         $validatedData = $request->validate([
             'meditpModel' => 'required',
+            'meditnModel' => 'required',
         ]);
 
 
         $pemilik = Pejabat::findOrFail($id);
         $pemilik->nama_pejabat = $validatedData['meditpModel'];
+        $pemilik->nip_pejabat = $validatedData['medinpModel'];
         $pemilik->update();
 
         return response()->json(['message' => 'Data pemilik berhasil diperbarui']);

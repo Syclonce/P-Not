@@ -11,5 +11,6 @@ class Pejabat extends Model
     protected $table = 'pejabats';
     protected $fillable = [
         'nama_pejabat',
+        'nip_pejabat',
     ];
 }

@@ -42,6 +42,7 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Nama Pejabat</th>
+                                            <th>Nip Pejabat</th>
                                             <th class="text-center">Action</th>
                                         </tr>
                                     </thead>
@@ -51,10 +52,12 @@
                                             <tr>
                                                 <td>{{ $index }}</td>
                                                 <td>{{ $pejabat->nama_pejabat }}</td>
+                                                <td>{{ $pejabat->nip_pejabat }}</td>
                                                 <td class="text-center">
                                                     <a href="#" data-toggle="modal" data-target="#editpejabatModal"
                                                         data-id="{{ $pejabat->id }}"
-                                                        data-nama-pejabat="{{ $pejabat->nama_pejabat }}"class="edit-data-pejabat">
+                                                        data-nama-pejabat="{{ $pejabat->nama_pejabat }}"
+                                                        data-nip-pejabat="{{ $pejabat->nip_pejabat }}"class="edit-data-pejabat">
                                                         <i class="fa fa-edit text-secondary"></i></a>
                                                     <a href="#" data-toggle="modal" data-target="#deletePejabatModal"
                                                         data-id="{{ $pejabat->id }}"
@@ -93,10 +96,16 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-sm-12">
+                            <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Nama Pejabat</label>
                                     <input type="text" class="form-control" name="nama">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Nip Pejabat</label>
+                                    <input type="text" class="form-control" name="nip">
                                 </div>
                             </div>
                         </div>
@@ -125,10 +134,16 @@
                         @csrf
                         <input type="hidden" id="meditpejabaId" name="meditpejabaId">
                         <div class="row">
-                            <div class="col-sm-12">
+                            <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Nama Pejabat</label>
                                     <input type="text" class="form-control" id="meditpModel" name="meditpModel">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Nip Pejabat</label>
+                                    <input type="text" class="form-control" id="meditnModel" name="meditnModel">
                                 </div>
                             </div>
                         </div>
