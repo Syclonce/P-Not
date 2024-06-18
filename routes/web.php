@@ -26,8 +26,10 @@ Route::middleware('auth')->group(function () {
 
 
 
-Route::middleware(['auth', 'verified', 'role:Super-Admin'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:PKB'])->group(function () {
     Route::get('/superadmin', [SuperAdminController::class, 'index'])->name('superadmin');
+
+
     Route::get('kendaraan', [kendaraanController::class, 'index'])->name('kendaraan');
     Route::post('kendaraan/store', [KendaraanController::class, 'store'])->name('kendaraan.store');
     Route::post('kendaraan/update', [KendaraanController::class, 'update'])->name('kendaraan.update');
@@ -58,6 +60,11 @@ Route::middleware(['auth', 'verified', 'role:Super-Admin'])->group(function () {
 
     Route::get('setweb', [websetController::class, 'index'])->name('setweb');
     Route::post('setweb/update', [websetController::class, 'updates'])->name('setweb.update');
+
+    Route::get('roless', [SuperAdminController::class, 'roles'])->name('roless');
+    Route::post('roless/store', [SuperAdminController::class, 'rolesadd'])->name('roless.store');
+    Route::post('roless/destroy', [SuperAdminController::class, 'rolesdelet'])->name('roless.destroy');
+    Route::post('roless/update', [SuperAdminController::class, 'roleupdate'])->name('roless.update');
 });
 Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin');

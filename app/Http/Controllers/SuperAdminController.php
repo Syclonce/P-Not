@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Dompdf\Dompdf;
 use App\Models\Pemilik;
+use App\Models\Role;
 use Illuminate\Support\Facades\DB;
 
 class SuperAdminController extends Controller
@@ -41,5 +42,49 @@ class SuperAdminController extends Controller
 
 
         return view('superadmin.index', compact('title', 'countKadaluarsa', 'kendaraan', 'countKadaluarsap', 'totalKendaraan', 'totalUsers', 'tglpajakkdasht', 'tglstnkdasht', 'relasikendaraan', 'tglstnkdash', 'tglpajakkdash'));
+    }
+
+    public function roles()
+    {
+        $title = 'Rs Apps';
+
+        $roles = Role::all();
+        return view('superadmin.roles', compact('title','roles'));
+    }
+
+    public function rolesadd(Request $request)
+    {
+        $validatedData = $request->validate([
+            'nama' => 'required',
+            'guard' => 'required',
+        ]);
+
+        $roles = new Role();
+        $roles->name = $validatedData['nama'];
+        $roles->guard_name = $validatedData['guard'];
+        $roles->save();
+
+        return redirect()->back()->with('success', 'Data kendaraan berhasil disimpan.');
+    }
+
+    public function roleupdate(Request $request)
+    {
+        $id =  $request['meditroleId'];
+
+        $roles = Role::findOrFail($id);
+        $roles->name = $request['meditroleModel'];
+        $roles->guard_name = $request['meditguardModel'];
+        $roles->update();
+
+        return redirect()->back()->with('success', 'Data kendaraan berhasil diperbarui.');
+    }
+
+    public function rolesdelet(Request $request)
+    {
+        $id =  $request['roleid'];
+
+        Role::findOrFail($id)->delete();
+
+        return redirect()->back()->with('success', 'Data kendaraan berhasil dihapus.');
     }
 }

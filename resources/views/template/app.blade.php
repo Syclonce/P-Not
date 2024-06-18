@@ -372,6 +372,16 @@
                                 </p>
                             </a>
                         </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('roless') }}"
+                                class="nav-link {{ \Route::is('roless') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-cogs"></i>
+                                <p>
+                                    Web Seting
+                                </p>
+                            </a>
+                        </li>
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -1598,6 +1608,113 @@
                 success: function(response) {
                     $('#deletePejabatModal').modal('hide');
                     window.location.href = '{{ route('pejabat') }}';
+                    alert.fire({
+                        icon: 'success',
+                        title: response.message
+                    });
+                },
+                error: function(xhr) {
+                    toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
+                }
+            });
+        });
+    </script>
+
+    {{-- CURD roles --}}
+    <script>
+        $(document).ready(function() {
+            $("#rolesTable").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "buttons": false,
+                "lengthChange": true, // Corrected: Removed conflicting lengthChange option
+                "language": {
+                    "lengthMenu": "Tampil  _MENU_",
+                    "info": "Menampilkan _START_ - _END_ dari _TOTAL_ entri",
+                    "search": "Cari :",
+                    "paginate": {
+                        "previous": "Sebelumnya",
+                        "next": "Berikutnya"
+                    }
+                }
+            });
+        });
+
+        $('#addFormroles').on('submit', function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: $(this).attr('action'),
+                method: $(this).attr('method'),
+                data: $(this).serialize(),
+                success: function(response) {
+                    $('#addpejabatModal').modal('hide');
+                    alert.fire({
+                        icon: 'success',
+                        title: response.message
+                    });
+                    $('#addFormroles')[0].reset();
+                    window.location.href = '{{ route('roless') }}';
+
+                },
+                error: function(xhr) {
+                    toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
+                }
+            });
+        });
+
+        $(document).on('click', '.edit-data-role', function() {
+            var id = $(this).data('id');
+            var nama = $(this).data('nama-role');
+            var guart_name = $(this).data('guart-role');
+
+            $('#meditroleId').val(id);
+            $('#meditroleModel').val(nama);
+            $('#meditguardModel').val(guart_name);
+        });
+
+        $('#editFormrole').on('submit', function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: $(this).attr('action'),
+                method: $(this).attr('method'),
+                data: $(this).serialize(),
+                success: function(response) {
+                    $('#editrolesModal').modal('hide');
+                    alert.fire({
+                        icon: 'success',
+                        title: response.message
+                    });
+                    window.location.href = '{{ route('roless') }}';
+                },
+                error: function(xhr) {
+                    toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
+                }
+            });
+        });
+
+        $(document).on('click', '.delete-data-role', function() {
+            var id = $(this).data('id');
+            var name = $(this).data('nama-role');
+
+            $('#roleid').val(id);
+            $('#deleteTextrole').html(
+                "<span>Apa anda yakin ingin menghapus data Pejabat <b>" + name +
+                "</b></span>");
+
+        });
+
+        $('#deleteFormrole').on('submit', function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: $(this).attr('action'),
+                method: $(this).attr('method'),
+                data: $(this).serialize(),
+                success: function(response) {
+                    $('#deleteFormrole').modal('hide');
+                    window.location.href = '{{ route('roless') }}';
                     alert.fire({
                         icon: 'success',
                         title: response.message
