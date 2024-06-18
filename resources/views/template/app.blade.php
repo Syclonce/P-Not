@@ -372,16 +372,6 @@
                                 </p>
                             </a>
                         </li>
-
-                        <li class="nav-item">
-                            <a href="{{ route('roless') }}"
-                                class="nav-link {{ \Route::is('roless') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-cogs"></i>
-                                <p>
-                                    Web Seting
-                                </p>
-                            </a>
-                        </li>
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -1620,10 +1610,10 @@
         });
     </script>
 
-    {{-- CURD roles --}}
+    {{-- CURD Pemsion --}}
     <script>
-        $(document).ready(function() {
-            $("#rolesTable").DataTable({
+       $(document).ready(function() {
+            $("permissiontbl").DataTable({
                 "responsive": true,
                 "autoWidth": false,
                 "buttons": false,
@@ -1640,7 +1630,9 @@
             });
         });
 
-        $('#addFormroles').on('submit', function(e) {
+
+
+        $('#addFormpermesion').on('submit', function(e) {
             e.preventDefault();
 
             $.ajax({
@@ -1648,14 +1640,13 @@
                 method: $(this).attr('method'),
                 data: $(this).serialize(),
                 success: function(response) {
-                    $('#addpejabatModal').modal('hide');
+                    $('#addpermesionModal').modal('hide');
                     alert.fire({
                         icon: 'success',
                         title: response.message
                     });
-                    $('#addFormroles')[0].reset();
-                    window.location.href = '{{ route('roless') }}';
-
+                    $('#addFormpermesion')[0].reset();
+                    window.location.href = '{{ route('permissions') }}';
                 },
                 error: function(xhr) {
                     toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
@@ -1663,14 +1654,120 @@
             });
         });
 
-        $(document).on('click', '.edit-data-role', function() {
-            var id = $(this).data('id');
-            var nama = $(this).data('nama-role');
-            var guart_name = $(this).data('guart-role');
 
-            $('#meditroleId').val(id);
-            $('#meditroleModel').val(nama);
-            $('#meditguardModel').val(guart_name);
+        $(document).on('click', '.edit-data-permesion', function() {
+        var id = $(this).data('id');
+        var nama = $(this).data('nama-permission');
+
+        $('#permissionsid').val(id);
+        $('#permissionnames').val(nama);
+        });
+
+        $('#editFormpermesion').on('submit', function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: $(this).attr('action'),
+                method: $(this).attr('method'),
+                data: $(this).serialize(),
+                success: function(response) {
+                    $('#editpermesionModal').modal('hide');
+                    alert.fire({
+                        icon: 'success',
+                        title: response.message
+                    });
+                    window.location.href = '{{ route('permissions') }}';
+                },
+                error: function(xhr) {
+                    toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
+                }
+            });
+        });
+
+        $(document).on('click', '.delete-data-permesion', function() {
+            var id = $(this).data('id');
+            var name = $(this).data('nama-permission');
+
+            $('#permissionsids').val(id);
+            $('#deleteTextpermissions').html(
+                "<span>Apa anda yakin ingin menghapus data Permession <b>" + name +
+                "</b></span>");
+
+        });
+
+        $('#deleteFormpermesion').on('submit', function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: $(this).attr('action'),
+                method: $(this).attr('method'),
+                data: $(this).serialize(),
+                success: function(response) {
+                    $('#deletepermesionModal').modal('hide');
+                    window.location.href = '{{ route('permissions') }}';
+                    alert.fire({
+                        icon: 'success',
+                        title: response.message
+                    });
+                },
+                error: function(xhr) {
+                    toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
+                }
+            });
+        });
+    </script>
+
+    {{-- CURD role --}}
+    <script>
+       $(document).ready(function() {
+            $("roletbl").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "buttons": false,
+                "lengthChange": true, // Corrected: Removed conflicting lengthChange option
+                "language": {
+                    "lengthMenu": "Tampil  _MENU_",
+                    "info": "Menampilkan _START_ - _END_ dari _TOTAL_ entri",
+                    "search": "Cari :",
+                    "paginate": {
+                        "previous": "Sebelumnya",
+                        "next": "Berikutnya"
+                    }
+                }
+            });
+        });
+
+
+
+        $('#addFormrole').on('submit', function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: $(this).attr('action'),
+                method: $(this).attr('method'),
+                data: $(this).serialize(),
+                success: function(response) {
+                    $('#addroleModal').modal('hide');
+                    alert.fire({
+                        icon: 'success',
+                        title: response.message
+                    });
+                    $('#addFormrole')[0].reset();
+                    window.location.href = '{{ route('role') }}';
+                },
+                error: function(xhr) {
+                    toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
+                }
+            });
+        });
+
+
+        $(document).on('click', '.edit-data-role', function() {
+        var id = $(this).data('id');
+        var nama = $(this).data('nama-role');
+
+        $('#roleid').val(id);
+        $('#rolenames').val(nama);
         });
 
         $('#editFormrole').on('submit', function(e) {
@@ -1681,12 +1778,12 @@
                 method: $(this).attr('method'),
                 data: $(this).serialize(),
                 success: function(response) {
-                    $('#editrolesModal').modal('hide');
+                    $('#editroleModal').modal('hide');
                     alert.fire({
                         icon: 'success',
                         title: response.message
                     });
-                    window.location.href = '{{ route('roless') }}';
+                    window.location.href = '{{ route('role') }}';
                 },
                 error: function(xhr) {
                     toastr.error('Terjadi kesalahan saat menyimpan kendaraan.');
@@ -1698,9 +1795,9 @@
             var id = $(this).data('id');
             var name = $(this).data('nama-role');
 
-            $('#roleid').val(id);
+            $('#roleids').val(id);
             $('#deleteTextrole').html(
-                "<span>Apa anda yakin ingin menghapus data Pejabat <b>" + name +
+                "<span>Apa anda yakin ingin menghapus data Permession <b>" + name +
                 "</b></span>");
 
         });
@@ -1713,8 +1810,8 @@
                 method: $(this).attr('method'),
                 data: $(this).serialize(),
                 success: function(response) {
-                    $('#deleteFormrole').modal('hide');
-                    window.location.href = '{{ route('roless') }}';
+                    $('#deleteroleModal').modal('hide');
+                    window.location.href = '{{ route('role') }}';
                     alert.fire({
                         icon: 'success',
                         title: response.message

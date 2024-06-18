@@ -7,6 +7,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\websetController;
 use App\Http\Controllers\PemilikController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\RoleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -61,11 +63,38 @@ Route::middleware(['auth', 'verified', 'role:PKB'])->group(function () {
     Route::get('setweb', [websetController::class, 'index'])->name('setweb');
     Route::post('setweb/update', [websetController::class, 'updates'])->name('setweb.update');
 
-    Route::get('roless', [SuperAdminController::class, 'roles'])->name('roless');
-    Route::post('roless/store', [SuperAdminController::class, 'rolesadd'])->name('roless.store');
-    Route::post('roless/destroy', [SuperAdminController::class, 'rolesdelet'])->name('roless.destroy');
-    Route::post('roless/update', [SuperAdminController::class, 'roleupdate'])->name('roless.update');
+
+    Route::get('permissions', [PermissionController::class, 'index'])->name('permissions');
+    Route::post('permissions/store', [PermissionController::class, 'store'])->name('permissions.store');
+    Route::post('permissions/update', [PermissionController::class, 'update'])->name('permissions.update');
+    Route::post('permissions/destroy', [PermissionController::class, 'destroy'])->name('permissions.destroy');
+
+    Route::get('role', [RoleController::class, 'index'])->name('role');
+    Route::post('role/store', [RoleController::class, 'store'])->name('role.store');
+    Route::post('role/update', [RoleController::class, 'update'])->name('role.update');
+    Route::post('role/destroy', [RoleController::class, 'destroy'])->name('role.destroy');
+
+
+    // Route::resource('permissions', PermissionController::class);
+    // Route::get('permissions/{permissionId}/delete', [PermissionController::class, 'destroy']);
+
 });
+
+
+Route::group(['middleware' => ['role:super-admin|admin']], function() {
+
+
+    // Route::resource('roles', App\Http\Controllers\RoleController::class);
+    // Route::get('roles/{roleId}/delete', [App\Http\Controllers\RoleController::class, 'destroy']);
+    // Route::get('roles/{roleId}/give-permissions', [App\Http\Controllers\RoleController::class, 'addPermissionToRole']);
+    // Route::put('roles/{roleId}/give-permissions', [App\Http\Controllers\RoleController::class, 'givePermissionToRole']);
+
+    // Route::resource('users', App\Http\Controllers\UserController::class);
+    // Route::get('users/{userId}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
+
+});
+
+
 Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin');
 });
