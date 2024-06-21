@@ -80,7 +80,8 @@ Route::middleware(['auth', 'verified', 'role:PKB'])->group(function () {
 
 
     Route::get('user/role-premesion', [SuperAdminController::class, 'userrolepremesion'])->name('user.role-premesion');
-    Route::post('user/role-premesion', [SuperAdminController::class, 'userrolepremesion'])->name('user.role-premesion.edit');
+    Route::get('user/role-premesion/{user}/edit', [SuperAdminController::class, 'edit'])->name('user.role-premesions');
+    Route::put('user/role-premesion/{user}/edit', [SuperAdminController::class, 'update'])->name('user.role-premesion.edit');
 
     // Route::resource('permissions', PermissionController::class);
     // Route::get('permissions/{permissionId}/delete', [PermissionController::class, 'destroy']);
