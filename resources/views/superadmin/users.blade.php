@@ -24,12 +24,12 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">Data Nama Pejabat</h3>
-                                <div class="card-tools">
+                                {{-- <div class="card-tools">
                                     <button type="button" class="btn btn-primary" data-toggle="modal"
                                         data-target="#addroleModal">
                                         <i class="fas fa-plus"></i> Add role
                                     </button>
-                                </div>
+                                </div> --}}
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
@@ -86,40 +86,6 @@
     <!-- /.content-wrapper -->
 
 
-    <div class="modal fade" id="addroleModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addModalLabel">Add New Permission</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="addFormrole" action="{{ route('role.store') }}" method="POST">
-                        @csrf
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label>Nama Permission</label>
-                                    <input type="text" class="form-control" id="rolename" name="rolename">
-                                </div>
-                            </div>
-                        </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Perbarui</button> <!-- Submit button -->
-                </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-
-
-
     <div class="modal fade" id="editroleModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -135,11 +101,20 @@
                         @csrf
                         <input  id="roleid" name="roleid">
                         <div class="row">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label>Nama Pejabat</label>
-                                    <input type="text" class="form-control" id="rolenames" name="rolenames">
-                                </div>
+                            <div class="mb-12">
+                                <label for="">Roles</label>
+                                <select name="roles[]" class="form-control" multiple>
+                                    <option value="">Select Role</option>
+                                    @foreach ($roles as $role)
+                                    <option
+                                        value="{{ $role }}"
+                                        {{ $role  ? 'selected':'' }}>
+
+                                        {{ $role }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                                @error('roles') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                 </div>
                 <div class="modal-footer">
@@ -152,29 +127,5 @@
     </div>
     </div>
 
-    <div class="modal fade" id="deleteroleModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <form id="deleteFormrole" action="{{ route('role.destroy') }}" method="POST">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editModalLabel">Hapus Data permesion</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        @csrf
-                        <input type="hidden" id="roleids" name="roleids">
-                        <div id="deleteTextrole"></div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-danger">Hapus</button>
-                    </div>
-            </form>
-        </div>
-    </div>
-    </div>
 
 @endsection

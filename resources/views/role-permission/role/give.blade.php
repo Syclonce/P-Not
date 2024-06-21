@@ -23,7 +23,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Data Nama Pejabat</h3>
+                                <h3 class="card-title">Role : {{ $role->name }}</h3>
                                 <div class="card-tools">
                                     <button type="button" class="btn btn-primary" data-toggle="modal"
                                         data-target="#addroleModal">
@@ -33,44 +33,38 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                @php
-                                    use Carbon\Carbon;
-                                    Carbon::setLocale('id');
-                                @endphp
-                                <table id="roletbl" class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Id</th>
-                                            <th>Name</th>
-                                            <th width="40%">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @php $index = 1; @endphp
-                                        @foreach ($roles as $role)
-                                            <tr>
-                                                <td>{{ $role->id }}</td>
-                                                <td>{{ $role->name }}</td>
-                                                <td class="text-center">
-                                                    <a href="#" data-toggle="modal"
-                                                    data-target="#editroleModal"
-                                                    data-id="{{ $role->id }}"
-                                                    data-nama-role="{{ $role->name }}"
-                                                    class="edit-data-role"><i class="fa fa-edit text-secondary"></i></a>
-                                                    <a href="{{ route('role.give', ['roleId' => $role->id]) }}"
-                                                        class="delete-data-role">
-                                                        <i class="fa fa-trash-can text-secondary"></i></a>
-                                                    <a href="#" data-toggle="modal"
-                                                    data-target="#deleteroleModal"
-                                                        data-id="{{ $role->id }}"
-                                                        data-nama-role="{{ $role->name }}"
-                                                        class="delete-data-role">
-                                                        <i class="fa fa-trash-can text-secondary"></i></a>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                <form action="{{ route('role.give.put', ['roleId' => $role->id]) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+
+                                    <div class="mb-3">
+                                        @error('permission')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+
+                                        <label for="">Permissions</label>
+
+                                        <div class="row">
+                                            @foreach ($permissions as $permission)
+                                            <div class="col-md-2">
+                                                <label>
+                                                    <input
+                                                        type="checkbox"
+                                                        name="permission[]"
+                                                        value="{{ $permission->name }}"
+                                                        {{ in_array($permission->id, $rolePermissions) ? 'checked':'' }}
+                                                    />
+                                                    {{ $permission->name }}
+                                                </label>
+                                            </div>
+                                            @endforeach
+                                        </div>
+
+                                    </div>
+                                    <div class="mb-3">
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                    </div>
+                                </form>
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -132,7 +126,7 @@
                 <div class="modal-body">
                     <form id="editFormrole" action="{{ route('role.update') }}" method="POST">
                         @csrf
-                        <input type="hidden" id="roleid" name="roleid">
+                        <input  id="roleid" name="roleid">
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">

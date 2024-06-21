@@ -73,8 +73,14 @@ Route::middleware(['auth', 'verified', 'role:PKB'])->group(function () {
     Route::post('role/store', [RoleController::class, 'store'])->name('role.store');
     Route::post('role/update', [RoleController::class, 'update'])->name('role.update');
     Route::post('role/destroy', [RoleController::class, 'destroy'])->name('role.destroy');
+    Route::get('role/{roleId}/give', [RoleController::class, 'addPermissionToRole'])->name('role.give');
+    Route::put('role/{roleId}/give', [RoleController::class, 'givePermissionToRole'])->name('role.give.put');
+
+
+
 
     Route::get('user/role-premesion', [SuperAdminController::class, 'userrolepremesion'])->name('user.role-premesion');
+    Route::post('user/role-premesion', [SuperAdminController::class, 'userrolepremesion'])->name('user.role-premesion.edit');
 
     // Route::resource('permissions', PermissionController::class);
     // Route::get('permissions/{permissionId}/delete', [PermissionController::class, 'destroy']);
