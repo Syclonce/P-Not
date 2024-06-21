@@ -73,4 +73,12 @@ class SuperAdminController extends Controller
         return redirect()->route('user.role-premesion')->with('status', 'Permissions added to role');
 
     }
+
+    public function destroy($userId)
+    {
+        $user = User::findOrFail($userId);
+        $user->delete();
+
+        return redirect()->route('user.role-premesion')->with('status', 'Permissions added to role');
+    }
 }

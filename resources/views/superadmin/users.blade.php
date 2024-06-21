@@ -62,6 +62,7 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <a href="{{ route('user.role-premesions',['user' => $user->id]) }}"><i class="fa fa-edit text-secondary"></i></a>
+                                                    <a href="{{ route('user.role-premesion.del',['user' => $user->id]) }}"><i class="fa fa-edit text-secondary"></i></a>
 
                                                 </td>
                                             </tr>
