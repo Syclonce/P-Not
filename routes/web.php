@@ -74,6 +74,7 @@ Route::middleware(['auth', 'verified', 'role:PKB'])->group(function () {
     Route::post('role/update', [RoleController::class, 'update'])->name('role.update');
     Route::post('role/destroy', [RoleController::class, 'destroy'])->name('role.destroy');
 
+    Route::get('user/role-premesion', [SuperAdminController::class, 'userrolepremesion'])->name('user.role-premesion');
 
     // Route::resource('permissions', PermissionController::class);
     // Route::get('permissions/{permissionId}/delete', [PermissionController::class, 'destroy']);
