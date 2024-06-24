@@ -84,24 +84,8 @@ Route::middleware(['auth', 'verified', 'role:PKB'])->group(function () {
     Route::put('user/role-premesion/{user}/edit', [SuperAdminController::class, 'update'])->name('user.role-premesion.edit');
     Route::get('user/role-premesion/{user}', [SuperAdminController::class, 'destroy'])->name('user.role-premesion.del');
 
-    // Route::resource('permissions', PermissionController::class);
-    // Route::get('permissions/{permissionId}/delete', [PermissionController::class, 'destroy']);
-
 });
 
-
-Route::group(['middleware' => ['role:super-admin|admin']], function() {
-
-
-    // Route::resource('roles', App\Http\Controllers\RoleController::class);
-    // Route::get('roles/{roleId}/delete', [App\Http\Controllers\RoleController::class, 'destroy']);
-    // Route::get('roles/{roleId}/give-permissions', [App\Http\Controllers\RoleController::class, 'addPermissionToRole']);
-    // Route::put('roles/{roleId}/give-permissions', [App\Http\Controllers\RoleController::class, 'givePermissionToRole']);
-
-    // Route::resource('users', App\Http\Controllers\UserController::class);
-    // Route::get('users/{userId}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
-
-});
 
 
 Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
